@@ -1,0 +1,236 @@
+2025-02-22 00:02:59,964 [INFO] MainUpdater:2872 - connection check result : 10
+2025-02-22 00:02:59,984 [INFO] MainUpdater:2872 - connection check result : 10
+2025-02-22 00:03:00,033 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-02-22 00:03:00,033 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.130
+2025-02-22 00:03:00,040 [WARN] ThirdParty:871 - waiting for thirdparty lock release [close project]
+2025-02-22 00:03:00,040 [INFO] ThirdParty:873 - entering critical section [close project]
+2025-02-22 00:03:00,042 [INFO] ThirdParty:883 - exiting critical section [close project]
+2025-02-22 00:03:00,044 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-02-22 00:03:00,048 [INFO] UtilMem:75 - Begin LoadConfig() Used Memory: 930506856 Bytes (1073741824)
+2025-02-22 00:03:00,050 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-02-22 00:03:00,050 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.130
+2025-02-22 00:03:00,050 [INFO] OpenFileManager:332 - Change cursor
+2025-02-22 00:03:00,293 [INFO] Mcu:2035 - Initializing MCU STM32F401RDTx STM32F401RDTx STM32F401RDT7
+2025-02-22 00:03:01,896 [INFO] Context:748 - Trying to add GPIOservice into a context  which must be forbidden
+2025-02-22 00:03:02,235 [INFO] ImportTextPane:218 - (OptionalMessage_ERROR) Unable to find key (Mcu.ThirdPartyNb) in loaded IOC file
+2025-02-22 00:03:02,235 [INFO] ImportTextPane:218 - (OptionalMessage_ERROR) Unable to find key (Mcu.PinsNb) in loaded IOC file
+2025-02-22 00:03:02,235 [INFO] ImportTextPane:218 - (OptionalMessage_ERROR) Unable to find key (Mcu.IPNb) in loaded IOC file
+2025-02-22 00:03:02,442 [INFO] RtosManager:555 - Registered RTOS mode: class=CMSIS, group=RTOS, mode=CMSIS_V1, owner=FREERTOS
+2025-02-22 00:03:02,442 [INFO] RtosManager:555 - Registered RTOS mode: class=CMSIS, group=RTOS2, mode=CMSIS_V2, owner=FREERTOS
+2025-02-22 00:03:02,442 [INFO] RtosManager:555 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V1, owner=FREERTOS
+2025-02-22 00:03:02,442 [INFO] RtosManager:555 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V2, owner=FREERTOS
+2025-02-22 00:03:02,442 [WARN] ModelIntegratedComponent:184 - Missing modes for component STMicroelectronics:FreeRTOS:0.0.1:STMicroelectronics:RTOS:FreeRTOS:Core:::10.2.0:
+2025-02-22 00:03:02,462 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-02-22 00:03:02,463 [WARN] ModelPack:524 - Component already loaded: STMicroelectronics:HAL Drivers:0.0.0:STMicroelectronics:Device:STMicro_Driver:XSPI:HAL::0.0.1:HAL_XSPI
+2025-02-22 00:03:02,595 [INFO] ThirdPartyModel:298 - Start build external matchings
+2025-02-22 00:03:03,526 [INFO] ThirdPartyModel:316 - End build external matchings
+2025-02-22 00:03:03,738 [INFO] UtilMem:75 - End LoadConfig() Used Memory: 862200952 Bytes (1073741824)
+2025-02-22 00:03:03,859 [WARN] ThirdParty:833 - waiting for thirdparty lock release [change project]
+2025-02-22 00:03:03,859 [INFO] ThirdParty:835 - entering critical section [change project]
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USBPD 4.1
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.3.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC9 1.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 6.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 2.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENVWB1 1.4.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F4 1.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics LIBJPEG 8.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-ASTRA1 2.0.1
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SMBUS 2.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-WB05N 1.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 3.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TCPP 4.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ISPU 2.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.2.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WB 2.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.0.1
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.23.2
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F7 1.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L5 2.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 2.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC6 3.1.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STBOX1 2.0.0
+2025-02-22 00:03:03,860 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.0.0
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G0 1.1.0
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SAFEA1 1.2.2
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 3.0.0
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DPower 1.2.0
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 5.0.0
+2025-02-22 00:03:03,861 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics STM32_WPAN 1.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :EmbeddedOffice I-CUBE-FS-RTOS 1.0.1
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.0.3
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-FLIGHT1 5.0.2
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Cesanta I-CUBE-Mongoose 7.13.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 1.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 9.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G4 2.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.1.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.3.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DISPLAY 3.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TCPP 4.2.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :RealThread X-CUBE-RT-Thread_Nano 4.1.1
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSL 5.7.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 7.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-SIGFOX1 3.2.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC10 1.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :quantropi X-CUBE-qispace-sdk-base 1.9.3
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ISPU 2.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 4.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-EEPRMA1 5.1.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics HAL Drivers 0.0.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.16.2
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.1.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALS 1.0.2
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :emotas I-CUBE-CANOPEN 1.3.0
+2025-02-22 00:03:03,862 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.3.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 10.0.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC7 1.0.1
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.14.1
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.24.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :ITTIA_DB I-CUBE-ITTIADB 8.9.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfTPM 3.2.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.24.2
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.24.1
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :portGmbH I-Cube-SoM-uGOAL 1.1.0
+2025-02-22 00:03:03,863 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 3.1.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 1.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-SMARTAG2 1.2.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.1.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WL 2.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :SEGGER I-CUBE-embOS 1.3.1
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.4.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENV1 5.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 1.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 8.1.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7RS 1.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfMQTT 1.19.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L4 2.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 0.0.2
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :WES I-CUBE-Cesium 1.3.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-ASTRA1 2.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.1.2
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SFXS2LP1 4.0.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 3.3.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOF1 3.4.2
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 9.1.0
+2025-02-22 00:03:03,864 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOF1 3.4.1
+2025-02-22 00:03:03,865 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.2.0
+2025-02-22 00:03:03,865 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Infineon AIROC-Wi-Fi-Bluetooth-STM32 1.6.0
+2025-02-22 00:03:03,865 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.2.0
+2025-02-22 00:03:03,865 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSH 1.4.17
+2025-02-22 00:03:03,865 [INFO] ThirdParty:841 - exiting critical section [change project]
+2025-02-22 00:03:04,118 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-02-22 00:03:04,121 [INFO] PinOutPanel:1589 - setPackage(STM32F401RDTx,LQFP64)
+2025-02-22 00:03:04,657 [INFO] UtilMem:75 - Before build in PCC Used Memory: 682371928 Bytes (1073741824)
+2025-02-22 00:03:05,597 [INFO] UtilMem:75 - After build in PCC Used Memory: 756820840 Bytes (1073741824)
+2025-02-22 00:03:05,625 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,625 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,625 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,626 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,627 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,628 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,629 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,630 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,630 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,630 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,630 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-02-22 00:03:05,770 [INFO] ApiDbMcu:508 - Load IP Config File for PDM2PCM
+2025-02-22 00:03:06,006 [INFO] CADModel:165 - CPN selected for project levelSTM32F401RDT7
+2025-02-22 00:03:06,006 [INFO] CADModel:114 - Register for checkConnection events
+2025-02-22 00:03:06,061 [INFO] OpenFileManager:363 - Restore cursor
+2025-02-22 00:03:07,677 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 868006112 Bytes (1073741824)
+2025-02-22 00:03:07,757 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 884747096 Bytes (1073741824)
+2025-02-22 00:03:08,137 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: NVIC
+2025-02-22 00:03:08,137 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: RCC
+2025-02-22 00:03:08,139 [INFO] CodeGenerator:896 - code generatio: config db path: C:\ST\STM32CubeIDE_1.15.1\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.13.0.202411220809\\db\
+2025-02-22 00:03:08,326 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\MXTmpFiles\license.tmp_save
+2025-02-22 00:03:08,727 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\MXTmpFiles\license.tmp
+2025-02-22 00:03:08,754 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\stm32f4xx_it.c_save
+2025-02-22 00:03:08,986 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\stm32f4xx_it.c
+2025-02-22 00:03:09,017 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\stm32f4xx_it.h_save
+2025-02-22 00:03:09,124 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\stm32f4xx_it.h
+2025-02-22 00:03:09,304 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\stm32f4xx_hal_msp.c_save
+2025-02-22 00:03:09,482 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\stm32f4xx_hal_msp.c
+2025-02-22 00:03:09,513 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\MXTmpFiles\system.tmp_save
+2025-02-22 00:03:09,603 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\MXTmpFiles\system.tmp
+2025-02-22 00:03:09,632 [INFO] CodeEngine:311 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-02-22 00:03:09,760 [INFO] CodeEngine:335 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\stm32f4xx_hal_conf.h
+2025-02-22 00:03:09,831 [INFO] ApiDbMcu:508 - Load IP Config File for RCC
+2025-02-22 00:03:09,871 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\main.h_save
+2025-02-22 00:03:10,001 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Inc\main.h
+2025-02-22 00:03:10,023 [INFO] CodeEngine:255 - oldGeneratedFile, C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\main.c_save
+2025-02-22 00:03:10,181 [INFO] CodeEngine:279 - Generated code: C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\dasd\Core\Src\main.c
+2025-02-22 00:03:10,571 [INFO] ProjectBuilder:3289 - Time for Copy HAL[1] : 268mS.
+2025-02-22 00:03:10,579 [INFO] ProjectBuilder:4876 - Project Generator version: 4.5.0-RC5
+2025-02-22 00:03:10,654 [INFO] ConfigFileManager:1579 - The Die is : DIE433
+2025-02-22 00:03:10,672 [INFO] ApiDbMcu:508 - Load IP Config File for FATFS
+2025-02-22 00:03:10,688 [INFO] ApiDbMcu:508 - Load IP Config File for FREERTOS
+2025-02-22 00:03:10,699 [INFO] ApiDbMcu:508 - Load IP Config File for LIBJPEG
+2025-02-22 00:03:10,717 [INFO] ApiDbMcu:508 - Load IP Config File for MBEDTLS
+2025-02-22 00:03:10,737 [INFO] ApiDbMcu:508 - Load IP Config File for USB_DEVICE
+2025-02-22 00:03:10,755 [INFO] ApiDbMcu:508 - Load IP Config File for USB_HOST

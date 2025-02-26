@@ -23,6 +23,11 @@ This document keeps track of all the **STM32F446RE Nucleo** and **Raspberry Pi 4
 |                  | PA9     | TIM1_CH2 | LeftEncoderCh2     | 
 |                  | PA0     | TIM2_CH1 | RightEncoderCh1     | 
 |                  | PA1     | TIM2_CH2 | RightEncoderCh2     |
+|**PCA9685**     | PB10     | I2C2_SCL |  I2C2_SCL    |
+|                          | PC12     | I2C2_SDA  |  I2C2_SDA     |
+|**Raspberry Pi UART**     |PC7       | USART6_RX |  USART6_RX    |
+|                          |PC6       | USART6_TX |  USART6_TX    |
+
 ---
 
 ## 🍓 Raspberry Pi 4B Pin Assignments
@@ -40,4 +45,4 @@ This document keeps track of all the **STM32F446RE Nucleo** and **Raspberry Pi 4
 
 ---
   
-📅 **Last Updated:** `[15-02-2025]`
+📅 **Last Updated:** `[26-02-2025]`
