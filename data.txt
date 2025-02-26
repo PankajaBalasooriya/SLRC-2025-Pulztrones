@@ -1,0 +1,11 @@
+(env) pulztrones@raspberrypi:~/SLRC-2025-Pulztrones/software/RPI/Tests/SerialCom $ python main.py
+Traceback (most recent call last):
+  File "/home/pulztrones/SLRC-2025-Pulztrones/software/RPI/Tests/SerialCom/main.py", line 97, in <module>
+    cv_processing()
+  File "/home/pulztrones/SLRC-2025-Pulztrones/software/RPI/Tests/SerialCom/main.py", line 84, in cv_processing
+    msg = build_message(MSG_CV_RESULT, tag_data.encode('utf-8'))
+  File "/home/pulztrones/SLRC-2025-Pulztrones/software/RPI/Tests/SerialCom/main.py", line 34, in build_message
+    crc = calc_crc(payload)
+  File "/home/pulztrones/SLRC-2025-Pulztrones/software/RPI/Tests/SerialCom/main.py", line 25, in calc_crc
+    calculator = Calculator(Crc16(0x1021, init_value=0xFFFF, final_xor_value=0x0000, reverse_input=False, reverse_output=False), optimized=True)
+TypeError: __call__() got an unexpected keyword argument 'init_value'
