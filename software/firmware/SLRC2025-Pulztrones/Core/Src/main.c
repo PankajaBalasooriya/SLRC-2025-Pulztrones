@@ -24,6 +24,9 @@
 #include "encoders.h"
 #include "motors.h"
 #include "pca9685.h"
+#include "math.h"
+#include <string.h>
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -34,6 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define BUFFER_SIZE 50
 
 /* USER CODE END PD */
 
@@ -57,6 +61,9 @@ DMA_HandleTypeDef hdma_usart6_rx;
 /* USER CODE BEGIN PV */
 int16_t left_counts = 0;
 int16_t right_counts = 0;
+
+char uart_rx_buffer[BUFFER_SIZE];  // Buffer to store received data
+volatile uint8_t data_received = 0;  // Flag to indicate new data received
 
 /* USER CODE END PV */
 
@@ -84,6 +91,46 @@ pca9685_handle_t handle = {
     .inverted = false
 };
 
+void sweep_servo(void)
+{
+    int pulse_width;
+    float angle;
+
+    // Sweep from 0° to 180° and back
+    for (angle = 0; angle <= 180; angle += 1)
+    {
+        // Calculate pulse width corresponding to the angle
+        pulse_width = (int)(2048 + 409.6 * sin(angle * M_PI / 180.0)); // 1ms - 2ms PWM range mapped to 0 - 4095
+        pca9685_set_channel_pwm_times(&handle, 0, pulse_width, 0);  // Set servo position on channel 0
+        HAL_Delay(15); // Small delay for smooth movement
+    }
+
+    for (angle = 180; angle >= 0; angle -= 1)
+    {
+        // Calculate pulse width corresponding to the angle
+        pulse_width = (int)(2048 + 409.6 * sin(angle * M_PI / 180.0)); // 1ms - 2ms PWM range mapped to 0 - 4095
+        pca9685_set_channel_pwm_times(&handle, 0, pulse_width, 0);  // Set servo position on channel 0
+        HAL_Delay(15); // Small delay for smooth movement
+    }
+}
+
+
+// UART Transmit function (send string)
+void UART_Transmit(UART_HandleTypeDef *huart, char *data)
+{
+    // Transmit the string over UART
+    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART6)  // Check if it's UART6
+    {
+        data_received = 1;  // Set flag to indicate new data
+        HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Restart reception
+    }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -94,6 +141,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+//	uint32_t count = 0; // Initialize the counter
+//	char buffer[50]; // Buffer to hold formatted string
 
   /* USER CODE END 1 */
 
@@ -142,10 +191,10 @@ int main(void)
   // Set PWM frequency.
   // The frequency must be between 24Hz and 1526Hz.
   // Todo: Set the frequency according to the servo
-  pca9685_set_pwm_frequency(&handle, 100.0f);
+  pca9685_set_pwm_frequency(&handle, 50.0f);
 
   /*-------------------------------------------------------------------*/
-
+  HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   /* USER CODE END 2 */
 
@@ -156,8 +205,31 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  left_counts = getLeftEncoderCounts();
-	  right_counts = getRightEncoderCounts();
+	  //left_counts = getLeftEncoderCounts();
+	  //right_counts = getRightEncoderCounts();
+
+	  //pca9685_set_channel_pwm_times(&handle, 0, 2048, 2048);
+	  // Format the message with the counter
+
+
+//		  snprintf(buffer, sizeof(buffer), "Hello, Raspberry Pi, From STM32! Count: %lu\r\n", count++);
+//
+//		  // Transmit the formatted message
+//		  UART_Transmit(&huart6, buffer);
+//
+//		  // Wait for 1 second
+//		  HAL_Delay(50);
+
+	  if (data_received)  // Check if new data is received
+	  {
+		  data_received = 0;  // Reset flag
+
+		  // Print received data back (optional, for debugging)
+		  HAL_UART_Transmit(&huart6, (uint8_t *)uart_rx_buffer, strlen(uart_rx_buffer), HAL_MAX_DELAY);
+	  }
+
+
+
 	  //setMotorLPWM(0.6);
 	  //setMotorRPWM(0.6);
   }
