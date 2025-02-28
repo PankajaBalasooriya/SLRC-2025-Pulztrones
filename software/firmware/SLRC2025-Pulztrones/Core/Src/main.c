@@ -27,6 +27,7 @@
 #include "math.h"
 #include <string.h>
 #include <stdio.h>
+#include "servo.h"
 
 /* USER CODE END Includes */
 
@@ -84,35 +85,7 @@ static void MX_USART6_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Create the handle for the driver.
-pca9685_handle_t handle = {
-    .i2c_handle = &hi2c2,
-    .device_address = PCA9865_I2C_DEFAULT_DEVICE_ADDRESS,
-    .inverted = false
-};
 
-void sweep_servo(void)
-{
-    int pulse_width;
-    float angle;
-
-    // Sweep from 0° to 180° and back
-    for (angle = 0; angle <= 180; angle += 1)
-    {
-        // Calculate pulse width corresponding to the angle
-        pulse_width = (int)(2048 + 409.6 * sin(angle * M_PI / 180.0)); // 1ms - 2ms PWM range mapped to 0 - 4095
-        pca9685_set_channel_pwm_times(&handle, 0, pulse_width, 0);  // Set servo position on channel 0
-        HAL_Delay(15); // Small delay for smooth movement
-    }
-
-    for (angle = 180; angle >= 0; angle -= 1)
-    {
-        // Calculate pulse width corresponding to the angle
-        pulse_width = (int)(2048 + 409.6 * sin(angle * M_PI / 180.0)); // 1ms - 2ms PWM range mapped to 0 - 4095
-        pca9685_set_channel_pwm_times(&handle, 0, pulse_width, 0);  // Set servo position on channel 0
-        HAL_Delay(15); // Small delay for smooth movement
-    }
-}
 
 
 // UART Transmit function (send string)
@@ -184,17 +157,31 @@ int main(void)
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 
 
-  /*---------------------PCA9685 init--------------------------------*/
-  // Initialise driver (performs basic setup).
-  pca9685_init(&handle);
+  /*---------------------Servo--------------------------------*/
+  Servo_Init(50);  // 50Hz for standard servos
 
-  // Set PWM frequency.
-  // The frequency must be between 24Hz and 1526Hz.
-  // Todo: Set the frequency according to the servo
-  pca9685_set_pwm_frequency(&handle, 50.0f);
+  //Examples
+  // Register servos (do this once)
+  int claw = Servo_Register(11, "claw", 0, 180);
+  int arm = Servo_Register(13, "arm", 0, 180);
+  int base = Servo_Register(15, "base", 0, 180);
+
+  // Later in your code, use the servos by ID
+  Servo_SetAngle(claw, 35);   // Set claw to 45 degrees
+  Servo_SetAngle(arm,100);    // Set arm to 90 degrees
+
+  // Or use them by name
+  Servo_SetAngleByName("base", 150);  // Set base to 120 degrees
+
+  // Reset all servos to center position
+  //Servo_ResetAll();
+
 
   /*-------------------------------------------------------------------*/
   HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
+
+
+
 
   /* USER CODE END 2 */
 
@@ -208,7 +195,6 @@ int main(void)
 	  //left_counts = getLeftEncoderCounts();
 	  //right_counts = getRightEncoderCounts();
 
-	  //pca9685_set_channel_pwm_times(&handle, 0, 2048, 2048);
 	  // Format the message with the counter
 
 
@@ -220,13 +206,21 @@ int main(void)
 //		  // Wait for 1 second
 //		  HAL_Delay(50);
 
-	  if (data_received)  // Check if new data is received
-	  {
-		  data_received = 0;  // Reset flag
 
-		  // Print received data back (optional, for debugging)
-		  HAL_UART_Transmit(&huart6, (uint8_t *)uart_rx_buffer, strlen(uart_rx_buffer), HAL_MAX_DELAY);
-	  }
+
+
+//	  if (data_received)  // Check if new data is received
+//	  {
+//		  data_received = 0;  // Reset flag
+//
+//		  // Print received data back (optional, for debugging)
+//		  HAL_UART_Transmit(&huart6, (uint8_t *)uart_rx_buffer, strlen(uart_rx_buffer), HAL_MAX_DELAY);
+//	  }
+
+
+
+
+
 
 
 
@@ -306,7 +300,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.ClockSpeed = 400000;
+  hi2c2.Init.ClockSpeed = 100000;
   hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;

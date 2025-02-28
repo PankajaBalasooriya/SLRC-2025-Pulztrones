@@ -1,0 +1,7 @@
+../Core/Src/servo.c:24:6:Servo_Init	16	static
+../Core/Src/servo.c:46:5:Servo_Register	32	static
+../Core/Src/servo.c:102:5:Servo_SetAngle	16	static
+../Core/Src/servo.c:129:5:Servo_SetAngleByName	24	static
+../Core/Src/servo.c:147:7:Servo_GetAngle	16	static
+../Core/Src/servo.c:161:5:Servo_GetIdByName	24	static
+../Core/Src/servo.c:179:6:Servo_ResetAll	16	static
