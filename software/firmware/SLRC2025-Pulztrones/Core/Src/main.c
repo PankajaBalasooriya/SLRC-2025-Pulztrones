@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include "servo.h"
 #include "analog_mux.h"
+#include "raykha.h"
+
 
 /* USER CODE END Includes */
 
@@ -70,6 +72,14 @@ int16_t right_counts = 0;
 char uart_rx_buffer[BUFFER_SIZE];  // Buffer to store received data
 volatile uint8_t data_received = 0;  // Flag to indicate new data received
 
+// Buffer to store values from all channels
+uint16_t sensorValues[16] = {0};
+
+RAYKHA_Calibration raykha_calibration;
+uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+int32_t line_position;
+uint8_t calibration_complete = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,6 +101,26 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+
+// Function to read all channels sequentially
+void ReadAllSensors(void)
+{
+    for (uint8_t i = 0; i < 16; i++)
+    {
+        sensorValues[i] = AnalogMux_ReadChannel(i);
+    }
+}
+
+// Function to read a specific set of channels (more efficient)
+void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results)
+{
+    for (uint8_t i = 0; i < numChannels; i++)
+    {
+        results[i] = AnalogMux_ReadChannel(channelList[i]);
+    }
+}
+
 
 
 
@@ -164,6 +194,11 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
+  /*---------------------Delay--------------------------------*/
+  Delay_Init();
+  /*-------------------------------------------------------------------*/
+
+  //AnalogMux_Init();
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
@@ -172,14 +207,14 @@ int main(void)
   // Register servos (do this once)
   int claw = Servo_Register(11, "claw", 0, 180);
   int arm = Servo_Register(13, "arm", 0, 180);
-  int base = Servo_Register(15, "base", 0, 180);
+  //int base = Servo_Register(15, "base", 0, 180);
 
   // Later in your code, use the servos by ID
   Servo_SetAngle(claw, 35);   // Set claw to 45 degrees
   Servo_SetAngle(arm,100);    // Set arm to 90 degrees
 
   // Or use them by name
-  Servo_SetAngleByName("base", 150);  // Set base to 120 degrees
+  //Servo_SetAngleByName("base", 150);  // Set base to 120 degrees
 
   // Reset all servos to center position
   //Servo_ResetAll();
@@ -188,8 +223,8 @@ int main(void)
   /*-------------------------------------------------------------------*/
   HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-
-
+  HAL_Delay(2000);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   /* USER CODE END 2 */
 
@@ -227,13 +262,18 @@ int main(void)
 
 
 
+	  RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+
+	     /* Get position for PID controller (centered around 0) */
+	  line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
+
+
+	  //ReadAllSensors();
 
 
 
-
-
-	  //setMotorLPWM(0.6);
-	  //setMotorRPWM(0.6);
+	  //setMotorLPWM(-0.6);
+	  //setMotorRPWM(-0.6);
   }
   /* USER CODE END 3 */
 }
