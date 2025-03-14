@@ -9,7 +9,7 @@
 #include "analog_mux.h"
 
 // Configuration
-#define RAYKHA_NUM_SENSORS          8
+#define RAYKHA_NUM_SENSORS          10
 #define RAYKHA_DEFAULT_TIMEOUT      2500  // Timeout in microseconds (default calibration timeout)
 #define RAYKHA_FIRST_MUX_CHANNEL    0     // First channel of the multiplexer used for RAYKHA
 #define RAYKHA_CALIBRATION_SAMPLES  10    // Number of samples for calibration

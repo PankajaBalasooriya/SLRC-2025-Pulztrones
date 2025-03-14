@@ -179,7 +179,7 @@ int32_t RAYKHA_GetPositionForPID(const uint16_t *sensor_values, const RAYKHA_Cal
 
     // Center the position around 0
     // The center of the sensor array is at 3500
-    return position - 3500;
+    return position - 4500;
 }
 
 /**

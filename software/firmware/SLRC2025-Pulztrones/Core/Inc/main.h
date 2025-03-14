@@ -63,6 +63,10 @@ void Error_Handler(void);
 #define B1_GPIO_Port GPIOC
 #define IR_ADC_Pin GPIO_PIN_0
 #define IR_ADC_GPIO_Port GPIOC
+#define AIRPUMP_Pin GPIO_PIN_1
+#define AIRPUMP_GPIO_Port GPIOC
+#define WATERPUMP_Pin GPIO_PIN_2
+#define WATERPUMP_GPIO_Port GPIOC
 #define RightEncoderCh1_Pin GPIO_PIN_0
 #define RightEncoderCh1_GPIO_Port GPIOA
 #define RightEncoderCh2_Pin GPIO_PIN_1
