@@ -219,12 +219,15 @@ int main(void)
   // Reset all servos to center position
   //Servo_ResetAll();
 
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+
 
   /*-------------------------------------------------------------------*/
   HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
   RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
 
   /* USER CODE END 2 */
 
@@ -262,10 +265,10 @@ int main(void)
 
 
 
-	  RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+	  //RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
 
 	     /* Get position for PID controller (centered around 0) */
-	  line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
+	  //line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
 
 
 	  //ReadAllSensors();
@@ -735,8 +738,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -780,8 +783,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
