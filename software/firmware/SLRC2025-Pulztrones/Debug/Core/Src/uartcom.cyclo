@@ -1,0 +1,6 @@
+../Core/Src/uartcom.c:6:6:UART_Init	1
+../Core/Src/uartcom.c:14:6:UART_Transmit	1
+../Core/Src/uartcom.c:21:6:UART_Transmit_Float	1
+../Core/Src/uartcom.c:34:6:UART_Transmit_Int	1
+../Core/Src/uartcom.c:45:6:UART_Transmit_IR	1
+../Core/Src/uartcom.c:58:6:UART_Transmit_TOF	1

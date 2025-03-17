@@ -30,6 +30,13 @@
 #include "servo.h"
 #include "analog_mux.h"
 #include "raykha.h"
+#include "buzzer.h"
+#include "vl53l0x_api.h"
+#include "ssd1306.h"
+#include "fonts.h"
+#include "bitmap.h"
+#include "uartcom.h"
+
 
 
 /* USER CODE END Includes */
@@ -125,20 +132,20 @@ void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16
 
 
 // UART Transmit function (send string)
-void UART_Transmit(UART_HandleTypeDef *huart, char *data)
-{
-    // Transmit the string over UART
-    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
-}
+//void UART_Transmit(UART_HandleTypeDef *huart, char *data)
+//{
+//    // Transmit the string over UART
+//    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
+//}
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART6)  // Check if it's UART6
-    {
-        data_received = 1;  // Set flag to indicate new data
-        HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Restart reception
-    }
-}
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//    if (huart->Instance == USART6)  // Check if it's UART6
+//    {
+//        data_received = 1;  // Set flag to indicate new data
+//        HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Restart reception
+//    }
+//}
 
 /* USER CODE END 0 */
 
@@ -194,11 +201,22 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
+  SSD1306_Init();
+    SSD1306_DrawBitmap(0, 0, logo, 128, 64, 1);
+    SSD1306_UpdateScreen(); // update screen
+
+
+
+
+	  Buzzer_UniquePattern();
+
   /*---------------------Delay--------------------------------*/
   Delay_Init();
   /*-------------------------------------------------------------------*/
 
   //AnalogMux_Init();
+
+  UART_Init(&huart6);
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
@@ -219,15 +237,16 @@ int main(void)
   // Reset all servos to center position
   //Servo_ResetAll();
 
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
-
+  Buzzer_Toggle(100);
 
   /*-------------------------------------------------------------------*/
-  HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
+  //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
   RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+
+  Buzzer_Toggle(100);
+
 
   /* USER CODE END 2 */
 
@@ -240,6 +259,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
+
+	  UART_Transmit_IR(&huart6, left_counts, right_counts);
 
 	  // Format the message with the counter
 
@@ -403,7 +424,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.ClockSpeed = 400000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -697,7 +718,7 @@ static void MX_USART6_UART_Init(void)
 
   /* USER CODE END USART6_Init 1 */
   huart6.Instance = USART6;
-  huart6.Init.BaudRate = 115200;
+  huart6.Init.BaudRate = 9600;
   huart6.Init.WordLength = UART_WORDLENGTH_8B;
   huart6.Init.StopBits = UART_STOPBITS_1;
   huart6.Init.Parity = UART_PARITY_NONE;
@@ -782,6 +803,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

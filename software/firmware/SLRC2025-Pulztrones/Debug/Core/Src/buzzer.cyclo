@@ -1,0 +1,4 @@
+../Core/Src/buzzer.c:5:6:Buzzer_On	1
+../Core/Src/buzzer.c:11:6:Buzzer_Off	1
+../Core/Src/buzzer.c:17:6:Buzzer_Toggle	1
+../Core/Src/buzzer.c:25:6:Buzzer_UniquePattern	1
