@@ -216,7 +216,7 @@ int main(void)
 
   //AnalogMux_Init();
 
-  UART_Init(&huart6);
+  UART_Init(&huart3);
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
@@ -260,7 +260,7 @@ int main(void)
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
 
-	  UART_Transmit_IR(&huart6, left_counts, right_counts);
+	  UART_Transmit_IR(&huart3, left_counts, right_counts);
 
 	  // Format the message with the counter
 
@@ -685,7 +685,7 @@ static void MX_USART3_UART_Init(void)
 
   /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
+  huart3.Init.BaudRate = 9600;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
   huart3.Init.StopBits = UART_STOPBITS_1;
   huart3.Init.Parity = UART_PARITY_NONE;

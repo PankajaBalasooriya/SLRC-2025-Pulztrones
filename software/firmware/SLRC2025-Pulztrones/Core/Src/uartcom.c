@@ -48,8 +48,8 @@ void UART_Transmit_IR(UART_HandleTypeDef *huart, uint16_t IRL, uint16_t IRR)
 
     // Format the float value into the buffer with the specified decimal points
     // You can change %.2f to another precision, such as %.3f, %.4f, etc.
-    //sprintf(buffer, ">L:%d,R:%d\r\n", IRL, IRR);  // Use header string as prefix
-    sprintf(buffer, "%.2f\t%d\t%d\n", HAL_GetTick() / 1000.0, IRL, IRR);  // Use header string as prefix
+    sprintf(buffer, ">L:%d,R:%d\r\n", IRL, IRR);  // Use header string as prefix
+    //sprintf(buffer, "%.2f\t%d\t%d\n", HAL_GetTick() / 1000.0, IRL, IRR);  // Use header string as prefix
 
     // Transmit the formatted string via UART
     HAL_UART_Transmit(huart, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
