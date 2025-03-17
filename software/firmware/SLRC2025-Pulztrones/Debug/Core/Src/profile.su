@@ -1,0 +1,16 @@
+../Core/Src/profile.c:8:6:Profile_Reset	16	static
+../Core/Src/profile.c:19:9:Profile_IsFinished	16	static
+../Core/Src/profile.c:24:6:Profile_Start	32	static
+../Core/Src/profile.c:47:6:Profile_Move	32	static
+../Core/Src/profile.c:53:6:Profile_Stop	16	static
+../Core/Src/profile.c:59:6:Profile_Finish	16	static
+../Core/Src/profile.c:65:6:Profile_WaitUntilFinished	16	static
+../Core/Src/profile.c:72:7:Profile_GetBrakingDistance	16	static
+../Core/Src/profile.c:77:7:Profile_GetPosition	16	static
+../Core/Src/profile.c:82:7:Profile_GetSpeed	16	static
+../Core/Src/profile.c:87:7:Profile_GetAcceleration	16	static
+../Core/Src/profile.c:92:6:Profile_SetSpeed	16	static
+../Core/Src/profile.c:97:6:Profile_SetTargetSpeed	16	static
+../Core/Src/profile.c:102:6:Profile_AdjustPosition	16	static
+../Core/Src/profile.c:107:6:Profile_SetPosition	16	static
+../Core/Src/profile.c:112:6:Profile_Update	24	static

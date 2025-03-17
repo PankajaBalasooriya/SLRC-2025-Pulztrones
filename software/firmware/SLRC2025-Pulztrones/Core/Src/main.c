@@ -37,6 +37,9 @@
 #include "bitmap.h"
 #include "uartcom.h"
 #include "systick.h"
+#include "motion.h"
+#include "profile.h"
+#include "controller.h"
 
 
 
@@ -111,7 +114,10 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+Motion motion;
+Profile forward_profile;
+Profile rotation_profile;
+Controller controller;
 
 // Function to read all channels sequentially
 void ReadAllSensors(void)

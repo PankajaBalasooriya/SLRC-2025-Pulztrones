@@ -6,6 +6,9 @@
 // #include "pid.h"
 #include "encoders.h"
 #include "uartcom.h"
+#include "motion.h"
+
+extern Motion motion;
 
 extern volatile uint8_t systick_function_enabled;
 extern UART_HandleTypeDef huart3;
@@ -17,10 +20,11 @@ void SysTickFunction(void) {
 	 */
 	//--------------------------------------------------------------------
 		update_Encoder_Data();
-		//Motion_Update(&motion);
+		Motion_Update(&motion);
 		//Sensors_Update(&tof_sensors);
 
 		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), get_steering_feedback());
+		UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0);
 	//--------------------------------------------------------------------
 		//UART_Transmit_EncoderData(&huart3);
 
