@@ -1,3 +1,11 @@
-../Core/Src/encoders.c:13:9:getRightEncoderCounts	4	static
-../Core/Src/encoders.c:17:9:getLeftEncoderCounts	4	static
-../Core/Src/encoders.c:21:6:resetEncoders	4	static
+../Core/Src/encoders.c:30:9:getRightEncoderCounts	4	static
+../Core/Src/encoders.c:34:9:getLeftEncoderCounts	4	static
+../Core/Src/encoders.c:38:6:resetEncoders	4	static
+../Core/Src/encoders.c:50:6:resetEncodersinSystick	4	static
+../Core/Src/encoders.c:55:6:update_Encoder_Data	24	static
+../Core/Src/encoders.c:76:7:robot_distance	16	static
+../Core/Src/encoders.c:82:7:robot_speed	16	static
+../Core/Src/encoders.c:88:7:robot_omega	16	static
+../Core/Src/encoders.c:94:7:robot_fwd_change	16	static
+../Core/Src/encoders.c:100:7:robot_rot_change	16	static
+../Core/Src/encoders.c:106:7:robot_angle	16	static

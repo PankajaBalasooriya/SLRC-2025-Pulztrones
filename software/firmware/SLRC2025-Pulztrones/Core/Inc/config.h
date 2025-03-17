@@ -44,8 +44,8 @@ extern const float DEGREES_PER_RADIAN;
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define MM_PER_COUNT_LEFT 0.07302884537456119301877072007349
-#define MM_PER_COUNT_RIGHT 0.07302884537456119301877072007349 // Counts per 1 rotation (32mm) = 1428
+#define MM_PER_COUNT_LEFT 0.06563081426854253155620883258464
+#define MM_PER_COUNT_RIGHT 0.06563081426854253155620883258464 // Counts per 1 rotation (32mm) = 3255
 // 0.07302884537456119301877072007349
 
 extern const float ROBOT_RADIUS;
@@ -60,7 +60,7 @@ extern const float HALF_CELL;
 
 
 //*** MOTION CONTROLLER CONSTANTS **********************************************//
-#define TICK_INTERVAL 30  // 30 ms interval
+#define TICK_INTERVAL 20  // 30 ms interval
 extern const float LOOP_FREQUENCY;
 extern const float LOOP_INTERVAL;
 

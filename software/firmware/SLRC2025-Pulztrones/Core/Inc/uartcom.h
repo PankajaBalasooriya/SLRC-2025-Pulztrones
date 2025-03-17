@@ -12,5 +12,5 @@ void UART_Transmit_Int(UART_HandleTypeDef *huart, const char *header, int number
 void UART_Transmit_IR(UART_HandleTypeDef *huart, uint16_t IRL, uint16_t IRR);
 void UART_Transmit_TOF(UART_HandleTypeDef *huart, uint16_t TOF1, uint16_t TOF2, uint16_t TOF3, uint16_t TOF4);
 
-
+void UART_Transmit_EncoderData(UART_HandleTypeDef *huart);
 #endif /* UARTCOM_H */

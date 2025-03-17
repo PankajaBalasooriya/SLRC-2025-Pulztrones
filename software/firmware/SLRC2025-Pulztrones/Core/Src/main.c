@@ -36,6 +36,7 @@
 #include "fonts.h"
 #include "bitmap.h"
 #include "uartcom.h"
+#include "systick.h"
 
 
 
@@ -73,6 +74,8 @@ UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart6_rx;
 
 /* USER CODE BEGIN PV */
+volatile uint8_t systick_function_enabled = 0;
+
 int16_t left_counts = 0;
 int16_t right_counts = 0;
 
@@ -242,12 +245,14 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-  HAL_Delay(2000);
-  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+ // HAL_Delay(2000);
+  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
 
+
+  EnableSysTickFunction();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -257,10 +262,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  left_counts = getLeftEncoderCounts();
-	  right_counts = getRightEncoderCounts();
-
-	  UART_Transmit_IR(&huart3, left_counts, right_counts);
+//	  left_counts = getLeftEncoderCounts();
+//	  right_counts = getRightEncoderCounts();
+//
+//	  UART_Transmit_IR(&huart3, left_counts, right_counts);
 
 	  // Format the message with the counter
 

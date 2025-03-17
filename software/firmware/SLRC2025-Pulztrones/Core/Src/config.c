@@ -6,22 +6,17 @@ volatile State RobotState = None;
 //***************************************************************************//
 
 
-const float ROBOT_RADIUS = 192;  // Adjust to your Robot specs - 46.5
+const float ROBOT_RADIUS = 93.75;  // Adjust to your Robot specs - 96
 const float DEG_PER_MM_DIFFERENCE = (180.0 / (2 * ROBOT_RADIUS * PI));
 const float RADIANS_PER_DEGREE = 0.01746031746031746031746031746032;
 const float DEGREES_PER_RADIAN = 57.295779513082320876798154814105;
 
-const int BACK_WALL_TO_CENTER = 45;
-// the position in the cell where the sensors are sampled.
-const float SENSING_POSITION = 170.0;
-// This is the size, in mm,  for each cell in the maze.
-const float FULL_CELL = 180.0f;
-const float HALF_CELL = FULL_CELL / 2.0;
+
 
 
 //*** MOTION CONTROLLER CONSTANTS **********************************************//
-const float LOOP_FREQUENCY = 133.333333333333333333333333333333;
-const float LOOP_INTERVAL = 0.03;
+const float LOOP_FREQUENCY = 50;
+const float LOOP_INTERVAL = 0.02;
 
 //need to adjust kp and kd values for required velocity and acceleration values
 const float FWD_KP = 0.005;// 0.045

@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "systick.h"
+#include "config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +43,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+volatile uint8_t tick_accumulator = 0;
+extern volatile uint8_t systick_function_enabled;
 
 /* USER CODE END PV */
 
@@ -189,8 +192,15 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  SysTickFunction();
+  tick_accumulator += 1;  // Increment by 1 ms
+  if(systick_function_enabled){
+	  if (tick_accumulator >= TICK_INTERVAL) {
+	        tick_accumulator = 0;  // Accumulate remainder
+	        SysTickFunction();
+	      }
+  }
 
+  CheckEncoderCounts();
   /* USER CODE END SysTick_IRQn 1 */
 }
 
