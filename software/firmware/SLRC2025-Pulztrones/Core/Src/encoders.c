@@ -79,7 +79,7 @@ float robot_distance() {
     return distance;
 }
 
-float robot_speed() {// in ms-1
+float robot_speed() {// in mms-1
 	float speed;
 	speed = LOOP_FREQUENCY * m_fwd_change;
 	return speed;

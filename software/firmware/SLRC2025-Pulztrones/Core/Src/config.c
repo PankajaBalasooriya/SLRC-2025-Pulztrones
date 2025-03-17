@@ -6,7 +6,7 @@ volatile State RobotState = None;
 //***************************************************************************//
 
 
-const float ROBOT_RADIUS = 93.75;  // Adjust to your Robot specs - 96
+const float ROBOT_RADIUS = 93.25;  // Adjust to your Robot specs - 93.75
 const float DEG_PER_MM_DIFFERENCE = (180.0 / (2 * ROBOT_RADIUS * PI));
 const float RADIANS_PER_DEGREE = 0.01746031746031746031746031746032;
 const float DEGREES_PER_RADIAN = 57.295779513082320876798154814105;
@@ -19,37 +19,38 @@ const float LOOP_FREQUENCY = 50;
 const float LOOP_INTERVAL = 0.02;
 
 //need to adjust kp and kd values for required velocity and acceleration values
-const float FWD_KP = 0.005;// 0.045
-const float FWD_KD = 0.1;// 0.5
+//const float FWD_KP = 0.005;// 0.045
+//const float FWD_KD = 0.1;// 0.5
 
-const float ROT_KP = 0.017; //0.009
-const float ROT_KD = 0.1;
+//const float ROT_KP = 0.017; //0.009
+//const float ROT_KD = 0.1;
 
 // Dynamic performance constants
 // There is a video describing how to get these numbers and calculate the feedforward
 // constants here: https://youtu.be/BrabDeHGsa0
-const float FWD_KM = 140;  // 45 mm/s/Volt
-const float FWD_TM = 0.00050;  //0.00090 forward time constant 63%
-const float ROT_KM = 0;  // deg/s/Volt
-const float ROT_TM = 0;  // rotation time constant
+const float FWD_KM = 977.54;  /// *
+const float FWD_TM = 0.2569;  ///*0.00090 forward time constant 63%
+
+const float ROT_KM = 595.55;  //* deg/s/Volt
+const float ROT_TM = 0.1660;  ///* rotation time constant
 
 const float SPEED_FF = (1.0 / FWD_KM);
 const float ACC_FF = (FWD_TM / FWD_KM);
-const float BIAS_FF = 0.0000340;
+const float BIAS_FF = 0.1815884772; // *
 
 // forward motion controller constants
 const float FWD_ZETA = 0.707;
 const float FWD_TD = FWD_TM;
 
-//const float FWD_KP = 16 * FWD_TM / (FWD_KM * FWD_ZETA * FWD_ZETA * FWD_TD * FWD_TD);
-//const float FWD_KD = LOOP_FREQUENCY * (8 * FWD_TM - FWD_TD) / (FWD_KM * FWD_TD);
+const float FWD_KP = 16 * FWD_TM / (FWD_KM * FWD_ZETA * FWD_ZETA * FWD_TD * FWD_TD);
+const float FWD_KD = LOOP_FREQUENCY * (8 * FWD_TM - FWD_TD) / (FWD_KM * FWD_TD);
 
 // rotation motion controller constants
 const float ROT_ZETA = 0.707;
 const float ROT_TD = ROT_TM;
 
-//const float ROT_KP = 16 * ROT_TM / (ROT_KM * ROT_ZETA * ROT_ZETA * ROT_TD * ROT_TD);
-//const float ROT_KD = LOOP_FREQUENCY * (8 * ROT_TM - ROT_TD) / (ROT_KM * ROT_TD);
+const float ROT_KP = 16 * ROT_TM / (ROT_KM * ROT_ZETA * ROT_ZETA * ROT_TD * ROT_TD);
+const float ROT_KD = LOOP_FREQUENCY * (8 * ROT_TM - ROT_TD) / (ROT_KM * ROT_TD);
 
 
 // controller constants for the steering controller

@@ -243,6 +243,13 @@ int main(void)
   // Or use them by name
   Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
 
+  HAL_Delay(1000);
+  Controller_Init(&controller);
+    Profile_Reset(&forward_profile);
+    Profile_Reset(&rotation_profile);
+    Motion_Init(&motion, &controller, &forward_profile, &rotation_profile);
+    Controller_ResetControllers(&controller);
+
   // Reset all servos to center position
   //Servo_ResetAll();
 
@@ -256,9 +263,16 @@ int main(void)
 
   Buzzer_Toggle(100);
 
-
+  HAL_Delay(5000);
+  Buzzer_Toggle(100);
 
   EnableSysTickFunction();
+
+  //setMotorLPWM(1);
+  //setMotorRPWM(1);
+
+  //Motion_Move(&motion, 1000, 400, 0, 200);
+  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
