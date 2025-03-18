@@ -40,6 +40,7 @@
 #include "motion.h"
 #include "profile.h"
 #include "controller.h"
+#include "sensors.h"
 
 
 
@@ -85,12 +86,9 @@ int16_t right_counts = 0;
 char uart_rx_buffer[BUFFER_SIZE];  // Buffer to store received data
 volatile uint8_t data_received = 0;  // Flag to indicate new data received
 
-// Buffer to store values from all channels
-uint16_t sensorValues[16] = {0};
+
 
 RAYKHA_Calibration raykha_calibration;
-uint16_t sensor_values[RAYKHA_NUM_SENSORS];
-int32_t line_position;
 uint8_t calibration_complete = 0;
 
 /* USER CODE END PV */
@@ -119,23 +117,7 @@ Profile forward_profile;
 Profile rotation_profile;
 Controller controller;
 
-// Function to read all channels sequentially
-void ReadAllSensors(void)
-{
-    for (uint8_t i = 0; i < 16; i++)
-    {
-        sensorValues[i] = AnalogMux_ReadChannel(i);
-    }
-}
 
-// Function to read a specific set of channels (more efficient)
-void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results)
-{
-    for (uint8_t i = 0; i < numChannels; i++)
-    {
-        results[i] = AnalogMux_ReadChannel(channelList[i]);
-    }
-}
 
 
 
@@ -232,16 +214,31 @@ int main(void)
 
   //Examples
   // Register servos (do this once)
-  int claw = Servo_Register(11, "claw", 0, 180);
-  int arm = Servo_Register(13, "arm", 0, 180);
+
+
+  //int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
+
   int base = Servo_Register(15, "base", 0, 180);
+  int A = Servo_Register(11g, "A", 0, 180);
+  int B = Servo_Register(13, "B", 0, 180);
+  int C = Servo_Register(12, "C", 0, 180);
+
+
 
   // Later in your code, use the servos by ID
-  Servo_SetAngle(claw, 35);   // Set claw to 45 degrees
-  Servo_SetAngle(arm,100);    // Set arm to 90 degrees
+
+
+  Servo_SetAngle(base, 0);
+  Servo_SetAngle(A, 150);
+  Servo_SetAngle(B, 0);
+  Servo_SetAngle(C, 0);
+
+  //PCA9685_SetServoAngle(14, 100);
+
+
 
   // Or use them by name
-  Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
+  //Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
 
   HAL_Delay(1000);
   Controller_Init(&controller);
@@ -258,21 +255,25 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
- // HAL_Delay(2000);
+  //HAL_Delay(2000);
   //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
-  HAL_Delay(5000);
+  set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+
+  //HAL_Delay(5000);
   Buzzer_Toggle(100);
 
-  EnableSysTickFunction();
+  //EnableSysTickFunction();
 
   //setMotorLPWM(1);
   //setMotorRPWM(1);
 
-  //Motion_Move(&motion, 1000, 400, 0, 200);
-  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+//  Motion_Move(&motion, 600, 200, 0, 200);
+//  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+//  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
+//  Motion_Move(&motion, 600, 200, 0, 200);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -298,7 +299,10 @@ int main(void)
 //		  // Wait for 1 second
 //		  HAL_Delay(50);
 
-
+	  Turn360Servo();
+	    HAL_Delay(780);
+	    Stop360Servo();
+	    HAL_Delay(1000);
 
 
 //	  if (data_received)  // Check if new data is received

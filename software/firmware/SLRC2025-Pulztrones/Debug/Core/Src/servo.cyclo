@@ -5,3 +5,5 @@
 ../Core/Src/servo.c:147:7:Servo_GetAngle	4
 ../Core/Src/servo.c:161:5:Servo_GetIdByName	5
 ../Core/Src/servo.c:179:6:Servo_ResetAll	3
+../Core/Src/servo.c:191:6:Turn360Servo	1
+../Core/Src/servo.c:202:6:Stop360Servo	1

@@ -87,6 +87,11 @@ int Servo_GetIdByName(const char* name);
   */
 void Servo_ResetAll(void);
 
+
+void Turn360Servo();
+
+void Stop360Servo();
+
 #ifdef __cplusplus
 }
 #endif

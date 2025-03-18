@@ -1,0 +1,170 @@
+/**
+ ******************************************************************************
+ * @file           : sensors.c
+ * @brief          : Sensor handling for STM32-based micromouse.
+ ******************************************************************************
+ */
+
+#include "sensors.h"
+
+
+extern UART_HandleTypeDef huart6;
+/* Variables for steering */
+static float m_last_steering_error = 0;
+static float m_cross_track_error = 0;
+static float m_steering_adjustment = 0;
+
+/* Sensor variables */
+volatile SensorChannel lfs, lss, lws, cfs, rss, rfs, rws;  // Front/side/wall sensors
+volatile uint8_t see_front_wall = 0;
+volatile uint8_t see_left_wall = 0;
+volatile uint8_t see_right_wall = 0;
+volatile float m_front_sum = 0;
+volatile int m_front_diff = 0;
+volatile uint8_t g_steering_mode = STEERING_OFF;
+
+
+// Buffer to store values from all IR channels
+uint16_t sensorValues[16] = {0};
+
+
+void init_sensor_value(){
+	lfs.raw = 0;
+	lss.raw = 0;
+	lws.raw = 0;
+	cfs.raw = 0;
+	rss.raw = 0;
+	rfs.raw = 0;
+	rws.raw = 0;
+}
+
+
+float get_steering_feedback() {
+  return m_steering_adjustment;
+}
+float get_cross_track_error() {
+  return m_cross_track_error;
+}
+uint8_t is_wall_left(){
+	return see_left_wall;
+}
+uint8_t is_wall_right(){
+	return see_right_wall;
+}
+uint8_t is_wall_front(){
+	return see_front_wall;
+}
+
+
+
+
+/* Calculate steering adjustment */
+float CalculateSteeringAdjustment() {
+    float pTerm = STEERING_KP * m_cross_track_error;
+    float dTerm = STEERING_KD * (m_cross_track_error - m_last_steering_error);
+    float adjustment = pTerm + dTerm * LOOP_FREQUENCY;
+    adjustment = fminf(fmaxf(adjustment, -STEERING_ADJUST_LIMIT), STEERING_ADJUST_LIMIT);
+    m_last_steering_error = m_cross_track_error;
+    m_steering_adjustment = adjustment;
+    return adjustment;
+}
+
+void set_steering_mode(uint8_t mode){
+	m_last_steering_error = m_cross_track_error;
+	m_steering_adjustment = 0;
+	g_steering_mode = mode;
+}
+
+void send_sensor_data(){
+	char buffer[50];  // Buffer to hold the formatted string
+
+	    // Format the float value into the buffer with the specified decimal points
+	    // You can change %.2f to another precision, such as %.3f, %.4f, etc.
+	    sprintf(buffer, ">LW:%d,LF:%d,RF:%d,RW:%d\r\n", lws.value, lfs.value, rfs.value, rws.value);  // Use header string as prefix
+
+	    // Transmit the formatted string via UART
+	    HAL_UART_Transmit(&huart6, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+}
+
+
+/* Update sensor readings and calculate cross-track error */
+void Sensors_Update() {
+    // Read ADC values for all sensor channels
+	int error = 0;
+
+	if(g_steering_mode == STEERING_CENTER_LINE_FOLLOW){
+
+	}
+
+	else if(g_steering_mode == STEER_NORMAL){
+		if(lws.raw < 500)lws.raw = 500;
+		if(rws.raw < 500)rws.raw = 500;
+		if(cfs.raw < 400)cfs.raw = 400;
+		//if(lfs.raw > 250)lfs.raw = 250;
+		//if(rfs.raw > 230)rfs.raw = 230;
+
+		// Scale sensor values
+		//lfs.value = tof_get_distance_mm(lfs.raw, 1);
+		//lss.value = tof_get_distance_mm(lss.raw, 0);
+		//rss.value = tof_get_distance_mm(rss.raw, 3);
+		//rfs.value = tof_get_distance_mm(rfs.raw, 2);
+		//lws.value = IR_get_distance_mm(lws.raw, IR_LEFT);
+		//rws.value = IR_get_distance_mm(rws.raw, IR_RIGHT);
+		//cfs.value = IR_get_distance_mm(cfs.raw, IR_FRONT);
+
+		//UART_Transmit_TOF(&huart6, lfs.value, lws.value, rfs.value, rws.value);
+
+		//UART_Transmit_Int(&huart6, ">L", lws.value);
+		//UART_Transmit_Int(&huart6, ">F", cfs.value);
+		//UART_Transmit_Int(&huart6, ">R", rws.value);
+
+		// Update wall detection flags
+		see_left_wall = (lws.value < LEFT_THRESHOLD);
+		see_right_wall = (rws.value < RIGHT_THRESHOLD);
+		m_front_sum = cfs.value;
+		//m_front_diff = lfs.value - rfs.value;
+		see_front_wall = (m_front_sum < FRONT_THRESHOLD);
+
+
+
+		// Calculate cross-track error
+		error = 0;
+		int left_error = SIDE_NOMINAL - lws.value;
+		int right_error = SIDE_NOMINAL - rws.value;
+
+		if (g_steering_mode == STEER_NORMAL) {
+			if (see_left_wall && see_right_wall) {
+				error = left_error - right_error;
+			} else if (see_left_wall) {
+				error = 2 * left_error;
+			} else if (see_right_wall) {
+				error = -2 * right_error;
+			}
+		} else if (g_steering_mode == STEER_LEFT_WALL) {
+			error = 2 * left_error;
+		} else if (g_steering_mode == STEER_RIGHT_WALL) {
+			error = -2 * right_error;
+		}
+    }
+    else if(g_steering_mode == STEERING_FRONT_WALL){
+
+
+    	if(lfs.raw > 250)lfs.raw = 250;
+		if(rfs.raw > 230)rfs.raw = 230;
+		if(cfs.raw < 400)cfs.raw = 400;
+
+
+
+		error = 0;
+    }
+
+//    if (see_front_wall) {
+//        error = 0;  // Ignore steering near front walls
+//    }
+
+    m_cross_track_error = error;
+    CalculateSteeringAdjustment();
+    //send_sensor_data();
+}
+
+

@@ -7,6 +7,7 @@
 #include "encoders.h"
 #include "uartcom.h"
 #include "motion.h"
+#include "sensors.h"
 
 extern Motion motion;
 
@@ -21,10 +22,10 @@ void SysTickFunction(void) {
 	//--------------------------------------------------------------------
 		update_Encoder_Data();
 		Motion_Update(&motion);
-		//Sensors_Update(&tof_sensors);
+		Sensors_Update();
 
-		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), get_steering_feedback());
-		UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0);
+		UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), get_steering_feedback());
+		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0);
 	//--------------------------------------------------------------------
 		//UART_Transmit_EncoderData(&huart3);
 

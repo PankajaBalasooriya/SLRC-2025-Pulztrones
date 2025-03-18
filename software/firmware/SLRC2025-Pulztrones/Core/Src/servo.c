@@ -186,3 +186,26 @@ void Servo_ResetAll(void)
         }
     }
 }
+
+
+void Turn360Servo()
+{
+  float pwmValue;
+
+
+  pwmValue = 298.00;
+
+  // Set PWM with calculated value
+  PCA9685_SetPWM(14, 0, (uint16_t)pwmValue);
+}
+
+void Stop360Servo()
+{
+	float pwmValue;
+
+
+	  pwmValue = 305;
+
+	  // Set PWM with calculated value
+	  PCA9685_SetPWM(14, 0, (uint16_t)pwmValue);
+}
