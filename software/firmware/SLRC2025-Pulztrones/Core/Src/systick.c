@@ -27,10 +27,10 @@ void SysTickFunction(void) {
 	 * You may have to adjust it in the event you try to traverse more than 31000 encoder counts at once (~9 meters) without
 	 * turning. But that'll be approximately never in Micromouse :)
 	 */
-	if (getRightEncoderCounts() > 31000 || getLeftEncoderCounts() > 31000
-			|| getRightEncoderCounts() < -31000 || getLeftEncoderCounts() < -31000) {
-		int16_t difference = getRightEncoderCounts() - getLeftEncoderCounts();
-		resetEncoders();
-		TIM1->CNT = (int16_t) difference;
-	}
+//	if (getRightEncoderCounts() > 31000 || getLeftEncoderCounts() > 31000
+//			|| getRightEncoderCounts() < -31000 || getLeftEncoderCounts() < -31000) {
+//		int16_t difference = getRightEncoderCounts() - getLeftEncoderCounts();
+//		resetEncoders();
+//		TIM1->CNT = (int16_t) difference;
+//	}
 }

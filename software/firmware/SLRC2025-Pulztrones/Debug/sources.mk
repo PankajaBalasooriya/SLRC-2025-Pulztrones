@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (12.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 ELF_SRCS := 
@@ -24,5 +24,8 @@ C_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
+Drivers/SSD1306/Src \
 Drivers/STM32F4xx_HAL_Driver/Src \
+Drivers/VL53L0X/core/src \
+Drivers/VL53L0X/platform/src \
 

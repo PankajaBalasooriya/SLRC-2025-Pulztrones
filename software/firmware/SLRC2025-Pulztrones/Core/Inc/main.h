@@ -61,6 +61,12 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
+#define IR_ADC_Pin GPIO_PIN_0
+#define IR_ADC_GPIO_Port GPIOC
+#define AIRPUMP_Pin GPIO_PIN_1
+#define AIRPUMP_GPIO_Port GPIOC
+#define WATERPUMP_Pin GPIO_PIN_2
+#define WATERPUMP_GPIO_Port GPIOC
 #define RightEncoderCh1_Pin GPIO_PIN_0
 #define RightEncoderCh1_GPIO_Port GPIOA
 #define RightEncoderCh2_Pin GPIO_PIN_1
@@ -71,6 +77,14 @@ void Error_Handler(void);
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define S0_Pin GPIO_PIN_12
+#define S0_GPIO_Port GPIOB
+#define S1_Pin GPIO_PIN_13
+#define S1_GPIO_Port GPIOB
+#define S2_Pin GPIO_PIN_14
+#define S2_GPIO_Port GPIOB
+#define S3_Pin GPIO_PIN_15
+#define S3_GPIO_Port GPIOB
 #define LeftEncoderCh1_Pin GPIO_PIN_8
 #define LeftEncoderCh1_GPIO_Port GPIOA
 #define LeftEncoderCh2_Pin GPIO_PIN_9
