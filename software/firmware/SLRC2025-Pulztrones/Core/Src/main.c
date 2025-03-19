@@ -218,22 +218,49 @@ int main(void)
 
   //int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
 
-  int base = Servo_Register(15, "base", 0, 180);
-  int A = Servo_Register(11g, "A", 0, 180);
-  int B = Servo_Register(13, "B", 0, 180);
-  int C = Servo_Register(12, "C", 0, 180);
+//  int base = Servo_Register(15, "base", 0, 180);
+//  int A = Servo_Register(11, "A", 0, 180);
+//  int B = Servo_Register(13, "B", 0, 180);
+//  int C = Servo_Register(12, "C", 0, 180);
+//
+//
+//
+//  // Later in your code, use the servos by ID
+//
+//
+//
+//
+//  Servo_SetAngle(base, 180);
+//  Servo_SetAngle(A, 5);
+//  Servo_SetAngle(B, 90);
+//  Servo_SetAngle(C, 100);
+//
+//  //PCA9685_SetServoAngle(14, 100);
+//
+//  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 0);
+////
+//  HAL_Delay(1000);
+//  Servo_SetAngle(A, 15);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(B, 70);
+////  HAL_Delay(200);
+//  Servo_SetAngle(C, 120);
+////  HAL_Delay(200);
+//
+////  for (int i=0; i<20;i++){
+////
+////	  Servo_SetAngle(B, 90-i);
+////	  HAL_Delay(200);
+////	  Servo_SetAngle(C, 100+i);
+////	  HAL_Delay(200);
+////
+////  }
+//  Servo_SetAngle(A, 0);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(B, 70);
 
 
 
-  // Later in your code, use the servos by ID
-
-
-  Servo_SetAngle(base, 0);
-  Servo_SetAngle(A, 150);
-  Servo_SetAngle(B, 0);
-  Servo_SetAngle(C, 0);
-
-  //PCA9685_SetServoAngle(14, 100);
 
 
 
@@ -255,8 +282,8 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-  //HAL_Delay(2000);
-  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_Delay(2000);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
@@ -265,12 +292,14 @@ int main(void)
   //HAL_Delay(5000);
   Buzzer_Toggle(100);
 
-  //EnableSysTickFunction();
+  HAL_Delay(2000);
+
+  EnableSysTickFunction();
 
   //setMotorLPWM(1);
   //setMotorRPWM(1);
 
-//  Motion_Move(&motion, 600, 200, 0, 200);
+  	  Motion_Move(&motion, 1200, 200, 0, 100);
 //  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
 //  Motion_Move(&motion, 600, 200, 0, 200);

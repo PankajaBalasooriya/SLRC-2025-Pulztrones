@@ -25,7 +25,7 @@ void SysTickFunction(void) {
 		Sensors_Update();
 
 		UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), get_steering_feedback());
-		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0);
+		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0.6);
 	//--------------------------------------------------------------------
 		//UART_Transmit_EncoderData(&huart3);
 

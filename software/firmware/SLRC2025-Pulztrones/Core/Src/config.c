@@ -54,8 +54,9 @@ const float ROT_KD = LOOP_FREQUENCY * (8 * ROT_TM - ROT_TD) / (ROT_KM * ROT_TD);
 
 
 // controller constants for the steering controller
-const float STEERING_KP = 0.018;//0.018
-const float STEERING_KD = 0.02;
+const float STEERING_KP = 0.003;//0.004
+const float STEERING_KD = 0.00001 ///0.000001
+		;
 const float STEERING_ADJUST_LIMIT = 0.6;  // deg/s
 
 //***************************************************************************//
