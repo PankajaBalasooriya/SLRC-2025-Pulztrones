@@ -169,10 +169,18 @@ JunctionType Robot_LineFollowUntillJunctionAndNotStop(){
 
 void Robot_FollowLineGivenDistance(int distnace){
 	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
-	Motion_Move(&motion, distnace, FORWARD_SPEED_1, FORWARD_SPEED_1, FORWARD_ACCELERATION_1);
-	Motion_ResetDriveSystem(&motion);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
 	set_steering_mode(STEERING_OFF);
 	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_FollowLineGivenDistanceandNotStop(int distnace){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, FORWARD_SPEED_1    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
+	//set_steering_mode(STEERING_OFF);
+	//Motion_ResetDriveSystem(&motion);
 }
 
 JunctionType Robot_MoveForwardUntillLine(){
@@ -199,15 +207,17 @@ void Robot_MoveForwardGivenDistance(int distnace){
 void Robot_TurnRight90Inplace(){
 	HAL_Delay(MOTION_DELAY);
 	Motion_SpinTurn(&motion, -90, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
-	Motion_ResetDriveSystem(&motion);
+
 	HAL_Delay(MOTION_DELAY);
+	Motion_ResetDriveSystem(&motion);
 }
 
 void Robot_TurnLeft90Inplace(){
 	HAL_Delay(MOTION_DELAY);
 	Motion_SpinTurn(&motion, 90, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
-	Motion_ResetDriveSystem(&motion);
+
 	HAL_Delay(MOTION_DELAY);
+	Motion_ResetDriveSystem(&motion);
 }
 
 

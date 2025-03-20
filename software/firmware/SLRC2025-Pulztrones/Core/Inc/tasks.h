@@ -21,6 +21,7 @@ typedef enum {
 void executePlantationTask(void);
 void moveToCenterofNextCell();
 void moveToCenterofCellinZeroRow();
+void moveToCenterofNextCellandNotStop();
 
 
 void moveToCenterofNextColumnfromFirstRow();

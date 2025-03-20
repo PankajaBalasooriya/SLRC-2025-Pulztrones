@@ -66,38 +66,7 @@ void executePlantationTask(void) {
 
 	}
 
-//	moveToCenterofNextCell();
-//	HAL_Delay(750);
-//
-//	Robot_TurnLeft90Inplace();
-//	//Picking the ball
-//
-//	HAL_Delay(750);
-//
-//	Robot_TurnLeft90Inplace();
-//
-//	HAL_Delay(750);
-//
-//	Robot_LineFollowUntillJunction();
-//
-//	HAL_Delay(750);
-//
-//	Robot_TurnRight90Inplace();
-//
-//	Robot_LineFollowUntillJunction();
-
-
-
-
-
-
-
-	// Detect color for the next using cv
-//	for(uint8_t column = 0; column < 5; i ++){
-//
-//	}
-
-}
+  }
 }
 
 void moveToCenterofNextCell(){
@@ -105,11 +74,14 @@ void moveToCenterofNextCell(){
 	Robot_FollowLineGivenDistance(170);
 }
 
+void moveToCenterofNextCellandNotStop(){
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_FollowLineGivenDistanceandNotStop(170);
+}
+
 void moveToCenterofCellinZeroRow(){
 	Robot_LineFollowUntillJunction();
-	HAL_Delay(MOTION_DELAY);
 	Robot_TurnRight90Inplace();
-	HAL_Delay(MOTION_DELAY);
 	Robot_FollowLineGivenDistance(170);
 	HAL_Delay(MOTION_DELAY);
 }
@@ -119,14 +91,16 @@ void moveToCenterofNextColumnfromFirstRow(){
 }
 
 void moveToCenterofNextColumnfromSecondRow(){
-	moveToCenterofNextCell();
-	HAL_Delay(MOTION_DELAY);
+	//moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+	//HAL_Delay(MOTION_DELAY);
 	moveToCenterofNextColumnfromFirstRow();
 }
 
 void moveToCenterofNextColumnfromThiredRow(){
-	moveToCenterofNextCell();
-	HAL_Delay(MOTION_DELAY);
+	//moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+	//HAL_Delay(MOTION_DELAY);
 	moveToCenterofNextColumnfromSecondRow();
 }
 

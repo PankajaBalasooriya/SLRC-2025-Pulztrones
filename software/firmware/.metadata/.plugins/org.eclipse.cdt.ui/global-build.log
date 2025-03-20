@@ -19,3 +19,145 @@ arm-none-eabi-size  SLRC2025-Pulztrones.elf
   52472	    472	   4800	  57744	   e190	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
  
+23:51:28 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/config.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/config.d" -MT"Core/Src/config.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/config.o"
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:33:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   33 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:56:11: warning: unused variable 'orientation' [-Wunused-variable]
+   56 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:55:11: warning: unused variable 'gridY' [-Wunused-variable]
+   55 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:54:11: warning: unused variable 'gridX' [-Wunused-variable]
+   54 |   uint8_t gridX = data[0];
+      |           ^~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52472	    472	   4800	  57744	   e190	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+00:05:37 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/config.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/config.d" -MT"Core/Src/config.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/config.o"
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:33:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   33 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:56:11: warning: unused variable 'orientation' [-Wunused-variable]
+   56 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:55:11: warning: unused variable 'gridY' [-Wunused-variable]
+   55 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:54:11: warning: unused variable 'gridX' [-Wunused-variable]
+   54 |   uint8_t gridX = data[0];
+      |           ^~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52464	    472	   4800	  57736	   e188	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+00:29:25 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/RPI_uart_comm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/RPI_uart_comm.d" -MT"Core/Src/RPI_uart_comm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/RPI_uart_comm.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+arm-none-eabi-gcc "../Core/Src/tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/tasks.d" -MT"Core/Src/tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/tasks.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:33:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   33 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:56:11: warning: unused variable 'orientation' [-Wunused-variable]
+   56 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:55:11: warning: unused variable 'gridY' [-Wunused-variable]
+   55 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:54:11: warning: unused variable 'gridX' [-Wunused-variable]
+   54 |   uint8_t gridX = data[0];
+      |           ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:248:3: warning: implicit declaration of function 'RPI_UART_Init'; did you mean 'HAL_UART_Init'? [-Wimplicit-function-declaration]
+  248 |   RPI_UART_Init();
+      |   ^~~~~~~~~~~~~
+      |   HAL_UART_Init
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:128:16: warning: 'rxByte' defined but not used [-Wunused-variable]
+  128 | static uint8_t rxByte;
+      |                ^~~~~~
+../Core/Src/main.c:127:16: warning: 'rxIndex' defined but not used [-Wunused-variable]
+  127 | static uint8_t rxIndex = 0;
+      |                ^~~~~~~
+../Core/Src/main.c:126:16: warning: 'rxLength' defined but not used [-Wunused-variable]
+  126 | static uint8_t rxLength = 0;
+      |                ^~~~~~~~
+../Core/Src/main.c:125:16: warning: 'rxCmd' defined but not used [-Wunused-variable]
+  125 | static uint8_t rxCmd = 0;
+      |                ^~~~~
+../Core/Src/main.c:124:16: warning: 'rxBuffer' defined but not used [-Wunused-variable]
+  124 | static uint8_t rxBuffer[MAX_BUFFER_SIZE];
+      |                ^~~~~~~~
+../Core/Src/main.c:123:16: warning: 'rxState' defined but not used [-Wunused-variable]
+  123 | static RxState rxState = WAITING_FOR_START;
+      |                ^~~~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52552	    472	   4800	  57824	   e1e0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+00:37:27 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+arm-none-eabi-gcc "../Core/Src/tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/tasks.d" -MT"Core/Src/tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/tasks.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:33:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   33 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:56:11: warning: unused variable 'orientation' [-Wunused-variable]
+   56 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:55:11: warning: unused variable 'gridY' [-Wunused-variable]
+   55 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:54:11: warning: unused variable 'gridX' [-Wunused-variable]
+   54 |   uint8_t gridX = data[0];
+      |           ^~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52528	    472	   4800	  57800	   e1c8	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 

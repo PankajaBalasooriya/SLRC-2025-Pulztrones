@@ -6,7 +6,8 @@
 ../Core/Src/robot.c:136:14:Robot_LineFollowUntillJunction	8	static
 ../Core/Src/robot.c:151:14:Robot_LineFollowUntillJunctionAndNotStop	8	static
 ../Core/Src/robot.c:170:6:Robot_FollowLineGivenDistance	16	static
-../Core/Src/robot.c:178:14:Robot_MoveForwardUntillLine	8	static
-../Core/Src/robot.c:193:6:Robot_MoveForwardGivenDistance	16	static
-../Core/Src/robot.c:199:6:Robot_TurnRight90Inplace	8	static
-../Core/Src/robot.c:206:6:Robot_TurnLeft90Inplace	8	static
+../Core/Src/robot.c:178:6:Robot_FollowLineGivenDistanceandNotStop	16	static
+../Core/Src/robot.c:186:14:Robot_MoveForwardUntillLine	8	static
+../Core/Src/robot.c:201:6:Robot_MoveForwardGivenDistance	16	static
+../Core/Src/robot.c:207:6:Robot_TurnRight90Inplace	8	static
+../Core/Src/robot.c:215:6:Robot_TurnLeft90Inplace	8	static

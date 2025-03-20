@@ -69,8 +69,8 @@ const int LINE_FOLLOW_ACCELERATION = 120;
 const int FORWARD_SPEED_1 = 100;
 const int FORWARD_ACCELERATION_1 = 120;
 
-const int SPIN_TURN_OMEGA = 200;
-const int SPIN_TURN_ALPHA = 120;
+const int SPIN_TURN_OMEGA = 150;
+const int SPIN_TURN_ALPHA = 50;
 
 
 

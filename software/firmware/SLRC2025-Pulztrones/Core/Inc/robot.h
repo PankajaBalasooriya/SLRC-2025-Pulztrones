@@ -37,6 +37,7 @@ BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
 JunctionType Robot_LineFollowUntillJunction();
 JunctionType Robot_LineFollowUntillJunctionAndNotStop();
 void Robot_FollowLineGivenDistance(int distnace);
+void Robot_FollowLineGivenDistanceandNotStop(int distnace);
 JunctionType Robot_MoveForwardUntillLine();
 void Robot_MoveForwardGivenDistance(int distnace);
 void Robot_TurnRight90Inplace();
