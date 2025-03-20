@@ -22,5 +22,6 @@
 ../Core/Src/motion.c:113:6:Motion_SpinTurn	24	static
 ../Core/Src/motion.c:137:6:Motion_StopAt	40	static
 ../Core/Src/motion.c:155:6:Motion_StopAfter	32	static
-../Core/Src/motion.c:165:6:Motion_WaitUntilPosition	16	static
-../Core/Src/motion.c:177:6:Motion_WaitUntilDistance	24	static
+../Core/Src/motion.c:160:6:Motion_SwitchToNextMotionAfter	32	static
+../Core/Src/motion.c:170:6:Motion_WaitUntilPosition	16	static
+../Core/Src/motion.c:182:6:Motion_WaitUntilDistance	24	static

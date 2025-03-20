@@ -1,0 +1,8 @@
+../Core/Src/tasks.c:16:6:executePlantationTask	9
+../Core/Src/tasks.c:103:6:moveToCenterofNextCell	1
+../Core/Src/tasks.c:108:6:moveToCenterofCellinZeroRow	1
+../Core/Src/tasks.c:117:6:moveToCenterofNextColumnfromFirstRow	1
+../Core/Src/tasks.c:121:6:moveToCenterofNextColumnfromSecondRow	1
+../Core/Src/tasks.c:127:6:moveToCenterofNextColumnfromThiredRow	1
+../Core/Src/tasks.c:133:11:picktheBall	1
+../Core/Src/tasks.c:150:6:runCurrentTask	2

@@ -52,4 +52,6 @@ void Motion_WaitUntilPosition(Motion *motion, float position);
 void Motion_WaitUntilDistance(Motion *motion, float distance);
 void Motion_Turn_(Motion *motion, float angle, float omega, float final_speed, float alpha);
 
+void Motion_SwitchToNextMotionAfter(Motion *motion, float distance);
+
 #endif

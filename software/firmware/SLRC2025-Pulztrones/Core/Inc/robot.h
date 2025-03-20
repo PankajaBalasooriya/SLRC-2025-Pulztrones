@@ -16,6 +16,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "config.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -25,6 +26,22 @@ void HandleLineDetection(uint8_t *data);
 void HandleGridPosition(uint8_t *data);
 void HandleColorDetection(uint8_t *data);
 void StopRobot(void);
+
+
+//Dummy functions
+LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
+BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
+
+
+
+JunctionType Robot_LineFollowUntillJunction();
+JunctionType Robot_LineFollowUntillJunctionAndNotStop();
+void Robot_FollowLineGivenDistance(int distnace);
+JunctionType Robot_MoveForwardUntillLine();
+void Robot_MoveForwardGivenDistance(int distnace);
+void Robot_TurnRight90Inplace();
+void Robot_TurnLeft90Inplace();
+
 
 #ifdef __cplusplus
 }

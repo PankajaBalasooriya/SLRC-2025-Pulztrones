@@ -171,7 +171,10 @@ void Sensors_Update() {
 
 		junction = DetectJunction();
 	}
-
+	else if(g_steering_mode == STEERING_OFF_READLINE){
+		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+		junction = DetectJunction();
+	}
 	else if(g_steering_mode == STEER_NORMAL){
 		if(lws.raw < 500)lws.raw = 500;
 		if(rws.raw < 500)rws.raw = 500;

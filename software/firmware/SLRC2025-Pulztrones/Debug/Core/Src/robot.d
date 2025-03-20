@@ -32,10 +32,9 @@ Core/Src/robot.o: ../Core/Src/robot.c ../Core/Inc/robot.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/config.h ../Core/Inc/sensors.h ../Core/Inc/config.h \
- ../Core/Inc/uartcom.h ../Core/Inc/motion.h ../Core/Inc/motors.h \
- ../Core/Inc/main.h ../Core/Inc/profile.h ../Core/Inc/encoders.h \
- ../Core/Inc/controller.h
+ ../Core/Inc/config.h ../Core/Inc/sensors.h ../Core/Inc/uartcom.h \
+ ../Core/Inc/motion.h ../Core/Inc/motors.h ../Core/Inc/main.h \
+ ../Core/Inc/profile.h ../Core/Inc/encoders.h ../Core/Inc/controller.h
 ../Core/Inc/robot.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -72,7 +71,6 @@ Core/Src/robot.o: ../Core/Src/robot.c ../Core/Inc/robot.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 ../Core/Inc/config.h:
 ../Core/Inc/sensors.h:
-../Core/Inc/config.h:
 ../Core/Inc/uartcom.h:
 ../Core/Inc/motion.h:
 ../Core/Inc/motors.h:

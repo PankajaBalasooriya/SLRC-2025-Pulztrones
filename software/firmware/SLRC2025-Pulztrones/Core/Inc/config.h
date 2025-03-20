@@ -108,6 +108,8 @@ extern const int LINE_FOLLOW_SPEED;
 extern const int LINE_FOLLOW_ACCELERATION;
 extern const int SPIN_TURN_OMEGA;
 extern const int SPIN_TURN_ALPHA;
+extern const int FORWARD_SPEED_1;
+extern const int FORWARD_ACCELERATION_1;
 
 
 
@@ -128,6 +130,20 @@ typedef enum {
     T_JUNCTION = 3,           // T-junction detected
 	STRAIGHT_LINE = 4
 } JunctionType;
+
+typedef enum{
+	WHITE = 0,
+	GREEN = 1
+} LineColor;
+
+typedef enum{
+	WHITE_BALL = 0,
+	YELLOW_BALL = 1
+}BallColor;
+
+
+
+extern const int MOTION_DELAY;
 
 
 #endif

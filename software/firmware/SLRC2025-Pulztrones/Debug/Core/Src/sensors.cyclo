@@ -10,4 +10,4 @@
 ../Core/Src/sensors.c:131:7:CalculateSteeringAdjustment	1
 ../Core/Src/sensors.c:141:6:set_steering_mode	1
 ../Core/Src/sensors.c:147:6:send_sensor_data	1
-../Core/Src/sensors.c:160:6:Sensors_Update	10
+../Core/Src/sensors.c:160:6:Sensors_Update	11

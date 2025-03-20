@@ -66,8 +66,11 @@ const float STEERING_ADJUST_LIMIT = 0.6;  // deg/s
 const int LINE_FOLLOW_SPEED = 100;
 const int LINE_FOLLOW_ACCELERATION = 120;
 
+const int FORWARD_SPEED_1 = 100;
+const int FORWARD_ACCELERATION_1 = 120;
+
 const int SPIN_TURN_OMEGA = 200;
-const int SPIN_TURN_ALPHA = 60;
+const int SPIN_TURN_ALPHA = 120;
 
 
 
@@ -84,6 +87,9 @@ const int RIGHT_THRESHOLD = 80;  // minimum value to register a wall
 const int FRONT_THRESHOLD = 100;  // minimum value to register a wall
 
 
+//***** Robot constants ******************************************************//
+
+const int MOTION_DELAY = 800;
 
 
 

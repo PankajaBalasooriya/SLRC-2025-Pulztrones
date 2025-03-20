@@ -156,6 +156,11 @@ void Motion_StopAfter(Motion *motion, float distance) {
     Profile_Move(&(motion->forward), distance, Profile_GetSpeed(&(motion->forward)), 0, Profile_GetAcceleration(&(motion->forward)));
 }
 
+// Test
+void Motion_SwitchToNextMotionAfter(Motion *motion, float distance){
+	Profile_Move(&(motion->forward), distance, Profile_GetSpeed(&(motion->forward)), Profile_GetSpeed(&(motion->forward)), Profile_GetAcceleration(&(motion->forward)));
+}
+
 /**
  * The robot is assumed to be moving. This utility function call will just
  * do a busy-wait until the forward profile gets to the supplied position.

@@ -44,6 +44,8 @@
 #include "string.h"
 #include "stdio.h"
 #include "robot.h"
+#include "tasks.h"
+
 
 
 
@@ -354,6 +356,7 @@ int main(void)
   HAL_Delay(2000);
 
   EnableSysTickFunction();
+  runCurrentTask(TASK_PLANTATION);
 
   //setMotorLPWM(1);
   //setMotorRPWM(1);
@@ -362,7 +365,7 @@ int main(void)
 //  HAL_Delay(1000);
 //  //Motion_StopAt(&motion, 600);
 //  Motion_StopAfter(&motion, 100);
-  LineFollowUntillJunction();
+  //Robot_LineFollowUntillJunction();
 
   	 //Motion_Move(&motion, 1200, 200, 0, 100);
 //Motion_SpinTurn(&motion, 90, 200.0, 20.0);

@@ -1,4 +1,12 @@
-../Core/Src/robot.c:31:6:HandleLineDetection	1
-../Core/Src/robot.c:53:6:HandleGridPosition	1
-../Core/Src/robot.c:67:6:HandleColorDetection	5
-../Core/Src/robot.c:92:14:LineFollowUntillJunction	2
+../Core/Src/robot.c:30:6:HandleLineDetection	1
+../Core/Src/robot.c:52:6:HandleGridPosition	1
+../Core/Src/robot.c:66:6:HandleColorDetection	5
+../Core/Src/robot.c:88:11:RPI_GetLineColor	11
+../Core/Src/robot.c:110:11:RPI_GetBallColor	11
+../Core/Src/robot.c:136:14:Robot_LineFollowUntillJunction	2
+../Core/Src/robot.c:151:14:Robot_LineFollowUntillJunctionAndNotStop	2
+../Core/Src/robot.c:170:6:Robot_FollowLineGivenDistance	1
+../Core/Src/robot.c:178:14:Robot_MoveForwardUntillLine	2
+../Core/Src/robot.c:193:6:Robot_MoveForwardGivenDistance	1
+../Core/Src/robot.c:199:6:Robot_TurnRight90Inplace	1
+../Core/Src/robot.c:206:6:Robot_TurnLeft90Inplace	1

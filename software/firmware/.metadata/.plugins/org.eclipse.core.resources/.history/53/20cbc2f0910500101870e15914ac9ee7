@@ -1,0 +1,50 @@
+#include "tasks.h"
+#include "sensors.h"
+#include "robot.h"
+
+
+// Initialize task status globally
+
+
+// Function to update task status
+
+
+//---------Start 0f Plantation Task (Collect and identify potatoes)---------------------
+void executePlantationTask(void) {
+	Robot_MoveForwardUntillLine();
+	Robot_TurnRight90Inplace();
+
+	moveToendofNextCell();
+
+	// Detect color for the next using cv
+//	for(uint8_t column = 0; column < 5; i ++){
+//
+//	}
+
+}
+
+void moveToendofNextCell(){
+	Robot_LineFollowUntillJunction();
+	Robot_FollowLineGivenDistance(50);
+	//Robot_FollowLineGivenDistance(135);
+}
+
+
+
+//---------end 0f Plantation Task (Collect and identify potatoes)---------------------
+
+// Task manager function
+void runCurrentTask(TaskType task) {
+
+    switch (task) {
+        case TASK_PLANTATION:
+            executePlantationTask();
+            break;
+        default:
+
+            break;
+    }
+
+    // Print final status after execution
+
+}

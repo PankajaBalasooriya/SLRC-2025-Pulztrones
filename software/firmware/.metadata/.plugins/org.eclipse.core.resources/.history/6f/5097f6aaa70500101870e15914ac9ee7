@@ -1,0 +1,96 @@
+#include "tasks.h"
+#include "sensors.h"
+#include "robot.h"
+
+
+// Initialize task status globally
+
+
+// Function to update task status
+
+
+//---------Start 0f Plantation Task (Collect and identify potatoes)---------------------
+void executePlantationTask(void) {
+	Robot_MoveForwardUntillLine();
+	Robot_TurnLeft90Inplace();
+
+	//Start the task
+	LineColor linecolor;
+	for(uint8_t column = 0; column < 5; column ++){
+		for(uint8_t row = 0; row < 4; column ++){
+				if(row == 0){
+					linecolor = RPI_GetLineColor(column, row);
+					if(linecolor == GREEN){
+
+					}
+				}
+
+		}
+
+	}
+
+	moveToCenterofNextCell();
+	HAL_Delay(750);
+
+	Robot_TurnLeft90Inplace();
+	//Picking the ball
+
+	HAL_Delay(750);
+
+	Robot_TurnLeft90Inplace();
+
+	HAL_Delay(750);
+
+	Robot_LineFollowUntillJunction();
+
+	HAL_Delay(750);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_LineFollowUntillJunction();
+
+
+
+
+
+
+
+	// Detect color for the next using cv
+//	for(uint8_t column = 0; column < 5; i ++){
+//
+//	}
+
+}
+
+void moveToCenterofNextCell(){
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_FollowLineGivenDistance(170);
+}
+
+void moveToCenterofCellinZeroRow(){
+	Robot_LineFollowUntillJunction();
+	HAL_Delay(MOTION_DELAY);
+	Robot_TurnRight90Inplace();
+	HAL_Delay(MOTION_DELAY);
+	Robot_FollowLineGivenDistance(170);
+}
+
+
+
+//---------end 0f Plantation Task (Collect and identify potatoes)---------------------
+
+// Task manager function
+void runCurrentTask(TaskType task) {
+
+    switch (task) {
+        case TASK_PLANTATION:
+            executePlantationTask();
+            break;
+        default:
+
+            break;
+    }
+
+    // Print final status after execution
+
+}
