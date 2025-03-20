@@ -1,14 +1,15 @@
 #include "uartcom.h"
 #include "stdio.h"
 #include "string.h"
+#include "encoders.h"
 
 // UART Initialization function
-void UART_Init(UART_HandleTypeDef *huart)
-{
-    // You can customize this function depending on your UART configuration
-    // Initialize UART with the desired configuration (baud rate, parity, stop bits, etc.)
-    HAL_UART_Init(huart);
-}
+//void UART_Init(UART_HandleTypeDef *huart)
+//{
+//    // You can customize this function depending on your UART configuration
+//    // Initialize UART with the desired configuration (baud rate, parity, stop bits, etc.)
+//    HAL_UART_Init(huart);
+//}
 
 // UART Transmit function (send string)
 void UART_Transmit(UART_HandleTypeDef *huart, char *data)
@@ -65,4 +66,12 @@ void UART_Transmit_TOF(UART_HandleTypeDef *huart, uint16_t TOF1, uint16_t TOF2, 
 
     // Transmit the formatted string via UART
     HAL_UART_Transmit(huart, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+}
+
+void UART_Transmit_EncoderData(UART_HandleTypeDef *huart){
+	char buffer[50];
+
+	sprintf(buffer, ">D:%.2f,V:%.2f,0:%.2f,W:%.2f\r\n", robot_distance(), robot_speed(), robot_angle(), robot_omega());
+
+	HAL_UART_Transmit(huart, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 }

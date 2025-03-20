@@ -1,4 +1,5 @@
+systick_function_enabled
 sensor_values
 line_position
-left_counts
-right_counts
+junction
+numberOfSensorsOnWhite

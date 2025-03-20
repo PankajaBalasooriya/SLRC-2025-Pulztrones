@@ -1,0 +1,7 @@
+../Core/Src/RPI_uart_comm.c:36:6:RPI_UART_Init	40	static
+../Core/Src/RPI_uart_comm.c:81:6:ProcessCommand	8	static
+../Core/Src/RPI_uart_comm.c:112:6:SendCommand	152	static
+../Core/Src/RPI_uart_comm.c:138:6:StartLineFollowing	16	static
+../Core/Src/RPI_uart_comm.c:148:6:StartGridNavigation	24	static
+../Core/Src/RPI_uart_comm.c:156:6:StartColorDetection	16	static
+../Core/Src/RPI_uart_comm.c:164:6:StopProcessing	8	static

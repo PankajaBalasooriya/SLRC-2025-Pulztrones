@@ -36,6 +36,14 @@
 #include "fonts.h"
 #include "bitmap.h"
 #include "uartcom.h"
+#include "systick.h"
+#include "motion.h"
+#include "profile.h"
+#include "controller.h"
+#include "sensors.h"
+#include "string.h"
+#include "stdio.h"
+#include "robot.h"
 
 
 
@@ -50,10 +58,31 @@
 /* USER CODE BEGIN PD */
 #define BUFFER_SIZE 50
 
+/* Communication protocol definitions */
+#define START_MARKER '<'
+#define END_MARKER '>'
+#define MAX_BUFFER_SIZE 128
+
+/* Command IDs */
+#define CMD_LINE_DETECTED 0x01
+#define CMD_GRID_POSITION 0x02
+#define CMD_COLOR_DETECTED 0x03
+#define CMD_START_LINE_FOLLOWING 0x11
+#define CMD_START_GRID_NAVIGATION 0x12
+#define CMD_START_COLOR_DETECTION 0x13
+#define CMD_STOP 0x20
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+typedef enum {
+  WAITING_FOR_START,
+  WAITING_FOR_CMD,
+  WAITING_FOR_LENGTH,
+  RECEIVING_DATA,
+  WAITING_FOR_END
+} RxState;
 
 /* USER CODE END PM */
 
@@ -73,19 +102,30 @@ UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart6_rx;
 
 /* USER CODE BEGIN PV */
+volatile uint8_t systick_function_enabled = 0;
+
 int16_t left_counts = 0;
 int16_t right_counts = 0;
 
 char uart_rx_buffer[BUFFER_SIZE];  // Buffer to store received data
 volatile uint8_t data_received = 0;  // Flag to indicate new data received
 
-// Buffer to store values from all channels
-uint16_t sensorValues[16] = {0};
+
 
 RAYKHA_Calibration raykha_calibration;
-uint16_t sensor_values[RAYKHA_NUM_SENSORS];
-int32_t line_position;
 uint8_t calibration_complete = 0;
+
+
+
+/* Reception variables */
+static RxState rxState = WAITING_FOR_START;
+static uint8_t rxBuffer[MAX_BUFFER_SIZE];
+static uint8_t rxCmd = 0;
+static uint8_t rxLength = 0;
+static uint8_t rxIndex = 0;
+static uint8_t rxByte;
+
+
 
 /* USER CODE END PV */
 
@@ -108,25 +148,11 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+Motion motion;
+Profile forward_profile;
+Profile rotation_profile;
+Controller controller;
 
-
-// Function to read all channels sequentially
-void ReadAllSensors(void)
-{
-    for (uint8_t i = 0; i < 16; i++)
-    {
-        sensorValues[i] = AnalogMux_ReadChannel(i);
-    }
-}
-
-// Function to read a specific set of channels (more efficient)
-void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results)
-{
-    for (uint8_t i = 0; i < numChannels; i++)
-    {
-        results[i] = AnalogMux_ReadChannel(channelList[i]);
-    }
-}
 
 
 
@@ -137,7 +163,7 @@ void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16
 //    // Transmit the string over UART
 //    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
 //}
-
+//
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //{
 //    if (huart->Instance == USART6)  // Check if it's UART6
@@ -215,24 +241,97 @@ int main(void)
   /*-------------------------------------------------------------------*/
 
   //AnalogMux_Init();
-
-  UART_Init(&huart3);
+  // This is the uart for the bluetooth
+  //UART_Init(&huart3);
+  RPI_UART_Init();
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
 
   //Examples
   // Register servos (do this once)
-  int claw = Servo_Register(11, "claw", 0, 180);
-  int arm = Servo_Register(13, "arm", 0, 180);
-  int base = Servo_Register(15, "base", 0, 180);
 
-  // Later in your code, use the servos by ID
-  Servo_SetAngle(claw, 35);   // Set claw to 45 degrees
-  Servo_SetAngle(arm,100);    // Set arm to 90 degrees
+
+//  int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
+//
+//  int base = Servo_Register(15, "base", 0, 180);
+//  int A = Servo_Register(11, "A", 0, 180);
+//  int B = Servo_Register(13, "B", 0, 180);
+//  int C = Servo_Register(12, "C", 0, 180);
+//
+//
+//
+//  // Later in your code, use the servos by ID
+//   Servo_SetAngle(base, 0);
+//    Servo_SetAngle(A, 0);
+//    Servo_SetAngle(B, 0);
+//    Servo_SetAngle(C, 0);
+
+
+//  Servo_SetAngle(base, 0);
+//  HAL_Delay(1000);
+
+//  Servo_SetAngle(base, 140);
+//  HAL_Delay(1000);
+////  Servo_SetAngle(base, 180);
+//  Servo_SetAngle(A, 0);
+//  Servo_SetAngle(B, 40);
+//  Servo_SetAngle(C, 120);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(A, 60);
+//  Servo_SetAngle(B, 90);
+////  Servo_SetAngle(C, 40);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(A, 70);
+
+//  Servo_SetAngle(base, 25);
+//  Servo_SetAngle(A, 70);
+//  Servo_SetAngle(B, 90);
+//  Servo_SetAngle(C, 35);
+
+  //PCA9685_SetServoAngle(14, 100);
+
+  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+////
+//  HAL_Delay(3000);
+//
+//  Servo_SetAngle(A, 5);
+//  Servo_SetAngle(C, 100);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(base, 180);
+//  Servo_SetAngle(A, 15);
+//  HAL_Delay(200);
+//  Servo_SetAngle(B, 70);
+//  HAL_Delay(200);
+//  Servo_SetAngle(C, 120);
+//  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+
+//  for (int i=0; i<20;i++){
+//
+//	  Servo_SetAngle(B, 90-i);
+//	  HAL_Delay(200);
+//	  Servo_SetAngle(C, 100+i);
+//	  HAL_Delay(200);
+//
+//  }
+//  Servo_SetAngle(A, 0);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(B, 70);
+
+
+
+
+
 
   // Or use them by name
-  Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
+  //Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
+
+  HAL_Delay(1000);
+  Controller_Init(&controller);
+    Profile_Reset(&forward_profile);
+    Profile_Reset(&rotation_profile);
+    Motion_Init(&motion, &controller, &forward_profile, &rotation_profile);
+    Controller_ResetControllers(&controller);
 
   // Reset all servos to center position
   //Servo_ResetAll();
@@ -247,6 +346,35 @@ int main(void)
 
   Buzzer_Toggle(100);
 
+  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+
+  //HAL_Delay(5000);
+  Buzzer_Toggle(100);
+
+  HAL_Delay(2000);
+
+  EnableSysTickFunction();
+
+  //setMotorLPWM(1);
+  //setMotorRPWM(1);
+
+//  Motion_StartMove(&motion, 1500, 200, 0, 120);
+//  HAL_Delay(1000);
+//  //Motion_StopAt(&motion, 600);
+//  Motion_StopAfter(&motion, 100);
+  LineFollowUntillJunction();
+
+  	 //Motion_Move(&motion, 1200, 200, 0, 100);
+//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+//  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
+//  Motion_Move(&motion, 600, 200, 0, 200);
+
+
+  //Motion_Move(&motion, 135, 200, 0, 100);
+//set_steering_mode(STEERING_OFF);
+  //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+
+
 
   /* USER CODE END 2 */
 
@@ -257,10 +385,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  left_counts = getLeftEncoderCounts();
-	  right_counts = getRightEncoderCounts();
-
-	  UART_Transmit_IR(&huart3, left_counts, right_counts);
+//	  left_counts = getLeftEncoderCounts();
+//	  right_counts = getRightEncoderCounts();
+//
+//	  UART_Transmit_IR(&huart3, left_counts, right_counts);
 
 	  // Format the message with the counter
 
@@ -273,7 +401,10 @@ int main(void)
 //		  // Wait for 1 second
 //		  HAL_Delay(50);
 
-
+//	  Turn360Servo();
+//	    HAL_Delay(780);
+//	    Stop360Servo();
+//	    HAL_Delay(1000);
 
 
 //	  if (data_received)  // Check if new data is received

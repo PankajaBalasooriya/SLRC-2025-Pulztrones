@@ -1,0 +1,13 @@
+../Core/Src/sensors.c:44:14:DetectJunction	9
+../Core/Src/sensors.c:81:6:ReadAllSensors	2
+../Core/Src/sensors.c:90:6:ReadSelectedSensors	2
+../Core/Src/sensors.c:100:6:init_sensor_value	1
+../Core/Src/sensors.c:111:7:get_steering_feedback	1
+../Core/Src/sensors.c:114:7:get_cross_track_error	1
+../Core/Src/sensors.c:117:9:is_wall_left	1
+../Core/Src/sensors.c:120:9:is_wall_right	1
+../Core/Src/sensors.c:123:9:is_wall_front	1
+../Core/Src/sensors.c:131:7:CalculateSteeringAdjustment	1
+../Core/Src/sensors.c:141:6:set_steering_mode	1
+../Core/Src/sensors.c:147:6:send_sensor_data	1
+../Core/Src/sensors.c:160:6:Sensors_Update	10

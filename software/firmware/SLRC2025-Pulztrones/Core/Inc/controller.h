@@ -33,5 +33,9 @@ void Controller_Stop();
 
 void UpdateControllers(Controller *controller, float velocity, float omega, float steering_adjustment);
 
+float leftFeedForward(float speed);
+
+float rightFeedForward(float speed);
+
 
 #endif /* INC_CONTROLLER_H_ */

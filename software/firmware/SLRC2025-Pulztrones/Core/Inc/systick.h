@@ -9,4 +9,9 @@
 
 void SysTickFunction(void);
 
+void EnableSysTickFunction(void);
+void DisableSysTickFunction(void);
+
+void CheckEncoderCounts(void);
+
 #endif /* INC_SYSTICK_H_ */

@@ -4,14 +4,14 @@
 
 #include "main.h"
 #include "controller.h"
-#include "pid.h"
+//#include "pid.h"
 #include "encoders.h"
 #include "motors.h"
 #include "ssd1306.h"
 #include "fonts.h"
 #include <stdio.h>
 
-
+static float oldSpeed = 0;
 
 void Controller_Init(Controller *controller) {
     // Initialize motor struct
@@ -63,13 +63,13 @@ void Controller_Stop(){
  */
 void UpdateControllers(Controller *controller, float velocity, float omega, float steering_adjustment) {
     float forward_output, rotational_output, left_output, right_output;
-    float left_speed, right_speed, left_ff, right_ff;
+    //float left_speed, right_speed, left_ff, right_ff;
 
     controller->velocity = velocity;
     controller->omega = omega;
 
     // Forward motion control
-    float forward_increment = velocity * LOOP_INTERVAL;
+    float forward_increment = velocity * LOOP_INTERVAL;//
     controller->forward_error += forward_increment - robot_fwd_change();
     float forward_diff = controller->forward_error - controller->previous_forward_error;
     controller->previous_forward_error = controller->forward_error;
@@ -87,34 +87,15 @@ void UpdateControllers(Controller *controller, float velocity, float omega, floa
     left_output = forward_output - rotational_output;
     right_output = forward_output + rotational_output;
 
+    float tangent_speed = omega * ROBOT_RADIUS * RADIANS_PER_DEGREE;
 
+	float left_speed = velocity - tangent_speed;
+	float right_speed = velocity + tangent_speed;
 
 	if (controller->feedforward_enabled) {
 		// Feedforward calculation
-		left_speed = velocity - omega * MOUSE_RADIUS * RADIANS_PER_DEGREE;
-		right_speed = velocity + omega * MOUSE_RADIUS * RADIANS_PER_DEGREE;
-
-		left_ff = SPEED_FF * left_speed;
-		right_ff = SPEED_FF * right_speed;
-
-		if(left_speed > 0){
-			left_ff += BIAS_FF;
-
-		}
-		else if(left_speed <0){
-			left_ff -= BIAS_FF;
-		}
-
-		if(right_speed > 0){
-			right_ff += BIAS_FF;
-
-		}
-		else if(right_speed <0){
-			right_ff -= BIAS_FF;
-		}
-
-		left_output += left_ff;
-		right_output += right_ff;
+		left_output += leftFeedForward(left_speed);
+		right_output += rightFeedForward(right_speed);
 	}
 
     if (controller->controllers_enabled) {
@@ -123,5 +104,40 @@ void UpdateControllers(Controller *controller, float velocity, float omega, floa
     }
 
 
+}
+
+
+float leftFeedForward(float speed) {
+//  static float oldSpeed = speed;
+  float leftFF = speed * SPEED_FF;
+  if (speed > 0) {
+    leftFF += BIAS_FF;
+  } else if (speed < 0) {
+    leftFF -= BIAS_FF;
+  } else {
+    // No bias when the speed is 0
+  }
+  float acc = (speed - oldSpeed) * LOOP_FREQUENCY;
+  oldSpeed = speed;
+  float accFF = ACC_FF * acc;
+  leftFF += accFF;
+  return leftFF;
+}
+
+float rightFeedForward(float speed) {
+  //static float oldSpeed = speed;
+  float rightFF = speed * SPEED_FF;
+  if (speed > 0) {
+    rightFF += BIAS_FF;
+  } else if (speed < 0) {
+    rightFF -= BIAS_FF;
+  } else {
+    // No bias when the speed is 0
+  }
+  float acc = (speed - oldSpeed) * LOOP_FREQUENCY;
+  oldSpeed = speed;
+  float accFF = ACC_FF * acc;
+  rightFF += accFF;
+  return rightFF;
 }
 

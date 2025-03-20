@@ -1,0 +1,8 @@
+../Core/Src/controller.c:16:6:Controller_Init	16	static
+../Core/Src/controller.c:34:6:Controller_EnableControllers	16	static
+../Core/Src/controller.c:41:6:Controller_DisableControllers	16	static
+../Core/Src/controller.c:48:6:Controller_ResetControllers	16	static
+../Core/Src/controller.c:55:6:Controller_Stop	8	static
+../Core/Src/controller.c:64:6:UpdateControllers	72	static
+../Core/Src/controller.c:110:7:leftFeedForward	32	static
+../Core/Src/controller.c:127:7:rightFeedForward	32	static
