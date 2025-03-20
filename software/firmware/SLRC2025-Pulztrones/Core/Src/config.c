@@ -63,18 +63,12 @@ const float STEERING_ADJUST_LIMIT = 0.6;  // deg/s
 
 
 //***** PERFORMANCE CONSTANTS************************************************//
-// search and run speeds in mm/s and mm
-const int SEARCH_SPEED = 350;
-const int SEARCH_ACCELERATION = 70;
-const int SEARCH_TURN_SPEED = 300;
-const int SMOOTH_TURN_SPEED = 500;
-const int FAST_TURN_SPEED = 600;
-const int FAST_RUN_SPEED_MAX = 2500;
+const int LINE_FOLLOW_SPEED = 100;
+const int LINE_FOLLOW_ACCELERATION = 120;
 
-const float FAST_RUN_ACCELERATION = 3000;
+const int SPIN_TURN_OMEGA = 200;
+const int SPIN_TURN_ALPHA = 60;
 
-const int OMEGA_SPIN_TURN = 610;//500
-const int ALPHA_SPIN_TURN = 295;//100
 
 
 

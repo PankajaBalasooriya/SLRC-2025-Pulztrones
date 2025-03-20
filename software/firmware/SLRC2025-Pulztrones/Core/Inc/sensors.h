@@ -34,6 +34,8 @@ typedef struct {
 
 /* Public Functions */
 
+JunctionType DetectJunction();
+
 void ReadAllSensors(void);
 void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results);
 

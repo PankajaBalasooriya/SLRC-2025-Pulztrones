@@ -4,12 +4,12 @@
 #include "encoders.h"
 
 // UART Initialization function
-void UART_Init(UART_HandleTypeDef *huart)
-{
-    // You can customize this function depending on your UART configuration
-    // Initialize UART with the desired configuration (baud rate, parity, stop bits, etc.)
-    HAL_UART_Init(huart);
-}
+//void UART_Init(UART_HandleTypeDef *huart)
+//{
+//    // You can customize this function depending on your UART configuration
+//    // Initialize UART with the desired configuration (baud rate, parity, stop bits, etc.)
+//    HAL_UART_Init(huart);
+//}
 
 // UART Transmit function (send string)
 void UART_Transmit(UART_HandleTypeDef *huart, char *data)

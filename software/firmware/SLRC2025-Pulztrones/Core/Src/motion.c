@@ -68,6 +68,7 @@ uint8_t Motion_MoveFinished(Motion *motion) {
     return Profile_IsFinished(&(motion->forward));
 }
 
+// wait untill mition is completed
 void Motion_Move(Motion *motion, float distance, float top_speed, float final_speed, float acceleration) {
     Profile_Move(&(motion->forward), distance, top_speed, final_speed, acceleration);
 }
@@ -80,7 +81,7 @@ uint8_t Motion_TurnFinished(Motion *motion) {
     return Profile_IsFinished(&(motion->rotation));
 }
 
-
+//wait untill motion is finished
 void Motion_Turn(Motion *motion, float angle, float omega, float alpha) {
     Profile_Move(&(motion->rotation), angle, omega, 0, alpha);
 }

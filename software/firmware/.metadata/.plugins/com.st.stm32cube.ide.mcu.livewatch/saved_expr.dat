@@ -1,3 +1,5 @@
 systick_function_enabled
 sensor_values
 line_position
+junction
+numberOfSensorsOnWhite

@@ -235,6 +235,68 @@ void USART6_IRQHandler(void)
   /* USER CODE END USART6_IRQn 0 */
   HAL_UART_IRQHandler(&huart6);
   /* USER CODE BEGIN USART6_IRQn 1 */
+	/* Check if receive interrupt */
+	  if (__HAL_UART_GET_FLAG(&huart6, UART_FLAG_RXNE) != RESET) {
+	    /* Read byte from UART */
+	    rxByte = (uint8_t)(huart6.Instance->DR & 0xFF);
+
+	    /* State machine for packet reception */
+	    switch (rxState) {
+	      case WAITING_FOR_START:
+	        if (rxByte == START_MARKER) {
+	          rxState = WAITING_FOR_CMD;
+	        }
+	        break;
+
+	      case WAITING_FOR_CMD:
+	        rxCmd = rxByte;
+	        rxState = WAITING_FOR_LENGTH;
+	        break;
+
+	      case WAITING_FOR_LENGTH:
+	        rxLength = rxByte;
+	        rxIndex = 0;
+
+	        if (rxLength > 0) {
+	          rxState = RECEIVING_DATA;
+	        } else {
+	          rxState = WAITING_FOR_END;
+	        }
+	        break;
+
+	      case RECEIVING_DATA:
+	        if (rxIndex < rxLength && rxIndex < MAX_BUFFER_SIZE) {
+	          rxBuffer[rxIndex++] = rxByte;
+
+	          if (rxIndex >= rxLength) {
+	            rxState = WAITING_FOR_END;
+	          }
+	        } else {
+	          /* Buffer overflow, reset state */
+	          rxState = WAITING_FOR_START;
+	        }
+	        break;
+
+	      case WAITING_FOR_END:
+	        if (rxByte == END_MARKER) {
+	          /* Complete packet received, process it */
+	          ProcessCommand();
+	        }
+	        /* Reset state machine for next packet */
+	        rxState = WAITING_FOR_START;
+	        break;
+
+	      default:
+	        rxState = WAITING_FOR_START;
+	        break;
+	    }
+
+	    /* Clear interrupt flag - use _CLEAR_FLAG instead of _CLEAR_IT */
+	    __HAL_UART_CLEAR_FLAG(&huart6, UART_FLAG_RXNE);
+	  }
+
+	  /* Handle other UART interrupts if needed */
+	  HAL_UART_IRQHandler(&huart6);
 
   /* USER CODE END USART6_IRQn 1 */
 }

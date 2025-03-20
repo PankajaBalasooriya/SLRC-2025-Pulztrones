@@ -1,0 +1,4 @@
+../Core/Src/robot.c:31:6:HandleLineDetection	1
+../Core/Src/robot.c:53:6:HandleGridPosition	1
+../Core/Src/robot.c:67:6:HandleColorDetection	5
+../Core/Src/robot.c:92:14:LineFollowUntillJunction	2

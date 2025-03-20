@@ -7,6 +7,7 @@
 
 #include "sensors.h"
 #include "raykha.h"
+#include "config.h"
 
 
 extern UART_HandleTypeDef huart6;
@@ -31,6 +32,48 @@ uint16_t sensor_values[RAYKHA_NUM_SENSORS];
 int32_t line_position;
 
 extern RAYKHA_Calibration raykha_calibration;
+
+JunctionType junction = NO_LINE;
+
+
+/**
+ * Detects junctions during line following
+ * @return JunctionType enum value indicating the type of junction detected
+ */
+int numberOfSensorsOnWhite = 0;
+JunctionType DetectJunction() {
+	numberOfSensorsOnWhite = 0;
+
+	for(int i = 0; i < RAYKHA_NUM_SENSORS; i++){
+		if(sensor_values[i] > LINE_THRESHOLD){
+			numberOfSensorsOnWhite++;
+		}
+	}
+
+	int leftSensorValue = sensor_values[0];
+	int rightSensorValue = sensor_values[RAYKHA_NUM_SENSORS - 1];
+
+	if(numberOfSensorsOnWhite > SENSORS_ON_LINE_FOR_JUNCTION_CHECK){
+		if (leftSensorValue > LINE_THRESHOLD && rightSensorValue > LINE_THRESHOLD){
+			return T_JUNCTION;
+		}
+		else if (leftSensorValue > LINE_THRESHOLD){
+			return LEFT_JUNCTION;
+		}
+		else if (rightSensorValue > LINE_THRESHOLD){
+			return RIGHT_JUNCTION;
+		}
+		else{
+			return STRAIGHT_LINE;
+		}
+	}
+	else if(numberOfSensorsOnWhite == 0){
+		return NO_LINE;
+	}
+	else{
+		return STRAIGHT_LINE;
+	}
+}
 
 
 
@@ -125,6 +168,8 @@ void Sensors_Update() {
 		line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
 
 		error = line_position;
+
+		junction = DetectJunction();
 	}
 
 	else if(g_steering_mode == STEER_NORMAL){
@@ -150,32 +195,7 @@ void Sensors_Update() {
 		//UART_Transmit_Int(&huart6, ">R", rws.value);
 
 		// Update wall detection flags
-		see_left_wall = (lws.value < LEFT_THRESHOLD);
-		see_right_wall = (rws.value < RIGHT_THRESHOLD);
-		m_front_sum = cfs.value;
-		//m_front_diff = lfs.value - rfs.value;
-		see_front_wall = (m_front_sum < FRONT_THRESHOLD);
 
-
-
-		// Calculate cross-track error
-		error = 0;
-		int left_error = SIDE_NOMINAL - lws.value;
-		int right_error = SIDE_NOMINAL - rws.value;
-
-		if (g_steering_mode == STEER_NORMAL) {
-			if (see_left_wall && see_right_wall) {
-				error = left_error - right_error;
-			} else if (see_left_wall) {
-				error = 2 * left_error;
-			} else if (see_right_wall) {
-				error = -2 * right_error;
-			}
-		} else if (g_steering_mode == STEER_LEFT_WALL) {
-			error = 2 * left_error;
-		} else if (g_steering_mode == STEER_RIGHT_WALL) {
-			error = -2 * right_error;
-		}
     }
     else if(g_steering_mode == STEERING_FRONT_WALL){
 

@@ -41,6 +41,9 @@
 #include "profile.h"
 #include "controller.h"
 #include "sensors.h"
+#include "string.h"
+#include "stdio.h"
+#include "robot.h"
 
 
 
@@ -55,10 +58,31 @@
 /* USER CODE BEGIN PD */
 #define BUFFER_SIZE 50
 
+/* Communication protocol definitions */
+#define START_MARKER '<'
+#define END_MARKER '>'
+#define MAX_BUFFER_SIZE 128
+
+/* Command IDs */
+#define CMD_LINE_DETECTED 0x01
+#define CMD_GRID_POSITION 0x02
+#define CMD_COLOR_DETECTED 0x03
+#define CMD_START_LINE_FOLLOWING 0x11
+#define CMD_START_GRID_NAVIGATION 0x12
+#define CMD_START_COLOR_DETECTION 0x13
+#define CMD_STOP 0x20
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+typedef enum {
+  WAITING_FOR_START,
+  WAITING_FOR_CMD,
+  WAITING_FOR_LENGTH,
+  RECEIVING_DATA,
+  WAITING_FOR_END
+} RxState;
 
 /* USER CODE END PM */
 
@@ -91,6 +115,18 @@ volatile uint8_t data_received = 0;  // Flag to indicate new data received
 RAYKHA_Calibration raykha_calibration;
 uint8_t calibration_complete = 0;
 
+
+
+/* Reception variables */
+static RxState rxState = WAITING_FOR_START;
+static uint8_t rxBuffer[MAX_BUFFER_SIZE];
+static uint8_t rxCmd = 0;
+static uint8_t rxLength = 0;
+static uint8_t rxIndex = 0;
+static uint8_t rxByte;
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,14 +157,13 @@ Controller controller;
 
 
 
-
 // UART Transmit function (send string)
 //void UART_Transmit(UART_HandleTypeDef *huart, char *data)
 //{
 //    // Transmit the string over UART
 //    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
 //}
-
+//
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //{
 //    if (huart->Instance == USART6)  // Check if it's UART6
@@ -206,8 +241,9 @@ int main(void)
   /*-------------------------------------------------------------------*/
 
   //AnalogMux_Init();
-
-  UART_Init(&huart3);
+  // This is the uart for the bluetooth
+  //UART_Init(&huart3);
+  RPI_UART_Init();
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
@@ -216,8 +252,8 @@ int main(void)
   // Register servos (do this once)
 
 
-  //int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
-
+//  int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
+//
 //  int base = Servo_Register(15, "base", 0, 180);
 //  int A = Servo_Register(11, "A", 0, 180);
 //  int B = Servo_Register(13, "B", 0, 180);
@@ -226,35 +262,58 @@ int main(void)
 //
 //
 //  // Later in your code, use the servos by ID
-//
-//
-//
-//
-//  Servo_SetAngle(base, 180);
-//  Servo_SetAngle(A, 5);
-//  Servo_SetAngle(B, 90);
-//  Servo_SetAngle(C, 100);
-//
-//  //PCA9685_SetServoAngle(14, 100);
-//
-//  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 0);
-////
+//   Servo_SetAngle(base, 0);
+//    Servo_SetAngle(A, 0);
+//    Servo_SetAngle(B, 0);
+//    Servo_SetAngle(C, 0);
+
+
+//  Servo_SetAngle(base, 0);
 //  HAL_Delay(1000);
-//  Servo_SetAngle(A, 15);
+
+//  Servo_SetAngle(base, 140);
 //  HAL_Delay(1000);
-//  Servo_SetAngle(B, 70);
-////  HAL_Delay(200);
+////  Servo_SetAngle(base, 180);
+//  Servo_SetAngle(A, 0);
+//  Servo_SetAngle(B, 40);
 //  Servo_SetAngle(C, 120);
-////  HAL_Delay(200);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(A, 60);
+//  Servo_SetAngle(B, 90);
+////  Servo_SetAngle(C, 40);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(A, 70);
+
+//  Servo_SetAngle(base, 25);
+//  Servo_SetAngle(A, 70);
+//  Servo_SetAngle(B, 90);
+//  Servo_SetAngle(C, 35);
+
+  //PCA9685_SetServoAngle(14, 100);
+
+  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+////
+//  HAL_Delay(3000);
 //
-////  for (int i=0; i<20;i++){
-////
-////	  Servo_SetAngle(B, 90-i);
-////	  HAL_Delay(200);
-////	  Servo_SetAngle(C, 100+i);
-////	  HAL_Delay(200);
-////
-////  }
+//  Servo_SetAngle(A, 5);
+//  Servo_SetAngle(C, 100);
+//  HAL_Delay(1000);
+//  Servo_SetAngle(base, 180);
+//  Servo_SetAngle(A, 15);
+//  HAL_Delay(200);
+//  Servo_SetAngle(B, 70);
+//  HAL_Delay(200);
+//  Servo_SetAngle(C, 120);
+//  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+
+//  for (int i=0; i<20;i++){
+//
+//	  Servo_SetAngle(B, 90-i);
+//	  HAL_Delay(200);
+//	  Servo_SetAngle(C, 100+i);
+//	  HAL_Delay(200);
+//
+//  }
 //  Servo_SetAngle(A, 0);
 //  HAL_Delay(1000);
 //  Servo_SetAngle(B, 70);
@@ -287,7 +346,7 @@ int main(void)
 
   Buzzer_Toggle(100);
 
-  set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
 
   //HAL_Delay(5000);
   Buzzer_Toggle(100);
@@ -299,10 +358,24 @@ int main(void)
   //setMotorLPWM(1);
   //setMotorRPWM(1);
 
-  	  Motion_Move(&motion, 1200, 200, 0, 100);
-//  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+//  Motion_StartMove(&motion, 1500, 200, 0, 120);
+//  HAL_Delay(1000);
+//  //Motion_StopAt(&motion, 600);
+//  Motion_StopAfter(&motion, 100);
+  LineFollowUntillJunction();
+
+  	 //Motion_Move(&motion, 1200, 200, 0, 100);
+//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
 //  Motion_Move(&motion, 600, 200, 0, 200);
+
+
+  //Motion_Move(&motion, 135, 200, 0, 100);
+//set_steering_mode(STEERING_OFF);
+  //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -328,10 +401,10 @@ int main(void)
 //		  // Wait for 1 second
 //		  HAL_Delay(50);
 
-	  Turn360Servo();
-	    HAL_Delay(780);
-	    Stop360Servo();
-	    HAL_Delay(1000);
+//	  Turn360Servo();
+//	    HAL_Delay(780);
+//	    Stop360Servo();
+//	    HAL_Delay(1000);
 
 
 //	  if (data_received)  // Check if new data is received

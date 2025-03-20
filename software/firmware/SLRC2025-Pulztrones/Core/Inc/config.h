@@ -103,30 +103,31 @@ extern const float ROT_KD;
 //***************************************************************************//
 
 //***** PERFORMANCE CONSTANTS************************************************//
-// search and run speeds in mm/s and mm
-extern const int SEARCH_SPEED;
-extern const int SEARCH_ACCELERATION;
-extern const int SEARCH_TURN_SPEED;
-extern const int SMOOTH_TURN_SPEED;
-extern const int FAST_TURN_SPEED;
-extern const int FAST_RUN_SPEED_MAX;
 
-extern const float FAST_RUN_ACCELERATION;
-
-extern const int OMEGA_SPIN_TURN;
-extern const int ALPHA_SPIN_TURN;
+extern const int LINE_FOLLOW_SPEED;
+extern const int LINE_FOLLOW_ACCELERATION;
+extern const int SPIN_TURN_OMEGA;
+extern const int SPIN_TURN_ALPHA;
 
 
 
 
-//***** SENSOR SCALING ******************************************************//
-extern const int SIDE_NOMINAL;
-extern const int FRONT_NOMINAL;
 
-// the values above which, a wall is seen
-extern const int LEFT_THRESHOLD;
-extern const int RIGHT_THRESHOLD;
-extern const int FRONT_THRESHOLD;
+
+//***** Line sensor ******************************************************//
+// Junction detection thresholds
+#define LINE_THRESHOLD     400    // Adjust based on your sensor calibration
+#define SENSORS_ON_LINE_FOR_JUNCTION_CHECK      5      // Minimum sensors needed to detect a Junction
+
+
+// Junction types enum
+typedef enum {
+    NO_LINE = 0,       // No Line detected
+	LEFT_JUNCTION = 1,       // Left junction detected
+	RIGHT_JUNCTION = 2,      // Right junction detected
+    T_JUNCTION = 3,           // T-junction detected
+	STRAIGHT_LINE = 4
+} JunctionType;
 
 
 #endif
