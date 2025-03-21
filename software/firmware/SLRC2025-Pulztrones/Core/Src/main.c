@@ -359,6 +359,7 @@ int main(void)
   //runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
+  rotate_to_position(2);
 
 
   //Robot_TurnRight90Inplace();
