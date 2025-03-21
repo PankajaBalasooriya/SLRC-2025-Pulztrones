@@ -155,7 +155,7 @@ void StartGridNavigation(uint8_t targetX, uint8_t targetY) {
  */
 void StartColorDetection(void) {
   uint8_t params[1] = {1}; // 1 = Start
-  SendCommand(CMD_START_COLOR_DETECTION, params, 1);
+  SendCommand(CMD_START_TASK_1_COLOR_DETECTION, params, 1);
 }
 
 /**

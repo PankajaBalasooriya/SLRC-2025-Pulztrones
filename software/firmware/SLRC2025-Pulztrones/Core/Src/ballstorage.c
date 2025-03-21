@@ -12,7 +12,7 @@ volatile uint16_t ballCount = 0;
 // Interrupt callback function for ball slot counting
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     currentMillis = HAL_GetTick();
-    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 7500)) {
+    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 500)) {
         ballCount++;
         previousMillis = currentMillis;
     }

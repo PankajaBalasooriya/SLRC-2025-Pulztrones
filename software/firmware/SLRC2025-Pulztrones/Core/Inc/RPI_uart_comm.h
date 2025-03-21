@@ -29,7 +29,7 @@ extern "C" {
 #define CMD_COLOR_DETECTED 0x03
 #define CMD_START_LINE_FOLLOWING 0x11
 #define CMD_START_GRID_NAVIGATION 0x12
-#define CMD_START_COLOR_DETECTION 0x13
+#define CMD_START_TASK_1_COLOR_DETECTION 0x13
 #define CMD_STOP 0x20
 
 /* Reception state machine */
