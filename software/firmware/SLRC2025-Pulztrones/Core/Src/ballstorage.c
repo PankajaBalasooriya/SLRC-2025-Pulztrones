@@ -6,28 +6,42 @@ volatile uint32_t previousMillis = 0;
 volatile uint32_t currentMillis = 0;
 volatile uint16_t ballCount = 0;
 
+char pos_1;
+char pos_2;
+char pos_3;
+char pos_4;
+char pos_5;
+
 #define TOTAL_SLOTS 5  // Adjust based on the number of ball slots
 #define GPIO_ENCODER_PIN GPIO_PIN_3  // Encoder sensor pin
 
 // Interrupt callback function for ball slot counting
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    currentMillis = HAL_GetTick();
-    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 500)) {
+    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 1000)) {
         ballCount++;
         previousMillis = currentMillis;
     }
 }
 
 // Function to rotate the storage to a desired slot position
-void rotate_to_position(uint8_t desired_position) {
+void rotate_360_to_position(uint8_t desired_position) {
     uint8_t current_position = get_ball_count();
-    
     if (desired_position == current_position) {
         Stop360Servo();
         return;
     }
 
     Turn360Servo();
+    //delay start
+    uint32_t previousMillis_2 = 0;
+    uint32_t currentMillis_2  = 0;
+    while currentMillis_2 - previousMillis_2 < 1000){
+        currentMillis_2 = HAL_GetTick();
+    }
+    previousMillis_2 = currentMillis_2;
+    //delay end
+    
+    ballCount = current_position; //Ignore the balls counted during the delay
     while (get_ball_count() != desired_position);
     Stop360Servo();
 }
@@ -37,3 +51,50 @@ uint8_t get_ball_count() {
     return ballCount % TOTAL_SLOTS;
 }
 
+
+//storing high_level func
+void store_ball(uint8_t desired_position, char colour) {
+    rotate_360_to_position(desired_position);
+    switch (desired_position) {
+        case 0:
+            pos_1 = colour;
+            break;
+        case 1:
+            pos_2 = colour;
+            break;
+        case 2:
+            pos_3 = colour;
+            break;
+        case 3:
+            pos_4 = colour;
+            break;
+        case 4:
+            pos_5 = colour;
+            break;
+    }
+}
+
+
+//retrieving high_level func
+void retrieve_ball(BallColour colour) {
+    if pos_1 == colour {
+        rotate_360_to_position(0);
+        //Ball drop arm function
+    }
+    else if pos_2 == colour {
+        rotate_360_to_position(1);
+        //Ball drop arm function
+    }
+    else if pos_3 == colour {
+        rotate_360_to_position(2);
+        //Ball drop arm function
+    }
+    else if pos_4 == colour {
+        rotate_360_to_position(3);
+        //Ball drop arm function
+    }
+    else if pos_5 == colour {
+        rotate_360_to_position(4);
+        //Ball drop arm function
+    }
+}

@@ -43,7 +43,7 @@ void Servo_Init(uint16_t frequency)
   * @param  maxAngle: Maximum angle limit (0-180)
   * @retval int: Servo ID (0 to MAX_SERVOS-1) or -1 if error
   */
-int Servo_Register(uint8_t channel, const char* name, float minAngle, float maxAngle)
+int Servo_Register(uint8_t channel, const char* name, float minAngle, float maxAngle,float init_angle)
 {
     // Check if initialized
     if (!isInitialized)
@@ -73,7 +73,8 @@ int Servo_Register(uint8_t channel, const char* name, float minAngle, float maxA
     servos[servoId].channel = channel;
     servos[servoId].minAngle = minAngle;
     servos[servoId].maxAngle = maxAngle;
-    servos[servoId].currentAngle = (minAngle + maxAngle) / 2.0f;  // Center position
+    //servos[servoId].currentAngle = (minAngle + maxAngle) / 2.0f;  // Center position
+    servos[servoId].currentAngle = init_angle;
     servos[servoId].initialized = 1;
 
     // Set optional name

@@ -255,20 +255,20 @@ int main(void)
   // Register servos (do this once)
 
 
+ int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0,0);
 
-////
-//  int base = Servo_Register(15, "base", 0, 180);
-//  int A = Servo_Register(11, "A", 0, 180);
-//  int B = Servo_Register(13, "B", 0, 180);
-//  int C = Servo_Register(12, "C", 0, 180);
-////
-////
-////
-////  // Later in your code, use the servos by ID
-//  Servo_SetAngle(base, 0);
-//  Servo_SetAngle(A, 0);
-//  Servo_SetAngle(B, 10);
-//  Servo_SetAngle(C, 0);
+ int base = Servo_Register(15, "base", 0, 180,0);
+ int A = Servo_Register(11, "A", 0, 180,0);
+ int B = Servo_Register(13, "B", 0, 180,10);
+ int C = Servo_Register(12, "C", 0, 180,0);
+//
+//
+//
+//  // Later in your code, use the servos by ID
+//   Servo_SetAngle(base, 0);
+//    Servo_SetAngle(A, 0);
+//    Servo_SetAngle(B, 0);
+//    Servo_SetAngle(C, 0);
 
 
 //  Servo_SetAngle(base, 0);
@@ -360,7 +360,10 @@ int main(void)
   runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
-  //rotate_to_position(4);
+
+
+  //rotate_360_to_position(4);
+
 
 
   //Robot_TurnRight90Inplace();

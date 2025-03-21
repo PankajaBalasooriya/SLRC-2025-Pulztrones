@@ -10,6 +10,8 @@ import threading
 import cv2
 import numpy as np
 
+from adj_line_color import detect_adjacent_line_color
+
 # Communication protocol definitions
 START_MARKER = b'<'
 END_MARKER = b'>'
@@ -18,10 +20,18 @@ END_MARKER = b'>'
 CMD_LINE_DETECTED = 0x01
 CMD_GRID_POSITION = 0x02
 CMD_COLOR_DETECTED = 0x03
-CMD_START_LINE_FOLLOWING = 0x11
-CMD_START_GRID_NAVIGATION = 0x12
-CMD_START_TASK_1_COLOR_DETECTION = 0x13
-CMD_STOP = 0x20
+
+CMD_LINE_COLOR = 0x04
+
+
+CMD_START_LINE_FOLLOWING = 0x31
+CMD_START_GRID_NAVIGATION = 0x32
+CMD_START_COLOR_DETECTION = 0x33
+
+CMD_START_LINE_COLOR_DETECTION = 0x34
+
+
+CMD_STOP = 0x50
 
 class RobotComm:
     def __init__(self, serial_port='/dev/serial0', baud_rate=115200):
@@ -148,6 +158,16 @@ class RobotComm:
             self.vision_thread = threading.Thread(target=self.color_detection_task)
             self.vision_thread.daemon = True
             self.vision_thread.start()
+
+        elif self.rx_cmd == CMD_START_LINE_COLOR_DETECTION:
+            # Stop any existing vision processing
+            self.stop_vision_processing()
+            # Start color detection mode
+            self.current_mode = 'line_color_detection'
+            self.vision_thread = threading.Thread(target=self.line_color_detection_task)
+            self.vision_thread.daemon = True
+            self.vision_thread.start()
+
             
         elif self.rx_cmd == CMD_STOP:
             # Stop all processing
@@ -335,6 +355,31 @@ class RobotComm:
             
             # Process at 10fps
             time.sleep(0.1)
+
+    def line_color_detection_task(self):
+        """Detect the color of the cell infront of the robot"""
+        print("Starting line color detection task")
+
+        while self.running and self.current_mode == 'line_color_detection':
+            ret, frame = self.camera.read()
+            if not ret:
+                print("Error: Could not read from camera")
+                time.sleep(0.1)
+                continue
+
+            color, marked_frame = detect_adjacent_line_color(frame)
+
+            print(f"Detected Line color: {color} ")
+
+            data = bytearray([color & 0xFF])
+            self.send_command(CMD_LINE_COLOR, data)
+        # Process at 10fps
+        time.sleep(0.1)
+
+            
+
+
+
 
 
 if __name__ == "__main__":
