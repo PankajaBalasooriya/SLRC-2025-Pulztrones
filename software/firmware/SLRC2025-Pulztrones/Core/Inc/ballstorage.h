@@ -2,6 +2,6 @@
 #define BALL_STORAGE_H
 
 #include "servo.h"
-
+void rotate_to_position(uint8_t desired_position);
 
 #endif
