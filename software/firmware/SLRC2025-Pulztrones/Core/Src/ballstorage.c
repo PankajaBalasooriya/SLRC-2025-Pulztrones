@@ -11,8 +11,7 @@ volatile uint16_t ballCount = 0;
 
 // Interrupt callback function for ball slot counting
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    currentMillis = HAL_GetTick();
-    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 500)) {
+    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 1000)) {
         ballCount++;
         previousMillis = currentMillis;
     }
@@ -21,13 +20,22 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 // Function to rotate the storage to a desired slot position
 void rotate_to_position(uint8_t desired_position) {
     uint8_t current_position = get_ball_count();
-    
     if (desired_position == current_position) {
         Stop360Servo();
         return;
     }
 
     Turn360Servo();
+    //delay start
+    uint32_t previousMillis_2 = 0;
+    uint32_t currentMillis_2  = 0;
+    while currentMillis_2 - previousMillis_2 < 1000){
+        currentMillis_2 = HAL_GetTick();
+    }
+    previousMillis_2 = currentMillis_2;
+    //delay end
+    
+    ballCount = current_position; //Ignore the balls counted during the delay
     while (get_ball_count() != desired_position);
     Stop360Servo();
 }
