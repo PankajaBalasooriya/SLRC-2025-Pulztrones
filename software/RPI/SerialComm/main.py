@@ -164,7 +164,7 @@ class RobotComm:
             self.stop_vision_processing()
             # Start color detection mode
             self.current_mode = 'line_color_detection'
-            self.vision_thread = threading.Thread(target=self.line_color_detection)
+            self.vision_thread = threading.Thread(target=self.line_color_detection_task)
             self.vision_thread.daemon = True
             self.vision_thread.start()
 
@@ -356,8 +356,9 @@ class RobotComm:
             # Process at 10fps
             time.sleep(0.1)
 
-    def line_color_detection(self):
+    def line_color_detection_task(self):
         """Detect the color of the cell infront of the robot"""
+        print("Starting line color detection task")
 
         while self.running and self.current_mode == 'line_color_detection':
             ret, frame = self.camera.read()
@@ -367,6 +368,8 @@ class RobotComm:
                 continue
 
             color, marked_frame = detect_adjacent_line_color(frame)
+
+            print(f"Detected Line color: {color} ")
 
             data = bytearray([color & 0xFF])
             self.send_command(CMD_LINE_COLOR, data)
