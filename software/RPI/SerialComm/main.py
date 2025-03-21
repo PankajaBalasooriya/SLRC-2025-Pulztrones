@@ -28,6 +28,8 @@ CMD_START_LINE_FOLLOWING = 0x31
 CMD_START_GRID_NAVIGATION = 0x32
 CMD_START_COLOR_DETECTION = 0x33
 
+CMD_START_LINE_COLOR_DETECTION = 0x34
+
 
 CMD_STOP = 0x50
 
@@ -156,6 +158,16 @@ class RobotComm:
             self.vision_thread = threading.Thread(target=self.color_detection_task)
             self.vision_thread.daemon = True
             self.vision_thread.start()
+
+        elif self.rx_cmd == CMD_START_LINE_COLOR_DETECTION:
+            # Stop any existing vision processing
+            self.stop_vision_processing()
+            # Start color detection mode
+            self.current_mode = 'line_color_detection'
+            self.vision_thread = threading.Thread(target=self.line_color_detection)
+            self.vision_thread.daemon = True
+            self.vision_thread.start()
+
             
         elif self.rx_cmd == CMD_STOP:
             # Stop all processing
@@ -357,7 +369,7 @@ class RobotComm:
             color, marked_frame = detect_adjacent_line_color(frame)
 
             data = bytearray([color & 0xFF])
-            self.send_command(CMD_COLOR_DETECTED, data)
+            self.send_command(CMD_LINE_COLOR, data)
         # Process at 10fps
         time.sleep(0.1)
 

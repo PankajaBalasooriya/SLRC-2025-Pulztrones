@@ -24,7 +24,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 
 // Function to rotate the storage to a desired slot position
-void rotate_to_position(uint8_t desired_position) {
+void rotate_360_to_position(uint8_t desired_position) {
     uint8_t current_position = get_ball_count();
     if (desired_position == current_position) {
         Stop360Servo();
@@ -54,7 +54,7 @@ uint8_t get_ball_count() {
 
 //storing high_level func
 void store_ball(uint8_t desired_position, char colour) {
-    rotate_to_position(desired_position);
+    rotate_360_to_position(desired_position);
     switch (desired_position) {
         case 0:
             pos_1 = colour;
@@ -78,21 +78,23 @@ void store_ball(uint8_t desired_position, char colour) {
 //retrieving high_level func
 void retrieve_ball(BallColour colour) {
     if pos_1 == colour {
-        rotate_to_position(0);
+        rotate_360_to_position(0);
+        //Ball drop arm function
     }
     else if pos_2 == colour {
-        rotate_to_position(1);
+        rotate_360_to_position(1);
+        //Ball drop arm function
     }
     else if pos_3 == colour {
-        rotate_to_position(2);
+        rotate_360_to_position(2);
+        //Ball drop arm function
     }
     else if pos_4 == colour {
-        rotate_to_position(3);
+        rotate_360_to_position(3);
+        //Ball drop arm function
     }
     else if pos_5 == colour {
-        rotate_to_position(4);
-    }
-    else {
-        return 'N';
+        rotate_360_to_position(4);
+        //Ball drop arm function
     }
 }
