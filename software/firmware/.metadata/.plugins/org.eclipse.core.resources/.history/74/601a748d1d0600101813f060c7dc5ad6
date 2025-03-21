@@ -1,0 +1,8 @@
+#include "ballstorage.h"
+
+volatile uint32_t previousMillis = 0;
+volatile uint32_t currentMillis = 0;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == BTN_UP_Pin && (currentMillis - previousMillis > 500)){
+}

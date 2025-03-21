@@ -214,7 +214,7 @@ void Robot_TurnRight90Inplace(){
 
 void Robot_TurnLeft90Inplace(){
 	HAL_Delay(MOTION_DELAY);
-	Motion_SpinTurn(&motion, 90, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+	Motion_SpinTurn(&motion, 85, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
 
 	HAL_Delay(MOTION_DELAY);
 	Motion_ResetDriveSystem(&motion);

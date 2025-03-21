@@ -344,7 +344,7 @@ int main(void)
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
-  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
@@ -355,8 +355,14 @@ int main(void)
 
   HAL_Delay(2000);
 
-  EnableSysTickFunction();
-  runCurrentTask(TASK_PLANTATION);
+  //EnableSysTickFunction();
+  //runCurrentTask(TASK_PLANTATION);
+
+  //Turn360Servo();
+
+
+  //Robot_TurnRight90Inplace();
+  //Robot_TurnLeft90Inplace();
 
   //setMotorLPWM(1);
   //setMotorRPWM(1);
@@ -373,7 +379,7 @@ int main(void)
 //  Motion_Move(&motion, 600, 200, 0, 200);
 
 
-  //Motion_Move(&motion, 135, 200, 0, 100);
+  //Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 //set_steering_mode(STEERING_OFF);
   //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
@@ -924,6 +930,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PC3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -943,6 +955,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

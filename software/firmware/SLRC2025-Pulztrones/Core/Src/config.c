@@ -6,7 +6,7 @@ volatile State RobotState = None;
 //***************************************************************************//
 
 
-const float ROBOT_RADIUS = 93.25;  // Adjust to your Robot specs - 93.75
+const float ROBOT_RADIUS = 93.50;  // Adjust to your Robot specs - 93.25
 const float DEG_PER_MM_DIFFERENCE = (180.0 / (2 * ROBOT_RADIUS * PI));
 const float RADIANS_PER_DEGREE = 0.01746031746031746031746031746032;
 const float DEGREES_PER_RADIAN = 57.295779513082320876798154814105;

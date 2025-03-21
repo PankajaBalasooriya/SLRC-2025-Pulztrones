@@ -1,6 +1,7 @@
 "./Core/.metadata/.plugins/org.eclipse.cdt.make.core/specs.o"
 "./Core/Src/RPI_uart_comm.o"
 "./Core/Src/analog_mux.o"
+"./Core/Src/ballstorage.o"
 "./Core/Src/buzzer.o"
 "./Core/Src/config.o"
 "./Core/Src/controller.o"
