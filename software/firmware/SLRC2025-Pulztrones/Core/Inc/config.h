@@ -113,6 +113,7 @@ extern const int FORWARD_ACCELERATION_1;
 
 
 
+extern const int DISTACE_TO_CENTER_OF_CELL;
 
 
 
@@ -139,7 +140,8 @@ typedef enum{
 
 typedef enum{
 	WHITE_BALL = 0,
-	YELLOW_BALL = 1
+	YELLOW_BALL = 1,
+	NO_BALL = 2
 }BallColor;
 
 

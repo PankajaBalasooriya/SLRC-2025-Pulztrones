@@ -1,0 +1,106 @@
+/**
+  ******************************************************************************
+  * @file           : armcontroller.h
+  * @brief          : Header file for robot arm controller with smooth movement
+  ******************************************************************************
+  */
+
+#ifndef ARM_CONTROLLER_H
+#define ARM_CONTROLLER_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "servo.h"
+
+/* Defines -------------------------------------------------------------------*/
+#define ARM_BASE_SERVO       0       // Base rotation servo
+#define ARM_A_SERVO          1       // A joint servo
+#define ARM_B_SERVO          2       // B joint servo
+#define ARM_C_SERVO          3       // C joint servo
+
+#define ARM_MOVEMENT_STEP    1.0f    // Default movement step in degrees
+#define ARM_MOVEMENT_DELAY   15      // Default delay between steps in milliseconds
+
+/* Arm configuration structure */
+typedef struct {
+    int servoIds[4];             // Array of servo IDs for the 4 arm servos
+    float targetAngles[4];       // Target angles for each servo
+    float movementStep;          // Step size for gradual movement (degrees)
+    uint32_t movementDelay;      // Delay between steps (milliseconds)
+    uint8_t isMoving;            // Flag to indicate if arm is currently moving
+} ArmController_t;
+
+/* Function Prototypes -------------------------------------------------------*/
+/**
+  * @brief  Initialize the arm controller
+  * @param  frequency: PWM frequency for the servos (typically 50Hz)
+  * @retval None
+  */
+void ArmController_Init(uint16_t frequency);
+
+/**
+  * @brief  Set target position for a specific servo with smooth movement
+  * @param  servoIndex: Index of the servo (0-3)
+  * @param  angle: Target angle in degrees
+  * @retval int: 0 if successful, -1 if error
+  */
+int ArmController_SetServoTargetAngle(uint8_t servoIndex, float angle);
+
+/**
+  * @brief  Set target position for all servos with smooth movement
+  * @param  baseAngle: Target angle for base servo
+  * @param  aAngle: Target angle for A servo
+  * @param  bAngle: Target angle for B servo
+  * @param  cAngle: Target angle for C servo
+  * @retval int: 0 if successful, -1 if error
+  */
+int ArmController_SetPosition(float baseAngle, float aAngle, float bAngle, float cAngle);
+
+/**
+  * @brief  Get current angle of a specific servo
+  * @param  servoIndex: Index of the servo (0-3)
+  * @retval float: Current angle in degrees or -1.0f if error
+  */
+float ArmController_GetServoAngle(uint8_t servoIndex);
+
+/**
+  * @brief  Process smooth movement (should be called regularly in main loop)
+  * @retval int: 1 if arm is still moving, 0 if movement complete
+  */
+int ArmController_ProcessMovement(void);
+
+/**
+  * @brief  Set movement parameters
+  * @param  step: Step size in degrees for each movement increment
+  * @param  delay: Delay in milliseconds between steps
+  * @retval None
+  */
+void ArmController_SetMovementParams(float step, uint32_t delay);
+
+/**
+  * @brief  Check if arm is currently moving
+  * @retval uint8_t: 1 if moving, 0 if stationary
+  */
+uint8_t ArmController_IsMoving(void);
+
+/**
+  * @brief  Stop all current movement
+  * @retval None
+  */
+void ArmController_Stop(void);
+
+/**
+  * @brief  Reset arm to home position (center angles)
+  * @retval None
+  */
+void ArmController_Home(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ARM_CONTROLLER_H */

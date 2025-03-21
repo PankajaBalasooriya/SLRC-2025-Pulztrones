@@ -15,77 +15,77 @@
 LineColor linecolor;
 BallColor ballcolor;
 void executePlantationTask(void) {
-	StartColorDetection();
-//	HAL_Delay(5000);
-//	Robot_MoveForwardUntillLine();
-//	Robot_TurnLeft90Inplace();
-//
-//	//Start the task
-//	for(uint8_t column = 0; column < 5; column ++){
-//		for(uint8_t row = 0; row < 4; row ++){
-//				if(row == 0){
-//					linecolor = RPI_GetLineColor();
-//					moveToCenterofCellinZeroRow();
-//
-//					if(linecolor == GREEN){
-//
-//						// Here we get the ball color after picking
-//						// ToDo: Handle that
-//						picktheBall(column, row);
-//
-//
-//						moveToCenterofNextColumnfromFirstRow();
-//						HAL_Delay(MOTION_DELAY);
-//						break;
-//					}
-//				}
-//				else if(row == 1){
-//					linecolor = RPI_GetLineColor();
-//					moveToCenterofNextCell();
-//
-//					if(linecolor == GREEN){
-//						// Here we get the ball color after picking
-//						// ToDo: Handle that
-//						picktheBall(column, row);
-//						moveToCenterofNextColumnfromSecondRow();
-//						HAL_Delay(MOTION_DELAY);
-//						break;
-//					}
-//
-//				}else if(row == 2){
-//					linecolor = RPI_GetLineColor();
-//					moveToCenterofNextCell();
-//
-//					if(linecolor == GREEN){
-//						// Here we get the ball color after picking
-//						// ToDo: Handle that
-//						picktheBall(column, row);
-//						moveToCenterofNextColumnfromThiredRow();
-//						HAL_Delay(MOTION_DELAY);
-//						break;
-//					}
-//
-//		}
-//
-//	}
-//
-//  }
+	//StartColorDetection();
+	HAL_Delay(5000);
+	Robot_MoveForwardUntillLine();
+	Robot_TurnLeft90Inplace();
+
+	//Start the task
+	for(uint8_t column = 0; column < 5; column ++){
+		for(uint8_t row = 0; row < 4; row ++){
+				if(row == 0){
+					linecolor = RPI_GetLineColor(column, row);
+					moveToCenterofCellinZeroRow();
+
+					if(linecolor == GREEN){
+
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+
+
+						moveToCenterofNextColumnfromFirstRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+				}
+				else if(row == 1){
+					linecolor = RPI_GetLineColor(column, row);
+					moveToCenterofNextCell();
+
+					if(linecolor == GREEN){
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+						moveToCenterofNextColumnfromSecondRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+
+				}else if(row == 2){
+					linecolor = RPI_GetLineColor(column, row);
+					moveToCenterofNextCell();
+
+					if(linecolor == GREEN){
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+						moveToCenterofNextColumnfromThiredRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+
+		}
+
+	}
+
+  }
 }
 
 void moveToCenterofNextCell(){
 	Robot_LineFollowUntillJunctionAndNotStop();
-	Robot_FollowLineGivenDistance(170);
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
 }
 
 void moveToCenterofNextCellandNotStop(){
 	Robot_LineFollowUntillJunctionAndNotStop();
-	Robot_FollowLineGivenDistanceandNotStop(170);
+	Robot_FollowLineGivenDistanceandNotStop(DISTACE_TO_CENTER_OF_CELL);
 }
 
 void moveToCenterofCellinZeroRow(){
 	Robot_LineFollowUntillJunction();
 	Robot_TurnRight90Inplace();
-	Robot_FollowLineGivenDistance(170);
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
 	HAL_Delay(MOTION_DELAY);
 }
 

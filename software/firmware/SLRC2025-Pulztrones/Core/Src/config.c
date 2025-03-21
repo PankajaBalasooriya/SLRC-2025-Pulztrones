@@ -90,6 +90,7 @@ const int FRONT_THRESHOLD = 100;  // minimum value to register a wall
 //***** Robot constants ******************************************************//
 
 const int MOTION_DELAY = 800;
+const int DISTACE_TO_CENTER_OF_CELL = 150;
 
 
 

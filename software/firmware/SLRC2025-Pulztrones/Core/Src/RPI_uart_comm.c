@@ -93,7 +93,7 @@ void ProcessCommand(void) {
       break;
 
     case CMD_LINE_COLOR:
-	  RPI_GetLineColor(rxBuffer);
+	  //RPI_GetLineColor(rxBuffer);
 	  break;
 
     case CMD_STOP:

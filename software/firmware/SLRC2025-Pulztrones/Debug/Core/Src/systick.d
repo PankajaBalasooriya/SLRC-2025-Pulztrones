@@ -35,7 +35,8 @@ Core/Src/systick.o: ../Core/Src/systick.c ../Core/Inc/main.h \
  ../Core/Inc/encoders.h ../Core/Inc/uartcom.h ../Core/Inc/motion.h \
  ../Core/Inc/motors.h ../Core/Inc/main.h ../Core/Inc/profile.h \
  ../Core/Inc/config.h ../Core/Inc/encoders.h ../Core/Inc/controller.h \
- ../Core/Inc/sensors.h ../Core/Inc/uartcom.h
+ ../Core/Inc/sensors.h ../Core/Inc/uartcom.h ../Core/Inc/arm_controller.h \
+ ../Core/Inc/servo.h ../Core/Inc/pca9685.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -81,3 +82,6 @@ Core/Src/systick.o: ../Core/Src/systick.c ../Core/Inc/main.h \
 ../Core/Inc/controller.h:
 ../Core/Inc/sensors.h:
 ../Core/Inc/uartcom.h:
+../Core/Inc/arm_controller.h:
+../Core/Inc/servo.h:
+../Core/Inc/pca9685.h:

@@ -33,7 +33,8 @@ Core/Src/ballstorage.o: ../Core/Src/ballstorage.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/pca9685.h ../Core/Inc/buzzer.h ../Core/Inc/servo.h
+ ../Core/Inc/pca9685.h ../Core/Inc/config.h ../Core/Inc/buzzer.h \
+ ../Core/Inc/servo.h
 ../Core/Inc/ballstorage.h:
 ../Core/Inc/servo.h:
 ../Core/Inc/main.h:
@@ -71,5 +72,6 @@ Core/Src/ballstorage.o: ../Core/Src/ballstorage.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 ../Core/Inc/pca9685.h:
+../Core/Inc/config.h:
 ../Core/Inc/buzzer.h:
 ../Core/Inc/servo.h:

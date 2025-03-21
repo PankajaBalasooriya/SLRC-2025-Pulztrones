@@ -1,3 +1,5 @@
-../Core/Src/ballstorage.c:13:6:HAL_GPIO_EXTI_Callback	3
-../Core/Src/ballstorage.c:22:6:rotate_to_position	3
-../Core/Src/ballstorage.c:36:9:get_ball_count	1
+../Core/Src/ballstorage.c:19:6:HAL_GPIO_EXTI_Callback	3
+../Core/Src/ballstorage.c:28:6:rotate_360_to_position	4
+../Core/Src/ballstorage.c:53:9:get_ball_count	1
+../Core/Src/ballstorage.c:58:6:store_ball	6
+../Core/Src/ballstorage.c:80:6:retrieve_ball	6

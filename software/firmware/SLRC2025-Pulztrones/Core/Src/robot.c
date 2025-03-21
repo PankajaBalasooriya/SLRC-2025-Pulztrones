@@ -90,34 +90,34 @@ void HandleLineColorDetection(uint8_t *data){
 }
 
 //-----------------------------------------------------------------------------------
-LineColor RPI_GetLineColor(){
-	return color;
-}
-
-
-
-
-//LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
-//	// Need seperate code to handle color detection
-//	// use this to acces a global vairable
-//
-//	if(column == 0 && row == 0){
-//		return GREEN;
-//	}
-//	if(column == 1 && row == 1){
-//		return GREEN;
-//	}
-//	if(column == 2 && row == 2){
-//		return GREEN;
-//	}
-//	if(column == 3 && row == 0){
-//		return GREEN;
-//	}
-//	if(column == 4 && row == 1){
-//		return GREEN;
-//	}
-//	return WHITE;
+//LineColor RPI_GetLineColor(){
+//	return color;
 //}
+
+
+
+
+LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
+	// Need seperate code to handle color detection
+	// use this to acces a global vairable
+
+	if(column == 0 && row == 0){
+		return GREEN;
+	}
+	if(column == 1 && row == 1){
+		return GREEN;
+	}
+	if(column == 2 && row == 2){
+		return GREEN;
+	}
+	if(column == 3 && row == 0){
+		return GREEN;
+	}
+	if(column == 4 && row == 1){
+		return GREEN;
+	}
+	return WHITE;
+}
 
 BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
 	// Need seperate code to handle color detection
@@ -155,7 +155,7 @@ JunctionType Robot_LineFollowUntillJunction(){
 		}
 	}
 	set_steering_mode(STEERING_OFF);
-	Motion_StopAfter(&motion, 45);
+	Motion_StopAfter(&motion, 55);
 	Motion_ResetDriveSystem(&motion);
 	return junction;
 

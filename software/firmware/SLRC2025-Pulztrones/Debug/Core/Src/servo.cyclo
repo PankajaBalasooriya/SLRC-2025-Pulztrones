@@ -1,9 +1,9 @@
 ../Core/Src/servo.c:24:6:Servo_Init	2
 ../Core/Src/servo.c:46:5:Servo_Register	11
-../Core/Src/servo.c:102:5:Servo_SetAngle	6
-../Core/Src/servo.c:129:5:Servo_SetAngleByName	3
-../Core/Src/servo.c:147:7:Servo_GetAngle	4
-../Core/Src/servo.c:161:5:Servo_GetIdByName	5
-../Core/Src/servo.c:179:6:Servo_ResetAll	3
-../Core/Src/servo.c:191:6:Turn360Servo	1
-../Core/Src/servo.c:202:6:Stop360Servo	1
+../Core/Src/servo.c:103:5:Servo_SetAngle	6
+../Core/Src/servo.c:130:5:Servo_SetAngleByName	3
+../Core/Src/servo.c:148:7:Servo_GetAngle	4
+../Core/Src/servo.c:162:5:Servo_GetIdByName	5
+../Core/Src/servo.c:180:6:Servo_ResetAll	3
+../Core/Src/servo.c:192:6:Turn360Servo	1
+../Core/Src/servo.c:203:6:Stop360Servo	1

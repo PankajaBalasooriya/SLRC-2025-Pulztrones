@@ -43,7 +43,7 @@ void Servo_Init(uint16_t frequency)
   * @param  maxAngle: Maximum angle limit (0-180)
   * @retval int: Servo ID (0 to MAX_SERVOS-1) or -1 if error
   */
-int Servo_Register(uint8_t channel, const char* name, float minAngle, float maxAngle,float init_angle)
+int Servo_Register(uint8_t channel, const char* name, float minAngle, float maxAngle, float init_angle)
 {
     // Check if initialized
     if (!isInitialized)
@@ -194,7 +194,7 @@ void Turn360Servo()
   float pwmValue;
 
 
-  pwmValue = 295.00;
+  pwmValue = 300.00;
 
   // Set PWM with calculated value
   PCA9685_SetPWM(14, 0, (uint16_t)pwmValue);

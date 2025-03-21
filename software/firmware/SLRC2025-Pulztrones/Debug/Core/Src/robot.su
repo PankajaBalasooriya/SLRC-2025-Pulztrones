@@ -2,7 +2,7 @@
 ../Core/Src/robot.c:53:6:HandleGridPosition	24	static
 ../Core/Src/robot.c:67:6:HandleColorDetection	24	static
 ../Core/Src/robot.c:88:6:HandleLineColorDetection	16	static
-../Core/Src/robot.c:93:11:RPI_GetLineColor	4	static
+../Core/Src/robot.c:100:11:RPI_GetLineColor	16	static
 ../Core/Src/robot.c:122:11:RPI_GetBallColor	16	static
 ../Core/Src/robot.c:148:14:Robot_LineFollowUntillJunction	8	static
 ../Core/Src/robot.c:163:14:Robot_LineFollowUntillJunctionAndNotStop	8	static

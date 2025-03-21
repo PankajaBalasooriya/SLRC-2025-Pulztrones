@@ -46,6 +46,8 @@
 #include "robot.h"
 #include "tasks.h"
 #include "ballstorage.h"
+#include "RPI_uart_comm.h"
+#include "arm_controller.h"
 
 
 
@@ -61,31 +63,11 @@
 /* USER CODE BEGIN PD */
 #define BUFFER_SIZE 50
 
-/* Communication protocol definitions */
-#define START_MARKER '<'
-#define END_MARKER '>'
-#define MAX_BUFFER_SIZE 128
-
-/* Command IDs */
-#define CMD_LINE_DETECTED 0x01
-#define CMD_GRID_POSITION 0x02
-#define CMD_COLOR_DETECTED 0x03
-#define CMD_START_LINE_FOLLOWING 0x11
-#define CMD_START_GRID_NAVIGATION 0x12
-#define CMD_START_COLOR_DETECTION 0x13
-#define CMD_STOP 0x20
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-typedef enum {
-  WAITING_FOR_START,
-  WAITING_FOR_CMD,
-  WAITING_FOR_LENGTH,
-  RECEIVING_DATA,
-  WAITING_FOR_END
-} RxState;
+
 
 /* USER CODE END PM */
 
@@ -120,13 +102,7 @@ uint8_t calibration_complete = 0;
 
 
 
-/* Reception variables */
-static RxState rxState = WAITING_FOR_START;
-static uint8_t rxBuffer[MAX_BUFFER_SIZE];
-static uint8_t rxCmd = 0;
-static uint8_t rxLength = 0;
-static uint8_t rxIndex = 0;
-static uint8_t rxByte;
+
 
 
 
@@ -249,23 +225,33 @@ int main(void)
   RPI_UART_Init();
 
   /*---------------------Servo--------------------------------*/
-  Servo_Init(50);  // 50Hz for standard servos
+  // Initialize servo system
+  Servo_Init(50);  // 50Hz frequency for servos
+
+  // Initialize arm controller
+  Arm_Init();
+
+  //Arm_MoveServo(ARM_BASE_SERVO, 100.0f);
+
+  //Arm_MoveTo(180.0f, 5.0f, 90.0f, 100.0f);
 
   //Examples
   // Register servos (do this once)
 
 
- int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0,0);
+ //int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0,0);
 
- int base = Servo_Register(15, "base", 0, 180,0);
- int A = Servo_Register(11, "A", 0, 180,0);
- int B = Servo_Register(13, "B", 0, 180,10);
- int C = Servo_Register(12, "C", 0, 180,0);
-//
-//
-//
-//  // Later in your code, use the servos by ID
-//   Servo_SetAngle(base, 0);
+
+
+// int base = Servo_Register(15, "base", 0, 180, 0 );
+// int A = Servo_Register(11, "A", 0, 180, 0);
+// int B = Servo_Register(13, "B", 0, 180, 10);
+// int C = Servo_Register(12, "C", 0, 180, 0);
+////
+////
+////
+////  // Later in your code, use the servos by ID
+// Servo_SetAngle(base, 50);
 //    Servo_SetAngle(A, 0);
 //    Servo_SetAngle(B, 0);
 //    Servo_SetAngle(C, 0);
@@ -344,9 +330,9 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-  HAL_Delay(2000);
-  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
-
+//  HAL_Delay(2000);
+// RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_Delay(200);
   Buzzer_Toggle(100);
 
   //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
@@ -354,16 +340,49 @@ int main(void)
   //HAL_Delay(5000);
   Buzzer_Toggle(100);
 
-  HAL_Delay(2000);
+  HAL_Delay(200);
 
-  EnableSysTickFunction();
-  runCurrentTask(TASK_PLANTATION);
+//  EnableSysTickFunction();
+//  runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
 
+  ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
+
+//  store_ball(1, WHITE_BALL);
+//  pickup_and_Store();
+//  HAL_Delay(2000);
+//  return_home();
+//
+//  store_ball(2, YELLOW_BALL);
+//  pickup_and_Store();
+//  HAL_Delay(2000);
+//  return_home();
+//
+//  store_ball(3, WHITE_BALL);
+//  pickup_and_Store();
+//  HAL_Delay(2000);
+//  return_home();
+//
+//  store_ball(4, YELLOW_BALL);
+//  pickup_and_Store();
+//  HAL_Delay(2000);
+//  return_home();
+//
+//  store_ball(5, WHITE_BALL);
+ pickup_and_Store();
+//  HAL_Delay(2000);
+//  return_home();
+//
+//
+//  retrieve_ball(YELLOW_BALL);
+//  HAL_Delay(1000);
+ return_home();
+
+
 
   //rotate_360_to_position(4);
-
+  ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
 
 
   //Robot_TurnRight90Inplace();

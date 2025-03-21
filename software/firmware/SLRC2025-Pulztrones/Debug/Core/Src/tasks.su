@@ -1,4 +1,4 @@
-../Core/Src/tasks.c:17:6:executePlantationTask	8	static
+../Core/Src/tasks.c:17:6:executePlantationTask	16	static
 ../Core/Src/tasks.c:75:6:moveToCenterofNextCell	8	static
 ../Core/Src/tasks.c:80:6:moveToCenterofNextCellandNotStop	8	static
 ../Core/Src/tasks.c:85:6:moveToCenterofCellinZeroRow	8	static

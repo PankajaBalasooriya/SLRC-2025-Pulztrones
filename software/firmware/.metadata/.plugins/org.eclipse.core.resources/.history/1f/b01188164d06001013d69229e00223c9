@@ -1,0 +1,12 @@
+#ifndef BALL_STORAGE_H
+#define BALL_STORAGE_H
+
+#include "servo.h"
+#include "config.h"
+
+void rotate_360_to_position(uint8_t desired_position);
+uint8_t get_ball_count();
+void store_ball();
+void retrieve_ball(uint8_t desired_position, BallColor colour);
+
+#endif

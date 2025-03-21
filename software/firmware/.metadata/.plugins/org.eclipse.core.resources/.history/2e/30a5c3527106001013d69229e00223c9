@@ -1,0 +1,94 @@
+/**
+  ******************************************************************************
+  * @file           : armcontroller.h
+  * @brief          : Header file for robot arm controller with smooth movement
+  ******************************************************************************
+  */
+
+#ifndef ARMCONTROLLER_H
+#define ARMCONTROLLER_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "servo.h"
+
+/* Defines -------------------------------------------------------------------*/
+#define ARM_BASE_SERVO       0       // Base servo ID
+#define ARM_LINK1_SERVO      1       // First link servo ID
+#define ARM_LINK2_SERVO      2       // Second link servo ID
+#define ARM_LINK3_SERVO      3       // End effector/gripper servo ID
+
+#define ARM_DEFAULT_STEP     1.0f    // Default step size in degrees per increment
+#define ARM_DEFAULT_DELAY    15      // Default delay between steps in milliseconds
+
+/* Function Prototypes -------------------------------------------------------*/
+/**
+  * @brief  Initialize the robot arm controller
+  * @retval int: 0 if successful, -1 if error
+  */
+int Arm_Init(void);
+
+/**
+  * @brief  Move a servo to target position gradually
+  * @param  servoId: ID of the servo to move
+  * @param  targetAngle: Desired final angle in degrees
+  * @param  stepSize: Movement step size in degrees per increment (smaller = smoother)
+  * @param  stepDelay: Delay between steps in milliseconds (larger = slower)
+  * @retval int: 0 if successful, -1 if error
+  * @note   This function blocks until movement is complete
+  */
+int Arm_MoveServoGradually(int servoId, float targetAngle, float stepSize, uint16_t stepDelay);
+
+/**
+  * @brief  Move a servo to target position gradually using default parameters
+  * @param  servoId: ID of the servo to move
+  * @param  targetAngle: Desired final angle in degrees
+  * @retval int: 0 if successful, -1 if error
+  * @note   This function blocks until movement is complete
+  */
+int Arm_MoveServo(int servoId, float targetAngle);
+
+/**
+  * @brief  Move the entire arm to a new position gradually
+  * @param  baseAngle: Target angle for base servo
+  * @param  link1Angle: Target angle for link 1 servo
+  * @param  link2Angle: Target angle for link 2 servo
+  * @param  link3Angle: Target angle for link 3 servo
+  * @param  stepSize: Movement step size in degrees per increment (smaller = smoother)
+  * @param  stepDelay: Delay between steps in milliseconds (larger = slower)
+  * @retval int: 0 if successful, -1 if error
+  * @note   This function blocks until movement is complete
+  */
+int Arm_MoveToPosition(float baseAngle, float link1Angle, float link2Angle, float link3Angle,
+                       float stepSize, uint16_t stepDelay);
+
+/**
+  * @brief  Move the entire arm to a new position gradually using default parameters
+  * @param  baseAngle: Target angle for base servo
+  * @param  link1Angle: Target angle for link 1 servo
+  * @param  link2Angle: Target angle for link 2 servo
+  * @param  link3Angle: Target angle for link 3 servo
+  * @retval int: 0 if successful, -1 if error
+  * @note   This function blocks until movement is complete
+  */
+int Arm_MoveTo(float baseAngle, float link1Angle, float link2Angle, float link3Angle);
+
+/**
+  * @brief  Reset the arm to a home position gradually
+  * @retval int: 0 if successful, -1 if error
+  */
+int Arm_Home(void);
+
+void pickup_and_Store(void);
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ARMCONTROLLER_H */
