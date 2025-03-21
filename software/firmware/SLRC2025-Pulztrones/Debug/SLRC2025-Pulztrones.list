@@ -6059,7 +6059,7 @@ void Turn360Servo()
   float pwmValue;
 
 
-  pwmValue = 298.00;
+  pwmValue = 295.00;
  8002e76:	4b09      	ldr	r3, [pc, #36]	@ (8002e9c <Turn360Servo+0x2c>)
  8002e78:	607b      	str	r3, [r7, #4]
 
@@ -6079,7 +6079,7 @@ void Turn360Servo()
  8002e96:	46bd      	mov	sp, r7
  8002e98:	bd80      	pop	{r7, pc}
  8002e9a:	bf00      	nop
- 8002e9c:	43950000 	.word	0x43950000
+ 8002e9c:	43938000 	.word	0x43938000
 
 08002ea0 <Stop360Servo>:
 
