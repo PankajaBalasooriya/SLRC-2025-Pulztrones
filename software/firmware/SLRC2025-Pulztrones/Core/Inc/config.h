@@ -133,7 +133,8 @@ typedef enum {
 
 typedef enum{
 	WHITE = 0,
-	GREEN = 1
+	GREEN = 1,
+	UNKNOWN = 2
 } LineColor;
 
 typedef enum{

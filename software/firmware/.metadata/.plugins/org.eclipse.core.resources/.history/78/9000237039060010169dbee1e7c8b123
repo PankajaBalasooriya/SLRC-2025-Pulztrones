@@ -43,6 +43,10 @@
 #include "sensors.h"
 #include "string.h"
 #include "stdio.h"
+#include "robot.h"
+#include "tasks.h"
+#include "ballstorage.h"
+
 
 
 
@@ -57,11 +61,31 @@
 /* USER CODE BEGIN PD */
 #define BUFFER_SIZE 50
 
+/* Communication protocol definitions */
+#define START_MARKER '<'
+#define END_MARKER '>'
+#define MAX_BUFFER_SIZE 128
+
+/* Command IDs */
+#define CMD_LINE_DETECTED 0x01
+#define CMD_GRID_POSITION 0x02
+#define CMD_COLOR_DETECTED 0x03
+#define CMD_START_LINE_FOLLOWING 0x11
+#define CMD_START_GRID_NAVIGATION 0x12
+#define CMD_START_COLOR_DETECTION 0x13
+#define CMD_STOP 0x20
 
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+typedef enum {
+  WAITING_FOR_START,
+  WAITING_FOR_CMD,
+  WAITING_FOR_LENGTH,
+  RECEIVING_DATA,
+  WAITING_FOR_END
+} RxState;
 
 /* USER CODE END PM */
 
@@ -97,12 +121,13 @@ uint8_t calibration_complete = 0;
 
 
 /* Reception variables */
-RxState rxState = WAITING_FOR_START;
-uint8_t rxBuffer[MAX_BUFFER_SIZE];
-uint8_t rxCmd = 0;
-uint8_t rxLength = 0;
-uint8_t rxIndex = 0;
-uint8_t rxByte;
+static RxState rxState = WAITING_FOR_START;
+static uint8_t rxBuffer[MAX_BUFFER_SIZE];
+static uint8_t rxCmd = 0;
+static uint8_t rxLength = 0;
+static uint8_t rxIndex = 0;
+static uint8_t rxByte;
+
 
 
 /* USER CODE END PV */
@@ -133,211 +158,7 @@ Controller controller;
 
 
 
-/* Function prototypes */
-void UART_Init(void);
-void ProcessCommand(void);
-void SendCommand(uint8_t cmd, uint8_t *data, uint8_t length);
-void HandleLineDetection(uint8_t *data);
-void HandleGridPosition(uint8_t *data);
-void HandleColorDetection(uint8_t *data);
 
-
-/**
- * @brief Initialize UART with interrupt capability
- */
-void UART_Init(void) {
-  /* USART6 GPIO Configuration
-   * PG14 -> USART6_TX
-   * PG9  -> USART6_RX
-   */
-
-  /* Enable clock for GPIOG */
-  __HAL_RCC_GPIOG_CLK_ENABLE();
-  /* Enable clock for USART6 */
-  __HAL_RCC_USART6_CLK_ENABLE();
-
-  /* Configure GPIO pins */
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  GPIO_InitStruct.Pin = GPIO_PIN_14 | GPIO_PIN_9;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /* Configure UART */
-  huart6.Instance = USART6;
-  huart6.Init.BaudRate = 115200;
-  huart6.Init.WordLength = UART_WORDLENGTH_8B;
-  huart6.Init.StopBits = UART_STOPBITS_1;
-  huart6.Init.Parity = UART_PARITY_NONE;
-  huart6.Init.Mode = UART_MODE_TX_RX;
-  huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart6.Init.OverSampling = UART_OVERSAMPLING_16;
-
-  if (HAL_UART_Init(&huart6) != HAL_OK) {
-    Error_Handler();
-  }
-
-  /* Enable UART global interrupt */
-  HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(USART6_IRQn);
-
-  /* Enable UART receive interrupt */
-  __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE);
-}
-
-
-/**
- * @brief Process received command
- */
-void ProcessCommand(void) {
-  switch (rxCmd) {
-    case CMD_LINE_DETECTED:
-      HandleLineDetection(rxBuffer);
-      break;
-
-    case CMD_GRID_POSITION:
-      HandleGridPosition(rxBuffer);
-      break;
-
-    case CMD_COLOR_DETECTED:
-      HandleColorDetection(rxBuffer);
-      break;
-
-    case CMD_STOP:
-      /* Stop all robot movements */
-      /* ... Your robot stop code here ... */
-      break;
-
-    default:
-      /* Unknown command */
-      break;
-  }
-}
-
-/**
- * @brief Send command to Raspberry Pi
- * @param cmd Command ID
- * @param data Data buffer
- * @param length Data length
- */
-void SendCommand(uint8_t cmd, uint8_t *data, uint8_t length) {
-  uint8_t txBuffer[MAX_BUFFER_SIZE + 4]; // Start + Cmd + Length + Data + End
-  uint16_t txIndex = 0;
-
-  /* Construct packet */
-  txBuffer[txIndex++] = START_MARKER;
-  txBuffer[txIndex++] = cmd;
-  txBuffer[txIndex++] = length;
-
-  /* Copy data */
-  if (length > 0 && data != NULL) {
-    for (uint8_t i = 0; i < length && txIndex < MAX_BUFFER_SIZE + 3; i++) {
-      txBuffer[txIndex++] = data[i];
-    }
-  }
-
-  /* Add end marker */
-  txBuffer[txIndex++] = END_MARKER;
-
-  /* Send packet */
-  HAL_UART_Transmit(&huart6, txBuffer, txIndex, 100);
-}
-
-/**
- * @brief Handle line detection data from Raspberry Pi
- * @param data Line detection data
- */
-void HandleLineDetection(uint8_t *data) {
-  /* Extract line position and orientation */
-  int8_t linePosition = (int8_t)data[0]; // Negative = left, Positive = right, 0 = center
-  uint8_t lineAngle = data[1];           // Line angle in degrees
-
-  /* Implement line following logic */
-  if (linePosition < -20) {
-    /* Turn left */
-    /* ... Your left turn code here ... */
-  } else if (linePosition > 20) {
-    /* Turn right */
-    /* ... Your right turn code here ... */
-  } else {
-    /* Go straight */
-    /* ... Your forward movement code here ... */
-  }
-}
-
-/**
- * @brief Handle grid position data from Raspberry Pi
- * @param data Grid position data
- */
-void HandleGridPosition(uint8_t *data) {
-  /* Extract grid coordinates */
-  uint8_t gridX = data[0];
-  uint8_t gridY = data[1];
-  uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
-
-  /* Use grid position for navigation */
-  /* ... Your grid navigation code here ... */
-}
-
-/**
- * @brief Handle color detection data from Raspberry Pi
- * @param data Color detection data
- */
-void HandleColorDetection(uint8_t *data) {
-  /* Extract color information */
-  uint8_t colorId = data[0]; // 0=Unknown, 1=Red, 2=Green, 3=Blue, etc.
-
-  /* React based on color */
-  switch (colorId) {
-    case 1: /* Red */
-      /* ... Your red color handling code ... */
-      break;
-    case 2: /* Green */
-      /* ... Your green color handling code ... */
-      break;
-    case 3: /* Blue */
-      /* ... Your blue color handling code ... */
-      break;
-    default:
-      /* Unknown color */
-      break;
-  }
-}
-
-/**
- * @brief Start line following mode
- */
-void StartLineFollowing(void) {
-  uint8_t params[1] = {1}; // 1 = Start
-  SendCommand(CMD_START_LINE_FOLLOWING, params, 1);
-}
-
-/**
- * @brief Start grid navigation mode
- * @param targetX Target X coordinate
- * @param targetY Target Y coordinate
- */
-void StartGridNavigation(uint8_t targetX, uint8_t targetY) {
-  uint8_t params[2] = {targetX, targetY};
-  SendCommand(CMD_START_GRID_NAVIGATION, params, 2);
-}
-
-/**
- * @brief Start color detection mode
- */
-void StartColorDetection(void) {
-  uint8_t params[1] = {1}; // 1 = Start
-  SendCommand(CMD_START_COLOR_DETECTION, params, 1);
-}
-
-/**
- * @brief Stop all processing on Raspberry Pi
- */
-void StopProcessing(void) {
-  SendCommand(CMD_STOP, NULL, 0);
-}
 
 // UART Transmit function (send string)
 //void UART_Transmit(UART_HandleTypeDef *huart, char *data)
@@ -425,8 +246,7 @@ int main(void)
   //AnalogMux_Init();
   // This is the uart for the bluetooth
   //UART_Init(&huart3);
-
-  UART_Init();
+  RPI_UART_Init();
 
   /*---------------------Servo--------------------------------*/
   Servo_Init(50);  // 50Hz for standard servos
@@ -524,12 +344,12 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-//  HAL_Delay(2000);
-//  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_Delay(2000);
+  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
-  set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
 
   //HAL_Delay(5000);
   Buzzer_Toggle(100);
@@ -537,18 +357,32 @@ int main(void)
   HAL_Delay(2000);
 
   //EnableSysTickFunction();
+  //runCurrentTask(TASK_PLANTATION);
+
+  //Turn360Servo();
+  rotate_to_position(4);
+
+
+  //Robot_TurnRight90Inplace();
+  //Robot_TurnLeft90Inplace();
 
   //setMotorLPWM(1);
   //setMotorRPWM(1);
 
+//  Motion_StartMove(&motion, 1500, 200, 0, 120);
+//  HAL_Delay(1000);
+//  //Motion_StopAt(&motion, 600);
+//  Motion_StopAfter(&motion, 100);
+  //Robot_LineFollowUntillJunction();
+
   	 //Motion_Move(&motion, 1200, 200, 0, 100);
-//  Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
 //  Motion_Move(&motion, 600, 200, 0, 200);
 
 
-  //Motion_Move(&motion, 135, 200, 0, 100);
-set_steering_mode(STEERING_OFF);
+  //Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+//set_steering_mode(STEERING_OFF);
   //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
 
@@ -606,7 +440,6 @@ set_steering_mode(STEERING_OFF);
 
 	  //setMotorLPWM(1);
 	  //setMotorRPWM(1);
-	  StartLineFollowing();
   }
   /* USER CODE END 3 */
 }
@@ -1078,7 +911,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, AIRPUMP_Pin|WATERPUMP_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(WATERPUMP_GPIO_Port, WATERPUMP_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
@@ -1092,11 +928,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : AIRPUMP_Pin WATERPUMP_Pin */
-  GPIO_InitStruct.Pin = AIRPUMP_Pin|WATERPUMP_Pin;
+  /*Configure GPIO pin : AIRPUMP_Pin */
+  GPIO_InitStruct.Pin = AIRPUMP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(AIRPUMP_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : WATERPUMP_Pin */
+  GPIO_InitStruct.Pin = WATERPUMP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(WATERPUMP_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
@@ -1118,6 +967,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

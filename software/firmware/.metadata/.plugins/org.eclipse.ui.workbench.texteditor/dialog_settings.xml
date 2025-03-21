@@ -3,6 +3,9 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="RPI_GetLine"/>
+		<item value="RPI"/>
+		<item value="RPI_GetLineColor"/>
 		<item value="mouse"/>
 		<item value="mouse\"/>
 	</list>

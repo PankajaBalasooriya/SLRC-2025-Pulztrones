@@ -45,6 +45,7 @@
 #include "stdio.h"
 #include "robot.h"
 #include "tasks.h"
+#include "ballstorage.h"
 
 
 
@@ -254,20 +255,20 @@ int main(void)
   // Register servos (do this once)
 
 
-//  int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0);
-//
+
+////
 //  int base = Servo_Register(15, "base", 0, 180);
 //  int A = Servo_Register(11, "A", 0, 180);
 //  int B = Servo_Register(13, "B", 0, 180);
 //  int C = Servo_Register(12, "C", 0, 180);
-//
-//
-//
-//  // Later in your code, use the servos by ID
-//   Servo_SetAngle(base, 0);
-//    Servo_SetAngle(A, 0);
-//    Servo_SetAngle(B, 0);
-//    Servo_SetAngle(C, 0);
+////
+////
+////
+////  // Later in your code, use the servos by ID
+//  Servo_SetAngle(base, 0);
+//  Servo_SetAngle(A, 0);
+//  Servo_SetAngle(B, 10);
+//  Servo_SetAngle(C, 0);
 
 
 //  Servo_SetAngle(base, 0);
@@ -344,7 +345,7 @@ int main(void)
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
-  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 
   Buzzer_Toggle(100);
 
@@ -355,11 +356,11 @@ int main(void)
 
   HAL_Delay(2000);
 
-  //EnableSysTickFunction();
-  //runCurrentTask(TASK_PLANTATION);
+  EnableSysTickFunction();
+  runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
-  rotate_to_position(4);
+  //rotate_to_position(4);
 
 
   //Robot_TurnRight90Inplace();
@@ -910,7 +911,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, AIRPUMP_Pin|WATERPUMP_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(WATERPUMP_GPIO_Port, WATERPUMP_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
@@ -924,12 +928,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : AIRPUMP_Pin WATERPUMP_Pin */
-  GPIO_InitStruct.Pin = AIRPUMP_Pin|WATERPUMP_Pin;
+  /*Configure GPIO pin : AIRPUMP_Pin */
+  GPIO_InitStruct.Pin = AIRPUMP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(AIRPUMP_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : WATERPUMP_Pin */
+  GPIO_InitStruct.Pin = WATERPUMP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(WATERPUMP_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC3 */
   GPIO_InitStruct.Pin = GPIO_PIN_3;
