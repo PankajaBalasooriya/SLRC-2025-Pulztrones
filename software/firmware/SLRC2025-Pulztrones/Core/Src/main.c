@@ -331,7 +331,7 @@ int main(void)
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
-  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
   HAL_Delay(200);
   Buzzer_Toggle(100);
 
@@ -353,7 +353,7 @@ int main(void)
 //
 //  Buzzer_TaskCompletion();
 
-  Robot_MoveForwardUntillLine();
+  //Robot_MoveForwardUntillLine();
 
 
 
@@ -385,7 +385,7 @@ int main(void)
 //  rotate_360_to_position(2);
 //  HAL_Delay(1000);
 //  rotate_360_to_position(1);
-//  HAL_Delay(1000);
+//  HAL_Dselay(1000);
 //////////////////////Lines for Oshadha's mechanism testing only ends
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
@@ -402,7 +402,7 @@ int main(void)
 //  //Motion_StopAt(&motion, 600);
 //  Motion_StopAfter(&motion, 100);
   //Robot_LineFollowUntillJunction();
-  	  //set_steering_mode(STEERING_OFF_READLINE);
+  	 // set_steering_mode(STEERING_OFF_READLINE);
 
   	//Motion_Move(&motion, 1000, 100, 0, 120);
 

@@ -1,17 +1,10 @@
-01:16:16 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+01:26:39 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
 make -j20 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: SLRC2025-Pulztrones.elf
- 
 arm-none-eabi-size  SLRC2025-Pulztrones.elf 
-arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
    text	   data	    bss	    dec	    hex	filename
-  52576	    488	   4816	  57880	   e218	SLRC2025-Pulztrones.elf
+  52048	    488	   4816	  57352	   e008	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
  
-Finished building: SLRC2025-Pulztrones.list
- 
 
-01:16:18 Build Finished. 0 errors, 0 warnings. (took 1s.649ms)
+01:26:40 Build Finished. 0 errors, 0 warnings. (took 624ms)
 
