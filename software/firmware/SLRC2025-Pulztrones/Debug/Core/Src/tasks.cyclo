@@ -8,4 +8,4 @@
 ../Core/Src/tasks.c:121:6:moveToCenterofNextColumnfromSecondRow	1
 ../Core/Src/tasks.c:128:6:moveToCenterofNextColumnfromThiredRow	1
 ../Core/Src/tasks.c:135:11:picktheBall	1
-../Core/Src/tasks.c:152:6:runCurrentTask	2
+../Core/Src/tasks.c:155:6:runCurrentTask	2

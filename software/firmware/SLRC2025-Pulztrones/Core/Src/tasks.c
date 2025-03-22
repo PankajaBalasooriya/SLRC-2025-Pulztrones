@@ -137,6 +137,9 @@ BallColor picktheBall(uint8_t column, uint8_t row){
 	ballcolor = RPI_GetBallColor(column, row);
 	HAL_Delay(MOTION_DELAY);
 	//ToDo: Pick The box
+	pickup_and_Store();
+//	HAL_Delay(2000);
+	return_home();
 	Buzzer_Toggle(1000);
 	HAL_Delay(MOTION_DELAY);
 

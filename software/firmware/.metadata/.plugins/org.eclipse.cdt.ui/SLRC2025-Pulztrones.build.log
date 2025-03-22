@@ -1,10 +1,10 @@
-14:54:13 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+16:45:25 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
 make -j20 all 
 arm-none-eabi-size  SLRC2025-Pulztrones.elf 
    text	   data	    bss	    dec	    hex	filename
-  55512	    488	   4832	  60832	   eda0	SLRC2025-Pulztrones.elf
+  56472	    488	   4832	  61792	   f160	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
  
 
-14:54:14 Build Finished. 0 errors, 0 warnings. (took 442ms)
+16:45:25 Build Finished. 0 errors, 0 warnings. (took 444ms)
 
