@@ -247,12 +247,12 @@ void USART6_IRQHandler(void)
   /* USER CODE BEGIN USART6_IRQn 0 */
 
   /* USER CODE END USART6_IRQn 0 */
-  HAL_UART_IRQHandler(&huart6);
+  //HAL_UART_IRQHandler(&huart6);
   /* USER CODE BEGIN USART6_IRQn 1 */
 	/* Check if receive interrupt */
-	  if (__HAL_UART_GET_FLAG(&huart6, UART_FLAG_RXNE) != RESET) {
+	if (__HAL_UART_GET_FLAG(&huart6, UART_FLAG_RXNE) != RESET) {
 	    /* Read byte from UART */
-	    rxByte = (uint8_t)(huart6.Instance->DR & 0xFF);
+		rxByte = (uint8_t)(huart6.Instance->DR & 0xFF);
 
 	    /* State machine for packet reception */
 	    switch (rxState) {
@@ -309,8 +309,10 @@ void USART6_IRQHandler(void)
 	    __HAL_UART_CLEAR_FLAG(&huart6, UART_FLAG_RXNE);
 	  }
 
-	  /* Handle other UART interrupts if needed */
-	  HAL_UART_IRQHandler(&huart6);
+	/* Handle other UART interrupts (errors, etc.) */
+	  else {
+	    HAL_UART_IRQHandler(&huart6);
+	  }
 
   /* USER CODE END USART6_IRQn 1 */
 }

@@ -9,13 +9,26 @@
 
 
 // Function to update task status
+volatile uint32_t delay_end_time = 0;
+
+// Start a non-blocking delay (delay in milliseconds)
+void NonBlockingDelay(uint32_t delay_ms)
+{
+    delay_end_time = HAL_GetTick() + delay_ms;  // Set the target time
+}
+
+// Check if the delay is complete
+uint8_t IsDelayComplete(void)
+{
+    return (HAL_GetTick() >= delay_end_time);  // Return true if the current time has passed the target time
+}
 
 
 //---------Start 0f Plantation Task (Collect and identify potatoes)--------------------
-LineColor linecolor;
+LineColor Newlinecolor = WHITE;
 BallColor ballcolor;
 void executePlantationTask(void) {
-	//StartColorDetection();
+	StartLineColorDetection();
 	HAL_Delay(5000);
 	Robot_MoveForwardUntillLine();
 	Robot_TurnLeft90Inplace();
@@ -24,10 +37,14 @@ void executePlantationTask(void) {
 	for(uint8_t column = 0; column < 5; column ++){
 		for(uint8_t row = 0; row < 4; row ++){
 				if(row == 0){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
 					moveToCenterofCellinZeroRow();
 
-					if(linecolor == GREEN){
+					if(Newlinecolor == GREEN){
 
 						// Here we get the ball color after picking
 						// ToDo: Handle that
@@ -40,10 +57,14 @@ void executePlantationTask(void) {
 					}
 				}
 				else if(row == 1){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
 					moveToCenterofNextCell();
 
-					if(linecolor == GREEN){
+					if(Newlinecolor == GREEN){
 						// Here we get the ball color after picking
 						// ToDo: Handle that
 						picktheBall(column, row);
@@ -53,10 +74,14 @@ void executePlantationTask(void) {
 					}
 
 				}else if(row == 2){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
 					moveToCenterofNextCell();
 
-					if(linecolor == GREEN){
+					if(Newlinecolor == GREEN){
 						// Here we get the ball color after picking
 						// ToDo: Handle that
 						picktheBall(column, row);

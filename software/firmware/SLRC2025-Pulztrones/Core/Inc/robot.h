@@ -18,6 +18,9 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 #include "config.h"
 
+// In robot.h
+extern int colorcounter;
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -30,7 +33,8 @@ void HandleLineColorDetection(uint8_t *data);
 
 
 //Dummy functions
-LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
+//LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
+LineColor RPI_GetLineColor();
 BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
 
 
