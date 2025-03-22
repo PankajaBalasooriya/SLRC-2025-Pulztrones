@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 
 from adj_line_color import detect_adjacent_line_color
+from ball_color_detection import detect_ball_color
 
 # Communication protocol definitions
 START_MARKER = b'<'
@@ -310,6 +311,8 @@ class RobotComm:
             'blue': ([100, 100, 100], [140, 255, 255])  # Blue color range
         }
         
+        
+        
         color_ids = {'red': 1, 'green': 2, 'blue': 3}
         
         while self.running and self.current_mode == 'color_detection':
@@ -360,6 +363,17 @@ class RobotComm:
         """Detect the color of the cell infront of the robot"""
         print("Starting line color detection task")
 
+        ball_color_detection_params = {
+            'h_min': 0, 'h_max': 80, 
+            's_min': 0, 's_max': 80, 
+            'v_min': 150, 'v_max': 255,
+            'min_circularity': 0.6,
+            'min_radius': 15, 'max_radius': 100,
+            'top_line_percent': 55,
+            'left_margin_percent': 15,
+            'right_margin_percent': 15
+        }
+
         while self.running and self.current_mode == 'line_color_detection':
             ret, frame = self.camera.read()
             if not ret:
@@ -368,8 +382,13 @@ class RobotComm:
                 continue
 
             color, marked_frame = detect_adjacent_line_color(frame)
+            
+            marked_frame2, ball_info = detect_ball_color(frame, ball_color_detection_params)
 
-            print(f"Detected Line color: {color} ")
+            if ball_info:
+                print(f"Detected Line color: {color}, Detected Ball color: {ball_info['color']}")
+            else:
+                print(f"Detected Line color: {color}, No ball detected")
 
             data = bytearray([color & 0xFF])
             self.send_command(CMD_LINE_COLOR, data)
