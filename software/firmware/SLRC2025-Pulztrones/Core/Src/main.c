@@ -345,13 +345,13 @@ int main(void)
 
   EnableSysTickFunction();
 
-//  runCurrentTask(TASK_PLANTATION);
-//
-//  Buzzer_Toggle(500);
-//
-//  runCurrentTask(TASK_SORTING_POTATOS);
-//
-//  Buzzer_TaskCompletion();
+  runCurrentTask(TASK_PLANTATION);
+
+  Buzzer_Toggle(500);
+
+  runCurrentTask(TASK_SORTING_POTATOS);
+
+  Buzzer_TaskCompletion();
 
   //Robot_MoveForwardUntillLine();
 
