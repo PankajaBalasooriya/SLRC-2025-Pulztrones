@@ -9,5 +9,6 @@ void Buzzer_On(void);          // Function to turn on the buzzer
 void Buzzer_Off(void);         // Function to turn off the buzzer
 void Buzzer_Toggle(uint32_t delay); // Toggle buzzer with a delay
 void Buzzer_UniquePattern(void);
+void Buzzer_TaskCompletion(void);
 
 #endif // __BUZZER_H

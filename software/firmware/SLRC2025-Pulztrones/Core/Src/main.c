@@ -331,7 +331,7 @@ int main(void)
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
   HAL_Delay(2000);
-  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
   HAL_Delay(200);
   Buzzer_Toggle(100);
 
@@ -344,7 +344,18 @@ int main(void)
   //HAL_Delay(200);
 
   EnableSysTickFunction();
-  runCurrentTask(TASK_PLANTATION);
+
+//  runCurrentTask(TASK_PLANTATION);
+//
+//  Buzzer_Toggle(500);
+//
+//  runCurrentTask(TASK_SORTING_POTATOS);
+//
+//  Buzzer_TaskCompletion();
+
+  Robot_MoveForwardUntillLine();
+
+
 
   //Turn360Servo();
 
@@ -391,14 +402,14 @@ int main(void)
 //  //Motion_StopAt(&motion, 600);
 //  Motion_StopAfter(&motion, 100);
   //Robot_LineFollowUntillJunction();
-  	  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+  	  //set_steering_mode(STEERING_OFF_READLINE);
 
-  	 //Motion_Move(&motion, 1000, 100, 0, 120);
+  	//Motion_Move(&motion, 1000, 100, 0, 120);
 
   	//set_steering_mode(STEERING_OFF);
 //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
-//  Motion_Move(&motion, 600, 200, 0, 200);
+//Motion_Move(&motion, 600, 200, 0, 200);
 
 
   //Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);

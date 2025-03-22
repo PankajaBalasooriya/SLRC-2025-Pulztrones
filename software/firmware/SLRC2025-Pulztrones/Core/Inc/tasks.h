@@ -8,6 +8,7 @@
 // Task definitions
 typedef enum {
     TASK_PLANTATION,
+	TASK_SORTING_POTATOS,
     TASK_MUDDY_ROAD,
     TASK_COLLECTION_POINT,
     TASK_OLD_WAREHOUSE,
@@ -31,7 +32,7 @@ void moveToCenterofNextColumnfromThiredRow();
 BallColor picktheBall(uint8_t column, uint8_t row);
 
 
-
+void executePotatoSeperationTask(void);
 
 
 

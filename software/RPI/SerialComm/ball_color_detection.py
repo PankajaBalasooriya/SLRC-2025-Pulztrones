@@ -220,10 +220,10 @@ def detect_ball_color(frame, params=None):
                 white_pixels = cv2.countNonZero(cv2.bitwise_and(white_mask, circle_mask))
                 
                 if orange_yellow_pixels > white_pixels:
-                    color = "Orange-Yellow"
+                    color = 1 #"Orange-Yellow"
                     display_color = (0, 165, 255)  # BGR orange
                 else:
-                    color = "White"
+                    color = 0 #"White"
                     display_color = (255, 255, 255)  # BGR white
                 
                 center = (int(x), int(y))

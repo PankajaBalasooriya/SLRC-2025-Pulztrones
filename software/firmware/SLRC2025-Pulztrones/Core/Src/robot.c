@@ -15,6 +15,8 @@ extern Motion motion;
 
 volatile LineColor linecolorRPI = WHITE;
 
+volatile BallColor ballcolorRPI = WHITE_BALL;
+
 //volatile int handlecount = 0;
 
 
@@ -93,6 +95,8 @@ void HandleColorDetection(uint8_t *data) {
 void HandleLineColorDetection(uint8_t *data){
 	uint8_t colorId = data[0];
 
+	uint8_t ballId = data[1];
+
 	//handlecount++;
 
 	switch (colorId) {
@@ -104,7 +108,20 @@ void HandleLineColorDetection(uint8_t *data){
 	  break;
 	default:
 	  /* Unknown color */
+		linecolorRPI = WHITE;
 	  break;
+	}
+
+	switch(ballId){
+	case 0:
+		ballcolorRPI = WHITE_BALL;
+		break;
+	case 1:
+		ballcolorRPI = YELLOW_BALL;
+		break;
+	default:
+		ballcolorRPI = WHITE_BALL;
+		break;
 	}
 }
 
@@ -112,8 +129,6 @@ void HandleLineColorDetection(uint8_t *data){
 LineColor RPI_GetLineColor(){
 	return linecolorRPI;
 }
-
-
 
 
 //LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
@@ -138,26 +153,34 @@ LineColor RPI_GetLineColor(){
 //	return WHITE;
 //}
 
-BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
+//BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return WHITE_BALL;
+//	}
+//	if(column == 1 && row == 1){
+//		return YELLOW_BALL;
+//	}
+//	if(column == 2 && row == 2){
+//		return YELLOW_BALL;
+//	}
+//	if(column == 3 && row == 0){
+//		return WHITE_BALL;
+//	}
+//	if(column == 4 && row == 1){
+//		return WHITE_BALL;
+//	}
+//	return WHITE_BALL;
+//}
+
+
+BallColor RPI_GetBallColor(){
 	// Need seperate code to handle color detection
 	// use this to acces a global vairable
 
-	if(column == 0 && row == 0){
-		return WHITE_BALL;
-	}
-	if(column == 1 && row == 1){
-		return YELLOW_BALL;
-	}
-	if(column == 2 && row == 2){
-		return YELLOW_BALL;
-	}
-	if(column == 3 && row == 0){
-		return WHITE_BALL;
-	}
-	if(column == 4 && row == 1){
-		return WHITE_BALL;
-	}
-	return WHITE_BALL;
+	return ballcolorRPI;
 }
 
 
@@ -231,7 +254,13 @@ JunctionType Robot_MoveForwardUntillLine(){
 
 void Robot_MoveForwardGivenDistance(int distnace){
 	set_steering_mode(STEERING_OFF);
-	Motion_Move(&motion, distnace, FORWARD_SPEED_1, FORWARD_SPEED_1, FORWARD_ACCELERATION_1);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveReverseGivenDistance(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 	Motion_ResetDriveSystem(&motion);
 }
 

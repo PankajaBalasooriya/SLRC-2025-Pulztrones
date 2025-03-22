@@ -387,10 +387,15 @@ class RobotComm:
 
             if ball_info:
                 print(f"Detected Line color: {color}, Detected Ball color: {ball_info['color']}")
+                data = bytearray([color & 0xFF, ball_info['color'] & 0xFF])
             else:
                 print(f"Detected Line color: {color}, No ball detected")
+                data = bytearray([color & 0xFF, 0 & 0xFF])
 
-            data = bytearray([color & 0xFF])
+            
+            
+
+            #data = bytearray([color & 0xFF])
             self.send_command(CMD_LINE_COLOR, data)
         # Process at 10fps
         time.sleep(0.1)
