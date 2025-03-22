@@ -1,9 +1,9 @@
 ../Core/Src/tasks.c:17:6:executePlantationTask	16	static
-../Core/Src/tasks.c:75:6:moveToCenterofNextCell	8	static
-../Core/Src/tasks.c:80:6:moveToCenterofNextCellandNotStop	8	static
-../Core/Src/tasks.c:85:6:moveToCenterofCellinZeroRow	8	static
-../Core/Src/tasks.c:92:6:moveToCenterofNextColumnfromFirstRow	8	static
-../Core/Src/tasks.c:96:6:moveToCenterofNextColumnfromSecondRow	8	static
-../Core/Src/tasks.c:103:6:moveToCenterofNextColumnfromThiredRow	8	static
-../Core/Src/tasks.c:110:11:picktheBall	16	static
-../Core/Src/tasks.c:127:6:runCurrentTask	16	static
+../Core/Src/tasks.c:78:6:moveToCenterofNextCell	8	static
+../Core/Src/tasks.c:83:6:moveToCenterofNextCellandNotStop	8	static
+../Core/Src/tasks.c:88:6:moveToCenterofCellinZeroRow	8	static
+../Core/Src/tasks.c:95:6:moveToCenterofNextColumnfromFirstRow	8	static
+../Core/Src/tasks.c:99:6:moveToCenterofNextColumnfromSecondRow	8	static
+../Core/Src/tasks.c:106:6:moveToCenterofNextColumnfromThiredRow	8	static
+../Core/Src/tasks.c:113:11:picktheBall	16	static
+../Core/Src/tasks.c:130:6:runCurrentTask	16	static

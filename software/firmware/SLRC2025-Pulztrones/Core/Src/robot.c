@@ -15,6 +15,7 @@ extern Motion motion;
 
 LineColor color;
 
+
 extern JunctionType junction;
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,14 +71,11 @@ void HandleColorDetection(uint8_t *data) {
 
   /* React based on color */
   switch (colorId) {
-    case 1: /* Red */
-      //HandleRedColor();
+    case 0: /* Red */
+      color = WHITE;
       break;
     case 2: /* Green */
-      //HandleGreenColor();
-      break;
-    case 3: /* Blue */
-      //HandleBlueColor();
+      color = GREEN;
       break;
     default:
       /* Unknown color */
@@ -86,38 +84,56 @@ void HandleColorDetection(uint8_t *data) {
 }
 
 void HandleLineColorDetection(uint8_t *data){
-	color = data[0];
+	uint8_t colorId = data[0]; // 0=Unknown, 1=Red, 2=Green, 3=Blue, etc.
+
+  /* React based on color */
+  switch (colorId) {
+	case 1: /* Red */
+	  //HandleRedColor();
+	  break;
+	case 2: /* Green */
+	  //HandleGreenColor();
+	  break;
+	case 3: /* Blue */
+	  //HandleBlueColor();
+	  break;
+	default:
+	  /* Unknown color */
+	  break;
+}
 }
 
 //-----------------------------------------------------------------------------------
-//LineColor RPI_GetLineColor(){
-//	return color;
+LineColor RPI_GetLineColor(){
+	return color;
+}
+
+
+
+
+//LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 1 && row == 1){
+//		return GREEN;
+//	}
+//	if(column == 2 && row == 2){
+//		return GREEN;
+//	}
+//	if(column == 3 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 4 && row == 1){
+//		return GREEN;
+//	}
+//	return WHITE;
 //}
 
 
-
-
-LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
-	// Need seperate code to handle color detection
-	// use this to acces a global vairable
-
-	if(column == 0 && row == 0){
-		return GREEN;
-	}
-	if(column == 1 && row == 1){
-		return GREEN;
-	}
-	if(column == 2 && row == 2){
-		return GREEN;
-	}
-	if(column == 3 && row == 0){
-		return GREEN;
-	}
-	if(column == 4 && row == 1){
-		return GREEN;
-	}
-	return WHITE;
-}
 
 BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
 	// Need seperate code to handle color detection

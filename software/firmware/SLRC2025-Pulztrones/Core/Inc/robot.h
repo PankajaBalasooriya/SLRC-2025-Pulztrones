@@ -22,6 +22,8 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
+
+
 void HandleLineDetection(uint8_t *data);
 void HandleGridPosition(uint8_t *data);
 void HandleColorDetection(uint8_t *data);
@@ -30,7 +32,8 @@ void HandleLineColorDetection(uint8_t *data);
 
 
 //Dummy functions
-LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
+//LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
+LineColor RPI_GetLineColor();
 BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
 
 

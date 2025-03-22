@@ -162,7 +162,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-//	uint32_t count = 0; // Initialize the counter
+//	uint32_t count = 0; // Initialize thecounter
 //	char buffer[50]; // Buffer to hold formatted string
 
   /* USER CODE END 1 */
@@ -280,7 +280,7 @@ int main(void)
 
   //PCA9685_SetServoAngle(14, 100);
 
-  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+//HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
 ////
 //  HAL_Delay(3000);
 //
@@ -329,21 +329,20 @@ int main(void)
 
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
-
-//  HAL_Delay(2000);
-// RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_Delay(2000);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
   HAL_Delay(200);
   Buzzer_Toggle(100);
 
   //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
 
-  //HAL_Delay(5000);
+  HAL_Delay(6000);
   Buzzer_Toggle(100);
 
-  HAL_Delay(200);
+  HAL_Delay(1000);
 
-//  EnableSysTickFunction();
-//  runCurrentTask(TASK_PLANTATION);
+  EnableSysTickFunction();
+  runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
 
@@ -370,14 +369,14 @@ int main(void)
 //  return_home();
 //
 //  store_ball(5, WHITE_BALL);
- pickup_and_Store();
+ ///pickup_and_Store();
 //  HAL_Delay(2000);
 //  return_home();
 //
 //
 //  retrieve_ball(YELLOW_BALL);
 //  HAL_Delay(1000);
- return_home();
+ ///return_home();
 
 
 

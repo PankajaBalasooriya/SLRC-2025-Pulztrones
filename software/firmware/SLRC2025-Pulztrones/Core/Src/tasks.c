@@ -15,7 +15,7 @@
 LineColor linecolor;
 BallColor ballcolor;
 void executePlantationTask(void) {
-	//StartColorDetection();
+	StartLineColorDetection();
 	HAL_Delay(5000);
 	Robot_MoveForwardUntillLine();
 	Robot_TurnLeft90Inplace();
@@ -24,7 +24,8 @@ void executePlantationTask(void) {
 	for(uint8_t column = 0; column < 5; column ++){
 		for(uint8_t row = 0; row < 4; row ++){
 				if(row == 0){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					linecolor = RPI_GetLineColor();
 					moveToCenterofCellinZeroRow();
 
 					if(linecolor == GREEN){
@@ -40,7 +41,8 @@ void executePlantationTask(void) {
 					}
 				}
 				else if(row == 1){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					linecolor = RPI_GetLineColor();
 					moveToCenterofNextCell();
 
 					if(linecolor == GREEN){
@@ -53,7 +55,8 @@ void executePlantationTask(void) {
 					}
 
 				}else if(row == 2){
-					linecolor = RPI_GetLineColor(column, row);
+					//linecolor = RPI_GetLineColor(column, row);
+					linecolor = RPI_GetLineColor();
 					moveToCenterofNextCell();
 
 					if(linecolor == GREEN){

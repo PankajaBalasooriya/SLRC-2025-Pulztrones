@@ -98,6 +98,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+	  HAL_Delay(1000);
+	  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+	  HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
   }
