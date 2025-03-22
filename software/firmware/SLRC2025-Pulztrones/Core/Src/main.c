@@ -388,7 +388,13 @@ int main(void)
 //  HAL_Dselay(1000);
 //////////////////////Lines for Oshadha's mechanism testing only ends
 
+//  pickup_and_Store();
+//  return_home();
+
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
+
+
+
 
 
   //Robot_TurnRight90Inplace();

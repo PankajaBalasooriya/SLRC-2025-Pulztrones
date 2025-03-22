@@ -1,0 +1,284 @@
+/**
+  ******************************************************************************
+  * @file           : robot_control.c
+  * @brief          : Robot control implementation
+  *                   This file provides code for robot control operations
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/
+#include "robot.h"
+#include "sensors.h"
+#include "motion.h"
+
+extern Motion motion;
+
+volatile LineColor linecolorRPI = WHITE;
+
+volatile BallColor ballcolorRPI = WHITE_BALL;
+
+//volatile int handlecount = 0;
+
+
+
+
+extern JunctionType junction;
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+
+/**
+ * @brief Handle line detection data from Raspberry Pi
+ * @param data Line detection data
+ */
+void HandleLineDetection(uint8_t *data) {
+  /* Extract line position and orientation */
+  int8_t linePosition = (int8_t)data[0]; // Negative = left, Positive = right, 0 = center
+  uint8_t lineAngle = data[1];           // Line angle in degrees
+
+  /* Implement line following logic */
+  if (linePosition < -20) {
+    /* Turn left */
+    //TurnLeft();
+  } else if (linePosition > 20) {
+    /* Turn right */
+    //TurnRight();
+  } else {
+    /* Go straight */
+    //MoveForward();
+  }
+}
+
+/**
+ * @brief Handle grid position data from Raspberry Pi
+ * @param data Grid position data
+ */
+void HandleGridPosition(uint8_t *data) {
+  /* Extract grid coordinates */
+  uint8_t gridX = data[0];
+  uint8_t gridY = data[1];
+  uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+
+  /* Use grid position for navigation */
+  //NavigateGrid(gridX, gridY, orientation);
+}
+
+/**
+ * @brief Handle color detection data from Raspberry Pi
+ * @param data Color detection data
+ */
+void HandleColorDetection(uint8_t *data) {
+  /* Extract color information */
+//  uint8_t colorId = data[0]; // 0=Unknown, 1=Red, 2=Green, 3=Blue, etc.
+//
+//  /* React based on color */
+//  switch (colorId) {
+//    case 1: /* Red */
+//      //HandleRedColor();
+//      break;
+//    case 2: /* Green */
+//      //HandleGreenColor();
+//      break;
+//    case 3: /* Blue */
+//      //HandleBlueColor();
+//      break;
+//    default:
+//      /* Unknown color */
+//      break;
+//  }
+}
+
+void HandleLineColorDetection(uint8_t *data){
+	uint8_t colorId = data[0];
+
+	uint8_t ballId = data[1];
+
+	//handlecount++;
+
+	switch (colorId) {
+	case 0: /* Red */
+		linecolorRPI = WHITE;
+	  break;
+	case 1: /* Green */
+		linecolorRPI = GREEN;
+	  break;
+	default:
+	  /* Unknown color */
+		linecolorRPI = WHITE;
+	  break;
+	}
+
+	switch(ballId){
+	case 0:
+		ballcolorRPI = WHITE_BALL;
+		break;
+	case 1:
+		ballcolorRPI = YELLOW_BALL;
+		break;
+	default:
+		ballcolorRPI = WHITE_BALL;
+		break;
+	}
+}
+
+//-----------------------------------------------------------------------------------
+LineColor RPI_GetLineColor(){
+	return linecolorRPI;
+}
+
+
+//LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 1 && row == 1){
+//		return GREEN;
+//	}
+//	if(column == 2 && row == 2){
+//		return GREEN;
+//	}
+//	if(column == 3 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 4 && row == 1){
+//		return GREEN;
+//	}
+//	return WHITE;
+//}
+
+//BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return WHITE_BALL;
+//	}
+//	if(column == 1 && row == 1){
+//		return YELLOW_BALL;
+//	}
+//	if(column == 2 && row == 2){
+//		return YELLOW_BALL;
+//	}
+//	if(column == 3 && row == 0){
+//		return WHITE_BALL;
+//	}
+//	if(column == 4 && row == 1){
+//		return WHITE_BALL;
+//	}
+//	return WHITE_BALL;
+//}
+
+
+BallColor RPI_GetBallColor(){
+	// Need seperate code to handle color detection
+	// use this to acces a global vairable
+
+	return ballcolorRPI;
+}
+
+
+
+
+//------------------------------------------------------------------------------//
+JunctionType Robot_LineFollowUntillJunction(){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_StartMove(&motion, 1500, LINE_FOLLOW_SPEED, LINE_FOLLOW_SPEED, LINE_FOLLOW_ACCELERATION);
+	junction = STRAIGHT_LINE;
+	while(1){
+		if(junction != STRAIGHT_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	Motion_StopAfter(&motion, 55);
+	Motion_ResetDriveSystem(&motion);
+	return junction;
+
+}
+JunctionType Robot_LineFollowUntillJunctionAndNotStop(){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_StartMove(&motion, 1500, LINE_FOLLOW_SPEED, LINE_FOLLOW_SPEED, LINE_FOLLOW_ACCELERATION);
+	junction = STRAIGHT_LINE;
+	while(1){
+		if(junction != STRAIGHT_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	//Motion_StopAfter(&motion, 45);
+	Motion_SwitchToNextMotionAfter(&motion, 45);
+
+	//Motion_ResetDriveSystem(&motion);
+	return junction;
+
+}
+
+
+void Robot_FollowLineGivenDistance(int distnace){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
+	set_steering_mode(STEERING_OFF);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_FollowLineGivenDistanceandNotStop(int distnace){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, FORWARD_SPEED_1    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
+	//set_steering_mode(STEERING_OFF);
+	//Motion_ResetDriveSystem(&motion);
+}
+
+JunctionType Robot_MoveForwardUntillLine(){
+	set_steering_mode(STEERING_OFF_READLINE);
+	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, FORWARD_SPEED_1, FORWARD_ACCELERATION_1);
+	junction = NO_LINE;
+	while(1){
+		if(junction != NO_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	Motion_StopAfter(&motion, 60);
+	Motion_ResetDriveSystem(&motion);
+	return junction;
+}
+
+void Robot_MoveForwardGivenDistance(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveReverseGivenDistance(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnRight90Inplace(){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -90, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+	HAL_Delay(MOTION_DELAY);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnLeft90Inplace(){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, 88, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+	HAL_Delay(MOTION_DELAY);
+	Motion_ResetDriveSystem(&motion);
+}
+
+
+

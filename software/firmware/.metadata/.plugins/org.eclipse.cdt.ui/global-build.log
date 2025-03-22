@@ -1,4 +1,74 @@
-01:43:55 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+02:04:46 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+   text	   data	    bss	    dec	    hex	filename
+  57368	    488	   4832	  62688	   f4e0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+02:05:55 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+   text	   data	    bss	    dec	    hex	filename
+  57368	    488	   4832	  62688	   f4e0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+02:38:38 **** Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:41:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   41 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:64:11: warning: unused variable 'orientation' [-Wunused-variable]
+   64 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:63:11: warning: unused variable 'gridY' [-Wunused-variable]
+   63 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:62:11: warning: unused variable 'gridX' [-Wunused-variable]
+   62 |   uint8_t gridX = data[0];
+      |           ^~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  57368	    488	   4832	  62688	   f4e0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:42:23 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/robot.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/robot.d" -MT"Core/Src/robot.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/robot.o"
+../Core/Src/robot.c: In function 'HandleLineDetection':
+../Core/Src/robot.c:41:11: warning: unused variable 'lineAngle' [-Wunused-variable]
+   41 |   uint8_t lineAngle = data[1];           // Line angle in degrees
+      |           ^~~~~~~~~
+../Core/Src/robot.c: In function 'HandleGridPosition':
+../Core/Src/robot.c:64:11: warning: unused variable 'orientation' [-Wunused-variable]
+   64 |   uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
+      |           ^~~~~~~~~~~
+../Core/Src/robot.c:63:11: warning: unused variable 'gridY' [-Wunused-variable]
+   63 |   uint8_t gridY = data[1];
+      |           ^~~~~
+../Core/Src/robot.c:62:11: warning: unused variable 'gridX' [-Wunused-variable]
+   62 |   uint8_t gridX = data[0];
+      |           ^~~~~
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  57368	    488	   4832	  62688	   f4e0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:51:44 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
 make -j20 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -7,22 +77,290 @@ Finished building target: SLRC2025-Pulztrones.elf
 arm-none-eabi-size  SLRC2025-Pulztrones.elf 
 arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
    text	   data	    bss	    dec	    hex	filename
-  57376	    488	   4832	  62696	   f4e8	SLRC2025-Pulztrones.elf
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
  
 Finished building: SLRC2025-Pulztrones.list
  
-01:44:45 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+02:53:23 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
 make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
 arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
    text	   data	    bss	    dec	    hex	filename
-  57376	    488	   4832	  62696	   f4e8	SLRC2025-Pulztrones.elf
+  52424	    488	   4816	  57728	   e180	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
  
-01:45:17 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:55:12 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
 make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
 arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
    text	   data	    bss	    dec	    hex	filename
-  57376	    488	   4832	  62696	   f4e8	SLRC2025-Pulztrones.elf
+  52440	    488	   4816	  57744	   e190	SLRC2025-Pulztrones.elf
 Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:56:02 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:57:07 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+02:58:17 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:00:07 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:01:14 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:03:27 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:05:17 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:06:11 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:07:06 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:09:08 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52448	    488	   4816	  57752	   e198	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:10:20 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:11:13 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:25:26 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  57232	    488	   4832	  62552	   f458	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:32:59 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:35:04 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:36:46 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:37:37 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  52456	    488	   4816	  57760	   e1a0	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
+ 
+03:39:11 **** Incremental Build of configuration Debug for project SLRC2025-Pulztrones ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/arm_controller.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/arm_controller.d" -MT"Core/Src/arm_controller.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/arm_controller.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc" -I"C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "SLRC2025-Pulztrones.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\SLRC2025-Pulztrones\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLRC2025-Pulztrones.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SLRC2025-Pulztrones.elf
+ 
+arm-none-eabi-size  SLRC2025-Pulztrones.elf 
+arm-none-eabi-objdump -h -S SLRC2025-Pulztrones.elf  > "SLRC2025-Pulztrones.list"
+   text	   data	    bss	    dec	    hex	filename
+  57360	    488	   4832	  62680	   f4d8	SLRC2025-Pulztrones.elf
+Finished building: default.size.stdout
+ 
+Finished building: SLRC2025-Pulztrones.list
  

@@ -149,7 +149,7 @@ void moveToCenterofNextColumnfromThiredRow(){
 BallColor picktheBall(uint8_t column, uint8_t row){
 	ball_pos++;
 	Robot_TurnLeft90Inplace();
-	ballcolor = RPI_GetBallColor(column, row);
+	ballcolor = RPI_GetBallColor();
 	HAL_Delay(MOTION_DELAY);
 	//ToDo: Pick The box
 	//pickup_and_Store();

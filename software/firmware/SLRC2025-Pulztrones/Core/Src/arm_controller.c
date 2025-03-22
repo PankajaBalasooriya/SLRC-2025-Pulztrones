@@ -226,21 +226,21 @@ int Arm_Home(void)
 
 void pickup_and_Store(void){
 	Arm_MoveServo(ARM_LINK2_SERVO,86);
-	Arm_MoveServo(ARM_BASE_SERVO,5);
+	Arm_MoveServo(ARM_BASE_SERVO,3);
 	Arm_MoveServo(ARM_LINK3_SERVO,31);
 	Arm_MoveServo(ARM_LINK1_SERVO,55);
-	HAL_Delay(1000);
-	Arm_MoveServo(ARM_LINK1_SERVO,65);
-	Arm_MoveServo(ARM_LINK2_SERVO,96);
+//	HAL_Delay(1000);
+	Arm_MoveServo(ARM_LINK1_SERVO,70);
+	Arm_MoveServo(ARM_LINK2_SERVO,94);
 	turn_on_air_pump();
-	HAL_Delay(4000);
+	HAL_Delay(3000);
 	Arm_MoveServo(ARM_LINK1_SERVO,0);
 	Arm_MoveServo(ARM_LINK3_SERVO,85);
 	Arm_MoveServo(ARM_LINK2_SERVO,30);
 //	turn_off_air_pump();
-	Arm_MoveServo(ARM_BASE_SERVO,145);
-	Arm_MoveServo(ARM_LINK3_SERVO,106);
-	Arm_MoveServo(ARM_LINK2_SERVO,57);
+	Arm_MoveServo(ARM_BASE_SERVO,148);
+	Arm_MoveServo(ARM_LINK3_SERVO,115);
+	Arm_MoveServo(ARM_LINK2_SERVO,50);
 	turn_off_air_pump();
 	HAL_Delay(10000);
 
