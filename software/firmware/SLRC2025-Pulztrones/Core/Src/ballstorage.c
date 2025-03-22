@@ -1,10 +1,14 @@
 #include "ballstorage.h"
 #include "buzzer.h"
 #include "servo.h"
+#include "ssd1306.h"
+#include "fonts.h"
+#include "arm_controller.h"
 
 volatile uint32_t previousMillis = 0;
 volatile uint32_t currentMillis = 0;
 volatile uint16_t ballCount = 0;
+volatile uint8_t is_rotating = 0;
 
 char pos_1;
 char pos_2;
@@ -12,13 +16,15 @@ char pos_3;
 char pos_4;
 char pos_5;
 
+
+
 #define TOTAL_SLOTS 5  // Adjust based on the number of ball slots
 #define GPIO_ENCODER_PIN GPIO_PIN_3  // Encoder sensor pin
 
 // Interrupt callback function for ball slot counting
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	currentMillis = HAL_GetTick();
-    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 500)) {
+    if (GPIO_Pin == GPIO_ENCODER_PIN && (currentMillis - previousMillis > 650) && is_rotating == 1) {
         ballCount++;
         previousMillis = currentMillis;
     }
@@ -26,6 +32,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
 // Function to rotate the storage to a desired slot position
 void rotate_360_to_position(uint8_t desired_position) {
+	is_rotating = 1;
 	desired_position--;
     uint8_t current_position = get_ball_count();
     if (desired_position == current_position) {
@@ -46,6 +53,7 @@ void rotate_360_to_position(uint8_t desired_position) {
     
     ballCount = current_position; // Ignore the balls counted during the delay
     while (get_ball_count() != desired_position);
+    is_rotating = 0;
     Stop360Servo();
 }
 
@@ -74,6 +82,9 @@ void store_ball(uint8_t desired_position, BallColor colour) {
             pos_5 = colour;
             break;
     }
+    pickup_and_Store();
+    //HAL_Delay(2000);
+    return_home();
 }
 
 // Retrieving high-level function

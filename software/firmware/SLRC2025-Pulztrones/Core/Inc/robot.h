@@ -20,6 +20,7 @@ extern "C" {
 
 // In robot.h
 extern int colorcounter;
+extern volatile LineColor linecolorRPI;
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

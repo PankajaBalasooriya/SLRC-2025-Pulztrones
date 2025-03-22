@@ -3,6 +3,7 @@
 #include "robot.h"
 #include "buzzer.h"
 #include "RPI_uart_comm.h"
+#include "ballstorage.h"
 
 
 // Initialize task status globally
@@ -10,6 +11,8 @@
 
 // Function to update task status
 volatile uint32_t delay_end_time = 0;
+
+uint8_t ball_pos = 0;
 
 // Start a non-blocking delay (delay in milliseconds)
 void NonBlockingDelay(uint32_t delay_ms)
@@ -133,13 +136,15 @@ void moveToCenterofNextColumnfromThiredRow(){
 }
 
 BallColor picktheBall(uint8_t column, uint8_t row){
+	ball_pos++;
 	Robot_TurnLeft90Inplace();
 	ballcolor = RPI_GetBallColor(column, row);
 	HAL_Delay(MOTION_DELAY);
 	//ToDo: Pick The box
-	pickup_and_Store();
+	//pickup_and_Store();
+	store_ball(ball_pos, ballcolor);
 //	HAL_Delay(2000);
-	return_home();
+	//return_home();
 	Buzzer_Toggle(1000);
 	HAL_Delay(MOTION_DELAY);
 

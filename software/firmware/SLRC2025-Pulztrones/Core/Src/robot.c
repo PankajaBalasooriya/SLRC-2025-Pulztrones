@@ -15,7 +15,7 @@ extern Motion motion;
 
 volatile LineColor linecolorRPI = WHITE;
 
-volatile int handlecount = 0;
+//volatile int handlecount = 0;
 
 
 
@@ -93,7 +93,7 @@ void HandleColorDetection(uint8_t *data) {
 void HandleLineColorDetection(uint8_t *data){
 	uint8_t colorId = data[0];
 
-	handlecount++;
+	//handlecount++;
 
 	switch (colorId) {
 	case 0: /* Red */

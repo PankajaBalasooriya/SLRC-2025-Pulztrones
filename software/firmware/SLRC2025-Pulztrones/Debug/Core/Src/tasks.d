@@ -34,7 +34,8 @@ Core/Src/tasks.o: ../Core/Src/tasks.c ../Core/Inc/tasks.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/uartcom.h ../Core/Inc/robot.h ../Core/Inc/buzzer.h \
- ../Core/Inc/RPI_uart_comm.h
+ ../Core/Inc/RPI_uart_comm.h ../Core/Inc/ballstorage.h \
+ ../Core/Inc/servo.h ../Core/Inc/main.h ../Core/Inc/pca9685.h
 ../Core/Inc/tasks.h:
 ../Core/Inc/config.h:
 ../Core/Inc/sensors.h:
@@ -75,3 +76,7 @@ Core/Src/tasks.o: ../Core/Src/tasks.c ../Core/Inc/tasks.h \
 ../Core/Inc/robot.h:
 ../Core/Inc/buzzer.h:
 ../Core/Inc/RPI_uart_comm.h:
+../Core/Inc/ballstorage.h:
+../Core/Inc/servo.h:
+../Core/Inc/main.h:
+../Core/Inc/pca9685.h:

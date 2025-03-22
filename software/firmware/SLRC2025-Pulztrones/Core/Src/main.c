@@ -330,58 +330,53 @@ int main(void)
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
 
-HAL_Delay(2000);
-RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  HAL_Delay(2000);
+  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
   HAL_Delay(200);
   Buzzer_Toggle(100);
 
-  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+  //set_steering_mode(STEERING_OFF_READLINE);
 
-  //HAL_Delay(5000);
+  Buzzer_Toggle(100);
+  HAL_Delay(6000);
   Buzzer_Toggle(100);
 
-  HAL_Delay(200);
+  //HAL_Delay(200);
 
-EnableSysTickFunction();
-runCurrentTask(TASK_PLANTATION);
+  EnableSysTickFunction();
+  runCurrentTask(TASK_PLANTATION);
 
   //Turn360Servo();
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
 
 //  store_ball(1, WHITE_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
+//
 //
 //  store_ball(2, YELLOW_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
 //
 //  store_ball(3, WHITE_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  /return_home();
 //
 //  store_ball(4, YELLOW_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
 //
 //  store_ball(5, WHITE_BALL);
-//pickup_and_Store();
-//HAL_Delay(2000);
-//  return_home();
 //
 //
 //  retrieve_ball(YELLOW_BALL);
+
+//////////////////////Lines for Oshadha's mechanism testing only
+//  rotate_360_to_position(1);
 //  HAL_Delay(1000);
-// return_home();
+//  rotate_360_to_position(3);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(5);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(2);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(1);
+//  HAL_Delay(1000);
+//////////////////////Lines for Oshadha's mechanism testing only ends
 
-
-
-  //rotate_360_to_position(4);
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
 
 
@@ -396,8 +391,11 @@ runCurrentTask(TASK_PLANTATION);
 //  //Motion_StopAt(&motion, 600);
 //  Motion_StopAfter(&motion, 100);
   //Robot_LineFollowUntillJunction();
+  	  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
 
-  	 //Motion_Move(&motion, 1200, 200, 0, 100);
+  	 //Motion_Move(&motion, 1000, 100, 0, 120);
+
+  	//set_steering_mode(STEERING_OFF);
 //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
 //  Motion_Move(&motion, 600, 200, 0, 200);

@@ -1,0 +1,173 @@
+#include "tasks.h"
+#include "sensors.h"
+#include "robot.h"
+#include "buzzer.h"
+#include "RPI_uart_comm.h"
+
+
+// Initialize task status globally
+
+
+// Function to update task status
+volatile uint32_t delay_end_time = 0;
+
+unit8_t ball_pos = 0;
+
+// Start a non-blocking delay (delay in milliseconds)
+void NonBlockingDelay(uint32_t delay_ms)
+{
+    delay_end_time = HAL_GetTick() + delay_ms;  // Set the target time
+}
+
+// Check if the delay is complete
+uint8_t IsDelayComplete(void)
+{
+    return (HAL_GetTick() >= delay_end_time);  // Return true if the current time has passed the target time
+}
+
+
+//---------Start 0f Plantation Task (Collect and identify potatoes)--------------------
+LineColor Newlinecolor = WHITE;
+BallColor ballcolor;
+void executePlantationTask(void) {
+	StartLineColorDetection();
+	HAL_Delay(5000);
+	Robot_MoveForwardUntillLine();
+	Robot_TurnLeft90Inplace();
+
+	//Start the task
+	for(uint8_t column = 0; column < 5; column ++){
+		for(uint8_t row = 0; row < 4; row ++){
+				if(row == 0){
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
+					moveToCenterofCellinZeroRow();
+
+					if(Newlinecolor == GREEN){
+
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+
+
+						moveToCenterofNextColumnfromFirstRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+				}
+				else if(row == 1){
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
+					moveToCenterofNextCell();
+
+					if(Newlinecolor == GREEN){
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+						moveToCenterofNextColumnfromSecondRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+
+				}else if(row == 2){
+					//linecolor = RPI_GetLineColor(column, row);
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
+					moveToCenterofNextCell();
+
+					if(Newlinecolor == GREEN){
+						// Here we get the ball color after picking
+						// ToDo: Handle that
+						picktheBall(column, row);
+						moveToCenterofNextColumnfromThiredRow();
+						HAL_Delay(MOTION_DELAY);
+						break;
+					}
+
+		}
+
+	}
+
+  }
+}
+
+void moveToCenterofNextCell(){
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
+}
+
+void moveToCenterofNextCellandNotStop(){
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_FollowLineGivenDistanceandNotStop(DISTACE_TO_CENTER_OF_CELL);
+}
+
+void moveToCenterofCellinZeroRow(){
+	Robot_LineFollowUntillJunction();
+	Robot_TurnRight90Inplace();
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
+	HAL_Delay(MOTION_DELAY);
+}
+
+void moveToCenterofNextColumnfromFirstRow(){
+	moveToCenterofCellinZeroRow();
+}
+
+void moveToCenterofNextColumnfromSecondRow(){
+	//moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+	//HAL_Delay(MOTION_DELAY);
+	moveToCenterofNextColumnfromFirstRow();
+}
+
+void moveToCenterofNextColumnfromThiredRow(){
+	//moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+	//HAL_Delay(MOTION_DELAY);
+	moveToCenterofNextColumnfromSecondRow();
+}
+
+BallColor picktheBall(uint8_t column, uint8_t row){
+	ball_pos++;
+	Robot_TurnLeft90Inplace();
+	ballcolor = RPI_GetBallColor(column, row);
+	HAL_Delay(MOTION_DELAY);
+	//ToDo: Pick The box
+	//pickup_and_Store();
+	store_ball(ball_pos, ballcolor);
+//	HAL_Delay(2000);
+	//return_home();
+	Buzzer_Toggle(1000);
+	HAL_Delay(MOTION_DELAY);
+
+	Robot_TurnLeft90Inplace();
+
+	return ballcolor;
+}
+
+
+//---------end 0f Plantation Task (Collect and identify potatoes)---------------------
+
+// Task manager function
+void runCurrentTask(TaskType task) {
+
+    switch (task) {
+        case TASK_PLANTATION:
+            executePlantationTask();
+            break;
+        default:
+
+            break;
+    }
+
+    // Print final status after execution
+
+}
+
