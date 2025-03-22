@@ -12,7 +12,7 @@ ret, frame = cap.read()
 
 if ret:
     # Save the image
-    cv2.imwrite("captured_image_4.jpg", frame)
+    cv2.imwrite("captured_image_6.jpg", frame)
     print("Image saved as captured_image.jpg")
 else:
     print("Error: Could not capture image")
