@@ -101,7 +101,7 @@ RAYKHA_Calibration raykha_calibration;
 uint8_t calibration_complete = 0;
 
 
-
+ volatile uint8_t task_ready = 0;  // Global flag
 
 
 
@@ -341,17 +341,17 @@ int main(void)
   HAL_Delay(6000);
   Buzzer_Toggle(100);
 
-  //HAL_Delay(200);
-
-  EnableSysTickFunction();
-
-  runCurrentTask(TASK_PLANTATION);
-
-  Buzzer_Toggle(500);
-
-  runCurrentTask(TASK_SORTING_POTATOS);
-
-  Buzzer_TaskCompletion();
+//  HAL_Delay(200);
+//
+//  EnableSysTickFunction();
+//
+//  runCurrentTask(TASK_PLANTATION);
+//
+//  Buzzer_Toggle(500);
+//
+//  runCurrentTask(TASK_SORTING_POTATOS);
+//
+//  Buzzer_TaskCompletion();
 
   //Robot_MoveForwardUntillLine();
 
@@ -361,11 +361,11 @@ int main(void)
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
 
-//  store_ball(1, WHITE_BALL);
-//
-//
-//  store_ball(2, YELLOW_BALL);
-//
+//store_ball(1, WHITE_BALL);
+////
+////
+//store_ball(2, YELLOW_BALL);
+////
 //  store_ball(3, WHITE_BALL);
 //
 //  store_ball(4, YELLOW_BALL);
@@ -385,16 +385,20 @@ int main(void)
 //  rotate_360_to_position(2);
 //  HAL_Delay(1000);
 //  rotate_360_to_position(1);
-//  HAL_Dselay(1000);
+//  HAL_Delay(1000);
 //////////////////////Lines for Oshadha's mechanism testing only ends
 
 //  pickup_and_Store();
+////  retrive_and_drop();
 //  return_home();
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
 
 
-
+//  pickup_and_Store();
+  //retrive_and_drop();
+//  HAL_Delay(3000);
+ // return_home();
 
 
   //Robot_TurnRight90Inplace();
@@ -433,6 +437,24 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (task_ready){
+		  task_ready = 0;
+
+		HAL_Delay(200);
+
+		EnableSysTickFunction();
+
+		runCurrentTask(TASK_PLANTATION);
+
+		Buzzer_Toggle(500);
+
+		runCurrentTask(TASK_SORTING_POTATOS);
+
+		Buzzer_TaskCompletion();
+
+	  }
+
+
 //	  left_counts = getLeftEncoderCounts();
 //	  right_counts = getRightEncoderCounts();
 //
@@ -959,11 +981,11 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, S0_Pin|S1_Pin|S2_Pin|S3_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
+  /*Configure GPIO pins : B1_Pin PC11 */
+  GPIO_InitStruct.Pin = B1_Pin|GPIO_PIN_11;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : AIRPUMP_Pin */
   GPIO_InitStruct.Pin = AIRPUMP_Pin;
@@ -999,15 +1021,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PC11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_11;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

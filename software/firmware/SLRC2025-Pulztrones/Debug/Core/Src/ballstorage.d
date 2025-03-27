@@ -39,7 +39,7 @@ Core/Src/ballstorage.o: ../Core/Src/ballstorage.c \
  ../Core/Inc/main.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
- ../Core/Inc/arm_controller.h
+ ../Core/Inc/arm_controller.h ../Core/Inc/config.h
 ../Core/Inc/ballstorage.h:
 ../Core/Inc/servo.h:
 ../Core/Inc/main.h:
@@ -85,3 +85,4 @@ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/S
 C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
 C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
 ../Core/Inc/arm_controller.h:
+../Core/Inc/config.h:

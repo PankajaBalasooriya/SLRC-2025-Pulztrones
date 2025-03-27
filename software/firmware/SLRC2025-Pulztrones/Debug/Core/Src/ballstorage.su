@@ -1,5 +1,5 @@
-../Core/Src/ballstorage.c:25:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/ballstorage.c:34:6:rotate_360_to_position	32	static
-../Core/Src/ballstorage.c:61:9:get_ball_count	4	static
-../Core/Src/ballstorage.c:66:6:store_ball	16	static
-../Core/Src/ballstorage.c:91:6:retrieve_ball	16	static
+../Core/Src/ballstorage.c:26:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/ballstorage.c:41:6:rotate_360_to_position	32	static
+../Core/Src/ballstorage.c:68:9:get_ball_count	4	static
+../Core/Src/ballstorage.c:73:6:store_ball	16	static
+../Core/Src/ballstorage.c:98:6:retrieve_ball	16	static

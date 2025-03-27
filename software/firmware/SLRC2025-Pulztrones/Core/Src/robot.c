@@ -10,6 +10,7 @@
 #include "robot.h"
 #include "sensors.h"
 #include "motion.h"
+#include "buzzer.h"
 
 extern Motion motion;
 
@@ -179,6 +180,16 @@ LineColor RPI_GetLineColor(){
 BallColor RPI_GetBallColor(){
 	// Need seperate code to handle color detection
 	// use this to acces a global vairable
+	if(ballcolorRPI == WHITE_BALL){
+		Buzzer_Toggle(100);
+		HAL_Delay(100);
+	}
+	else if(ballcolorRPI == YELLOW_BALL){
+		Buzzer_Toggle(100);
+		HAL_Delay(100);
+		Buzzer_Toggle(100);
+		HAL_Delay(100);
+	}
 
 	return ballcolorRPI;
 }

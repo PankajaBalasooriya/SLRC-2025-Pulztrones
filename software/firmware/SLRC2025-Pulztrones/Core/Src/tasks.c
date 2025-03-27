@@ -33,7 +33,9 @@ LineColor Nextlinecolor = WHITE;
 BallColor ballcolor;
 void executePlantationTask(void) {
 	StartLineColorDetection();
-	HAL_Delay(5000);
+	Buzzer_Toggle(100);
+	HAL_Delay(2000);
+	Buzzer_Toggle(300);
 	Robot_MoveForwardUntillLine();
 	Robot_TurnLeft90Inplace();
 
@@ -56,7 +58,7 @@ void executePlantationTask(void) {
 
 
 						moveToCenterofNextColumnfromFirstRow();
-						HAL_Delay(MOTION_DELAY);
+						//#HAL_Delay(MOTION_DELAY);
 						break;
 					}
 				}
@@ -80,7 +82,7 @@ void executePlantationTask(void) {
 						// ToDo: Handle that
 						picktheBall(column, row);
 						moveToCenterofNextColumnfromSecondRow();
-						HAL_Delay(MOTION_DELAY);
+						//#HAL_Delay(MOTION_DELAY);
 						break;
 					}
 
@@ -102,7 +104,7 @@ void executePlantationTask(void) {
 //					}
 					picktheBall(column, row);
 					moveToCenterofNextColumnfromThiredRow();
-					HAL_Delay(MOTION_DELAY);
+					//#HAL_Delay(MOTION_DELAY);
 
 		}
 
@@ -188,7 +190,7 @@ void executePotatoSeperationTask(void){
 
 	//Drop the baalls
 
-	//retrieve_ball(WHITE_BALL);
+	retrieve_ball(WHITE_BALL);
 	Buzzer_Toggle(300);
 
 	HAL_Delay(2000);
@@ -203,7 +205,7 @@ void executePotatoSeperationTask(void){
 
 	Robot_MoveForwardUntillLine();
 
-	//retrieve_ball(YELLOW_BALL);
+	retrieve_ball(YELLOW_BALL);
 	Buzzer_Toggle(300);
 
 
