@@ -25,6 +25,7 @@ SUBDIRS := \
 Core/.metadata/.plugins/org.eclipse.cdt.make.core \
 Core/Src \
 Core/Startup \
+Drivers/PCA9548A/Src \
 Drivers/SSD1306/Src \
 Drivers/STM32F4xx_HAL_Driver/Src \
 Drivers/VL53L0X/core/src \

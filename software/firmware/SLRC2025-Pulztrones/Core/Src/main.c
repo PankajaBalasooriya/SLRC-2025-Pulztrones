@@ -48,6 +48,7 @@
 #include "ballstorage.h"
 #include "RPI_uart_comm.h"
 #include "arm_controller.h"
+#include "PCA9548A.h"
 
 
 
@@ -101,7 +102,7 @@ RAYKHA_Calibration raykha_calibration;
 uint8_t calibration_complete = 0;
 
 
-
+ volatile uint8_t task_ready = 0;  // Global flag
 
 
 
@@ -152,6 +153,195 @@ Controller controller;
 //    }
 //}
 
+
+
+//-------------------------color sensor----------------
+
+
+/* TCS3472 I2C Address */
+#define TCS3472_ADDR                 (0x29 << 1)  // 7-bit address shifted left
+
+/* TCS3472 Registers */
+#define TCS3472_COMMAND_BIT          0x80
+#define TCS3472_REG_ENABLE           0x00
+#define TCS3472_REG_ATIME            0x01
+#define TCS3472_REG_WTIME            0x03
+#define TCS3472_REG_AILTL            0x04
+#define TCS3472_REG_AILTH            0x05
+#define TCS3472_REG_AIHTL            0x06
+#define TCS3472_REG_AIHTH            0x07
+#define TCS3472_REG_PERS             0x0C
+#define TCS3472_REG_CONFIG           0x0D
+#define TCS3472_REG_CONTROL          0x0F
+#define TCS3472_REG_ID               0x12
+#define TCS3472_REG_STATUS           0x13
+#define TCS3472_REG_CDATAL           0x14
+#define TCS3472_REG_CDATAH           0x15
+#define TCS3472_REG_RDATAL           0x16
+#define TCS3472_REG_RDATAH           0x17
+#define TCS3472_REG_GDATAL           0x18
+#define TCS3472_REG_GDATAH           0x19
+#define TCS3472_REG_BDATAL           0x1A
+#define TCS3472_REG_BDATAH           0x1B
+
+/* TCS3472 Enable Register bits */
+#define TCS3472_ENABLE_PON           0x01    // Power ON
+#define TCS3472_ENABLE_AEN           0x02    // RGBC Enable
+#define TCS3472_ENABLE_WEN           0x08    // Wait Enable
+#define TCS3472_ENABLE_AIEN          0x10    // RGBC Interrupt Enable
+
+
+uint8_t TCS3472_Init(void);
+uint8_t TCS3472_GetID(void);
+void TCS3472_Enable(void);
+void TCS3472_Disable(void);
+void TCS3472_SetIntegrationTime(uint8_t time);
+void TCS3472_SetGain(uint8_t gain);
+void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
+void TCS3472_Write(uint8_t reg, uint8_t value);
+uint8_t TCS3472_Read8(uint8_t reg);
+uint16_t TCS3472_Read16(uint8_t reg);
+
+
+
+
+/* TCS3472 Color Sensor Functions */
+
+/* Initialize TCS3472 sensor */
+uint8_t TCS3472_Init(void)
+{
+    /* Check if sensor is responding */
+    uint8_t id = TCS3472_GetID();
+    if (id != 0x44 && id != 0x4D) {
+        return HAL_ERROR;  // Sensor not detected
+    }
+
+    /* Power ON the device */
+    TCS3472_Enable();
+
+    /* Set integration time (1 = 2.4ms, 255 = 614.4ms) */
+    TCS3472_SetIntegrationTime(0xFF);  // Maximum integration time
+
+    /* Set gain (0 = 1x, 1 = 4x, 2 = 16x, 3 = 60x) */
+    TCS3472_SetGain(1);  // 4x gain
+
+    /* Wait for a moment for the sensor to stabilize */
+    HAL_Delay(50);
+
+    return HAL_OK;
+}
+
+/* Get device ID */
+uint8_t TCS3472_GetID(void)
+{
+    return TCS3472_Read8(TCS3472_REG_ID);
+}
+
+/* Enable the device */
+void TCS3472_Enable(void)
+{
+    /* Power ON */
+    TCS3472_Write(TCS3472_REG_ENABLE, TCS3472_ENABLE_PON);
+    HAL_Delay(3);  // Wait 2.4ms for power-up
+
+    /* Enable RGBC sensor */
+    TCS3472_Write(TCS3472_REG_ENABLE, TCS3472_ENABLE_PON | TCS3472_ENABLE_AEN);
+}
+
+/* Disable the device */
+void TCS3472_Disable(void)
+{
+    /* Get current value */
+    uint8_t val = TCS3472_Read8(TCS3472_REG_ENABLE);
+
+    /* Turn off AEN and PON */
+    TCS3472_Write(TCS3472_REG_ENABLE, val & ~(TCS3472_ENABLE_PON | TCS3472_ENABLE_AEN));
+}
+
+/* Set integration time */
+void TCS3472_SetIntegrationTime(uint8_t time)
+{
+    /* Write integration time to the register */
+    TCS3472_Write(TCS3472_REG_ATIME, time);
+}
+
+/* Set gain */
+void TCS3472_SetGain(uint8_t gain)
+{
+    /* Check if gain is valid (0-3) */
+    if (gain > 3) gain = 3;
+
+    /* Write gain to the register */
+    TCS3472_Write(TCS3472_REG_CONTROL, gain);
+}
+
+/* Get RGB and Clear values */
+void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c)
+{
+    /* Wait for data to be valid */
+    while (!(TCS3472_Read8(TCS3472_REG_STATUS) & 0x01));
+
+    /* Read all values */
+    *c = TCS3472_Read16(TCS3472_REG_CDATAL);
+    *r = TCS3472_Read16(TCS3472_REG_RDATAL);
+    *g = TCS3472_Read16(TCS3472_REG_GDATAL);
+    *b = TCS3472_Read16(TCS3472_REG_BDATAL);
+}
+
+/* Write a byte to the TCS3472 register */
+void TCS3472_Write(uint8_t reg, uint8_t value)
+{
+    uint8_t data[2];
+    data[0] = TCS3472_COMMAND_BIT | reg;
+    data[1] = value;
+
+    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, data, 2, 100);
+}
+
+/* Read 8-bit value from TCS3472 register */
+uint8_t TCS3472_Read8(uint8_t reg)
+{
+    uint8_t cmd = TCS3472_COMMAND_BIT | reg;
+    uint8_t value;
+
+    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, &cmd, 1, 100);
+    HAL_I2C_Master_Receive(&hi2c1, TCS3472_ADDR, &value, 1, 100);
+
+    return value;
+}
+
+/* Read 16-bit value from TCS3472 register */
+uint16_t TCS3472_Read16(uint8_t reg)
+{
+    uint8_t cmd = TCS3472_COMMAND_BIT | reg;
+    uint8_t data[2];
+
+    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, &cmd, 1, 100);
+    HAL_I2C_Master_Receive(&hi2c1, TCS3472_ADDR, data, 2, 100);
+
+    return (data[1] << 8) | data[0];
+}
+
+/* This function is called when a HAL error occurs */
+
+#ifdef  USE_FULL_ASSERT
+void assert_failed(uint8_t *file, uint32_t line)
+{
+    /* User can add his own implementation to report the file name and line number */
+    printf("Wrong parameters value: file %s on line %d\r\n", file, line);
+}
+#endif /* USE_FULL_ASSERT */
+
+
+
+
+//------------------------------------------------------
+
+
+
+
+
+
 /* USER CODE END 0 */
 
 /**
@@ -162,7 +352,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-//	uint32_t count = 0; // Initialize thecounter
+//	uint32_t count = 0; // Initialize the counter
 //	char buffer[50]; // Buffer to hold formatted string
 
   /* USER CODE END 1 */
@@ -222,14 +412,14 @@ int main(void)
   //AnalogMux_Init();
   // This is the uart for the bluetooth
   //UART_Init(&huart3);
-  RPI_UART_Init();
+  //RPI_UART_Init();
 
   /*---------------------Servo--------------------------------*/
   // Initialize servo system
-  Servo_Init(50);  // 50Hz frequency for servos
+  //Servo_Init(50);  // 50Hz frequency for servos
 
   // Initialize arm controller
-  Arm_Init();
+  //Arm_Init();
 
   //Arm_MoveServo(ARM_BASE_SERVO, 100.0f);
 
@@ -280,7 +470,7 @@ int main(void)
 
   //PCA9685_SetServoAngle(14, 100);
 
-//HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
 ////
 //  HAL_Delay(3000);
 //
@@ -329,59 +519,77 @@ int main(void)
 
   /*-------------------------------------------------------------------*/
   //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
+
   HAL_Delay(2000);
-  RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
   HAL_Delay(200);
   Buzzer_Toggle(100);
 
-  //set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+  //set_steering_mode(STEERING_OFF_READLINE);
+  //tcs3272_init();
 
+  Buzzer_Toggle(100);
   HAL_Delay(6000);
   Buzzer_Toggle(100);
 
-  HAL_Delay(1000);
+//  HAL_Delay(200);
+//
+//  EnableSysTickFunction();
+//
+//  runCurrentTask(TASK_PLANTATION);
+//
+//  Buzzer_Toggle(500);
+//
+//  runCurrentTask(TASK_SORTING_POTATOS);
+//
+//  Buzzer_TaskCompletion();
 
-  EnableSysTickFunction();
-  runCurrentTask(TASK_PLANTATION);
+  //Robot_MoveForwardUntillLine();
+
+
 
   //Turn360Servo();
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
 
-//  store_ball(1, WHITE_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
-//
-//  store_ball(2, YELLOW_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
-//
+//store_ball(1, WHITE_BALL);
+////
+////
+//store_ball(2, YELLOW_BALL);
+////
 //  store_ball(3, WHITE_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
 //
 //  store_ball(4, YELLOW_BALL);
-//  pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
 //
 //  store_ball(5, WHITE_BALL);
- ///pickup_and_Store();
-//  HAL_Delay(2000);
-//  return_home();
 //
 //
 //  retrieve_ball(YELLOW_BALL);
+
+//////////////////////Lines for Oshadha's mechanism testing only
+//  rotate_360_to_position(1);
 //  HAL_Delay(1000);
- ///return_home();
+//  rotate_360_to_position(3);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(5);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(2);
+//  HAL_Delay(1000);
+//  rotate_360_to_position(1);
+//  HAL_Delay(1000);
+//////////////////////Lines for Oshadha's mechanism testing only ends
 
+//  pickup_and_Store();
+////  retrive_and_drop();
+//  return_home();
 
-
-  //rotate_360_to_position(4);
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
+
+
+//  pickup_and_Store();
+  //retrive_and_drop();
+//  HAL_Delay(3000);
+ // return_home();
 
 
   //Robot_TurnRight90Inplace();
@@ -395,17 +603,34 @@ int main(void)
 //  //Motion_StopAt(&motion, 600);
 //  Motion_StopAfter(&motion, 100);
   //Robot_LineFollowUntillJunction();
+  	 // set_steering_mode(STEERING_OFF_READLINE);
 
-  	 //Motion_Move(&motion, 1200, 200, 0, 100);
+  	//Motion_Move(&motion, 1000, 100, 0, 120);
+
+  	//set_steering_mode(STEERING_OFF);
 //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
-//  Motion_Move(&motion, 600, 200, 0, 200);
+//Motion_Move(&motion, 600, 200, 0, 200);
 
 
   //Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 //set_steering_mode(STEERING_OFF);
   //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
+
+
+  if (TCS3472_Init() != HAL_OK)
+      {
+          char msg[] = "TCS3472 initialization failed!\r\n";
+          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+          Error_Handler();
+      }
+
+      char msg[] = "TCS3472 initialized successfully!\r\n";
+      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+      uint16_t r, g, b, c;
+      char buffer[100];
 
 
   /* USER CODE END 2 */
@@ -417,6 +642,38 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
+	  /* Get RGB and Clear values */
+	          TCS3472_GetRGBC(&r, &g, &b, &c);
+
+	          /* Print the values */
+	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d\r\n", r, g, b, c);
+	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+	          /* Wait 500ms before next reading */
+	          HAL_Delay(500);
+
+
+
+//	  if (task_ready){
+//		  task_ready = 0;
+//
+//		HAL_Delay(200);
+//
+//		EnableSysTickFunction();
+//
+//		runCurrentTask(TASK_PLANTATION);
+//
+//		Buzzer_Toggle(500);
+//
+//		runCurrentTask(TASK_SORTING_POTATOS);
+//
+//		Buzzer_TaskCompletion();
+//
+//	  }
+
+
 //	  left_counts = getLeftEncoderCounts();
 //	  right_counts = getRightEncoderCounts();
 //
@@ -943,11 +1200,11 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, S0_Pin|S1_Pin|S2_Pin|S3_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
+  /*Configure GPIO pins : B1_Pin PC11 */
+  GPIO_InitStruct.Pin = B1_Pin|GPIO_PIN_11;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : AIRPUMP_Pin */
   GPIO_InitStruct.Pin = AIRPUMP_Pin;
@@ -983,15 +1240,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PC11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_11;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

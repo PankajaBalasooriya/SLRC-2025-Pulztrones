@@ -1,4 +1,4 @@
-../Core/Src/systick.c:18:6:SysTickFunction	16	static
-../Core/Src/systick.c:39:6:EnableSysTickFunction	8	static
-../Core/Src/systick.c:45:6:DisableSysTickFunction	8	static
-../Core/Src/systick.c:51:6:CheckEncoderCounts	24	static
+../Core/Src/systick.c:19:6:SysTickFunction	16	static
+../Core/Src/systick.c:43:6:EnableSysTickFunction	8	static
+../Core/Src/systick.c:49:6:DisableSysTickFunction	8	static
+../Core/Src/systick.c:55:6:CheckEncoderCounts	24	static

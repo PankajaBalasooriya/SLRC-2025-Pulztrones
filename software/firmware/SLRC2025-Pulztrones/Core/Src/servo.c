@@ -194,7 +194,7 @@ void Turn360Servo()
   float pwmValue;
 
 
-  pwmValue = 300.00;
+  pwmValue = 295.00;//299
 
   // Set PWM with calculated value
   PCA9685_SetPWM(14, 0, (uint16_t)pwmValue);

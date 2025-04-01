@@ -9,6 +9,7 @@
 #include "motion.h"
 #include "sensors.h"
 #include "arm_controller.h"
+#include "robot.h"
 
 extern Motion motion;
 
@@ -29,6 +30,9 @@ void SysTickFunction(void) {
 		//UpdateControllers(&controller, Motion_Velocity(&motion), Motion_Omega(&motion), 0.6);
 	//--------------------------------------------------------------------
 		//UART_Transmit_EncoderData(&huart3);
+
+		//UART_Transmit_Int(&huart3, "L", linecolorRPI);
+		//UART_Transmit_Int(&huart3, "B", ballcolorRPI);
 
 
 

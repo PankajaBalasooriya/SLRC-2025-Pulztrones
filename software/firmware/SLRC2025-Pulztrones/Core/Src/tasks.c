@@ -3,20 +3,39 @@
 #include "robot.h"
 #include "buzzer.h"
 #include "RPI_uart_comm.h"
+#include "ballstorage.h"
 
 
 // Initialize task status globally
 
 
 // Function to update task status
+volatile uint32_t delay_end_time = 0;
+
+uint8_t ball_pos = 0;
+
+// Start a non-blocking delay (delay in milliseconds)
+void NonBlockingDelay(uint32_t delay_ms)
+{
+    delay_end_time = HAL_GetTick() + delay_ms;  // Set the target time
+}
+
+// Check if the delay is complete
+uint8_t IsDelayComplete(void)
+{
+    return (HAL_GetTick() >= delay_end_time);  // Return true if the current time has passed the target time
+}
 
 
 //---------Start 0f Plantation Task (Collect and identify potatoes)--------------------
-LineColor linecolor;
+LineColor Newlinecolor = WHITE;
+LineColor Nextlinecolor = WHITE;
 BallColor ballcolor;
 void executePlantationTask(void) {
 	StartLineColorDetection();
-	HAL_Delay(5000);
+	Buzzer_Toggle(100);
+	HAL_Delay(2000);
+	Buzzer_Toggle(300);
 	Robot_MoveForwardUntillLine();
 	Robot_TurnLeft90Inplace();
 
@@ -25,10 +44,13 @@ void executePlantationTask(void) {
 		for(uint8_t row = 0; row < 4; row ++){
 				if(row == 0){
 					//linecolor = RPI_GetLineColor(column, row);
-					linecolor = RPI_GetLineColor();
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					Newlinecolor = RPI_GetLineColor();
 					moveToCenterofCellinZeroRow();
 
-					if(linecolor == GREEN){
+					if(Newlinecolor == GREEN){
 
 						// Here we get the ball color after picking
 						// ToDo: Handle that
@@ -36,37 +58,53 @@ void executePlantationTask(void) {
 
 
 						moveToCenterofNextColumnfromFirstRow();
-						HAL_Delay(MOTION_DELAY);
+						//#HAL_Delay(MOTION_DELAY);
 						break;
 					}
 				}
 				else if(row == 1){
 					//linecolor = RPI_GetLineColor(column, row);
-					linecolor = RPI_GetLineColor();
-					moveToCenterofNextCell();
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
 
-					if(linecolor == GREEN){
+					Newlinecolor = RPI_GetLineColor(); //white
+					moveToCenterofNextCell();
+					//
+					Nextlinecolor = RPI_GetLineColor();
+
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					//
+
+					if(Newlinecolor == GREEN && Nextlinecolor == WHITE){
 						// Here we get the ball color after picking
 						// ToDo: Handle that
 						picktheBall(column, row);
 						moveToCenterofNextColumnfromSecondRow();
-						HAL_Delay(MOTION_DELAY);
+						//#HAL_Delay(MOTION_DELAY);
 						break;
 					}
 
 				}else if(row == 2){
 					//linecolor = RPI_GetLineColor(column, row);
-					linecolor = RPI_GetLineColor();
+					NonBlockingDelay(2000);
+					while (!IsDelayComplete());
+
+					//Newlinecolor = RPI_GetLineColor();
 					moveToCenterofNextCell();
 
-					if(linecolor == GREEN){
-						// Here we get the ball color after picking
-						// ToDo: Handle that
-						picktheBall(column, row);
-						moveToCenterofNextColumnfromThiredRow();
-						HAL_Delay(MOTION_DELAY);
-						break;
-					}
+//					if(Newlinecolor == GREEN){
+//						// Here we get the ball color after picking
+//						// ToDo: Handle that
+//						picktheBall(column, row);
+//						moveToCenterofNextColumnfromThiredRow();
+//						HAL_Delay(MOTION_DELAY);
+//						break;
+//					}
+					picktheBall(column, row);
+					moveToCenterofNextColumnfromThiredRow();
+					//#HAL_Delay(MOTION_DELAY);
 
 		}
 
@@ -111,10 +149,15 @@ void moveToCenterofNextColumnfromThiredRow(){
 }
 
 BallColor picktheBall(uint8_t column, uint8_t row){
+	ball_pos++;
 	Robot_TurnLeft90Inplace();
-	ballcolor = RPI_GetBallColor(column, row);
+	ballcolor = RPI_GetBallColor();
 	HAL_Delay(MOTION_DELAY);
 	//ToDo: Pick The box
+	//pickup_and_Store();
+	store_ball(ball_pos, ballcolor);
+//	HAL_Delay(2000);
+	//return_home();
 	Buzzer_Toggle(1000);
 	HAL_Delay(MOTION_DELAY);
 
@@ -126,13 +169,69 @@ BallColor picktheBall(uint8_t column, uint8_t row){
 
 //---------end 0f Plantation Task (Collect and identify potatoes)---------------------
 
-// Task manager function
+//================================================================================================
+
+//---------Start 0f colorBox Task (Drop the potatoes to the identified boxed)--------------------
+
+void executePotatoSeperationTask(void){
+	Robot_LineFollowUntillJunction();
+	HAL_Delay(MOTION_DELAY);
+
+
+	// If line following initially
+
+	Robot_TurnRight90Inplace();
+
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
+
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveForwardUntillLine();
+
+	//Drop the baalls
+
+	retrieve_ball(WHITE_BALL);
+	Buzzer_Toggle(300);
+
+	HAL_Delay(2000);
+
+	Robot_MoveReverseGivenDistance(120);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_MoveForwardGivenDistance(2 * DISTACE_TO_CENTER_OF_CELL);
+
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveForwardUntillLine();
+
+	retrieve_ball(YELLOW_BALL);
+	Buzzer_Toggle(300);
+
+
+}
+
+
+//---------end 0f colorBox Task (Collect and identify potatoes)---------------------
+
+
+
+
+
+
+
+
+
+
+// -----------------------------Task manager function---------------------------------
 void runCurrentTask(TaskType task) {
 
     switch (task) {
         case TASK_PLANTATION:
             executePlantationTask();
             break;
+        case TASK_SORTING_POTATOS:
+        	executePotatoSeperationTask();
         default:
 
             break;

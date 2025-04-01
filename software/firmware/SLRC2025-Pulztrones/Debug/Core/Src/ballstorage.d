@@ -34,7 +34,12 @@ Core/Src/ballstorage.o: ../Core/Src/ballstorage.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/pca9685.h ../Core/Inc/config.h ../Core/Inc/buzzer.h \
- ../Core/Inc/servo.h
+ ../Core/Inc/servo.h \
+ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
+ ../Core/Inc/main.h \
+ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
+ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
+ ../Core/Inc/arm_controller.h ../Core/Inc/config.h
 ../Core/Inc/ballstorage.h:
 ../Core/Inc/servo.h:
 ../Core/Inc/main.h:
@@ -75,3 +80,9 @@ Core/Src/ballstorage.o: ../Core/Src/ballstorage.c \
 ../Core/Inc/config.h:
 ../Core/Inc/buzzer.h:
 ../Core/Inc/servo.h:
+C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h:
+../Core/Inc/main.h:
+C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
+C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
+../Core/Inc/arm_controller.h:
+../Core/Inc/config.h:

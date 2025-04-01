@@ -26,6 +26,7 @@
 "./Core/Src/tasks.o"
 "./Core/Src/uartcom.o"
 "./Core/Startup/startup_stm32f446retx.o"
+"./Drivers/PCA9548A/Src/PCA9548A.o"
 "./Drivers/SSD1306/Src/bitmap.o"
 "./Drivers/SSD1306/Src/fonts.o"
 "./Drivers/SSD1306/Src/ssd1306.o"

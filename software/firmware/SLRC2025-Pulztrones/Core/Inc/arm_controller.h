@@ -86,7 +86,8 @@ int Arm_Home(void);
 void pickup_and_Store(void);
 void retrive_and_drop(void);
 void return_home(void);
-
+void turn_on_air_pump(void);
+void turn_off_air_pump(void);
 
 
 #ifdef __cplusplus

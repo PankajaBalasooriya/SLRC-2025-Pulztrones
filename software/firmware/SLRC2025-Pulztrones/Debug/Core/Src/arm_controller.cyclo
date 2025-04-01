@@ -5,5 +5,7 @@
 ../Core/Src/arm_controller.c:211:5:Arm_MoveTo	1
 ../Core/Src/arm_controller.c:221:5:Arm_Home	1
 ../Core/Src/arm_controller.c:227:6:pickup_and_Store	1
-../Core/Src/arm_controller.c:251:6:retrive_and_drop	1
-../Core/Src/arm_controller.c:263:6:return_home	1
+../Core/Src/arm_controller.c:255:6:retrive_and_drop	1
+../Core/Src/arm_controller.c:303:6:return_home	1
+../Core/Src/arm_controller.c:312:6:turn_on_air_pump	1
+../Core/Src/arm_controller.c:316:6:turn_off_air_pump	1
