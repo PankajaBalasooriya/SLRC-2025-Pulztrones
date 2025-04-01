@@ -1,0 +1,23 @@
+/*
+ * irs.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef INC_IRS_H_
+#define INC_IRS_H_
+
+#include "sensors.h"
+
+typedef enum
+{
+	IR_LEFT = 0,
+	IR_FRONT_LEFT = 1,
+	IR_FRONT_RIGHT = 2,
+	IR_RIGHT = 3
+}IR;
+
+
+
+#endif /* INC_IRS_H_ */

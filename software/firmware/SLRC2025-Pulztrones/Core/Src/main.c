@@ -49,7 +49,8 @@
 #include "RPI_uart_comm.h"
 #include "arm_controller.h"
 #include "PCA9548A.h"
-//#include "sensor_app.h"
+#include "TCS3472.h"
+#include "irs.h"
 
 
 
@@ -708,41 +709,6 @@ int main(void)
 
 
 
-  ////////////////////////////////////////////////////////////////////
-//  char msg[100];
-//    sprintf(msg, "\r\n\r\nColor Sensor Application Starting...\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//
-//    /* Initialize sensors */
-//    if (InitSensors() != HAL_OK) {
-//      sprintf(msg, "Sensor initialization failed. Check connections!\r\n");
-//      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//      Error_Handler();
-//    }
-//
-//    /* Ask if user wants to calibrate sensors */
-//    sprintf(msg, "Press USER button (PA0) to start calibration or wait 5s to skip...\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//
-//    /* Wait for button press or timeout */
-////    uint32_t start_time = HAL_GetTick();
-////    while (HAL_GetTick() - start_time < 5000) {
-////      if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_RESET) {
-////        /* Button pressed, start calibration */
-////        HAL_Delay(200); // Debounce
-////        CalibrateSensors();
-////        break;
-////      }
-////    }
-//    HAL_Delay(5000);
-//    CalibrateSensors();
-//
-//    sprintf(msg, "Starting main application loop...\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-  ////////////////////////////////////////////////////////////////////
-
-
-
 
 
 
@@ -838,30 +804,30 @@ int main(void)
   //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
 
-
-  /* Initialize TCS3472 color sensor */
-  i2c_mux_select(&mux, 1);
-  HAL_Delay(2000);
-
-
-      if (TCS3472_Init() != HAL_OK)
-      {
-          char msg[] = "TCS3472 initialization failed!\r\n";
-          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-          Error_Handler();
-      }
-
-      char msg[] = "TCS3472 initialized successfully!\r\n";
-      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-
-      /* Run calibration routine */
-
-      TCS3472_CalibrateColors();
-      //TCS3472_CalibrateColors();
-
-      uint16_t r, g, b, c;
-      uint8_t line_color;
-      char buffer[100];
+//-----workinf code
+//  /* Initialize TCS3472 color sensor */
+//  i2c_mux_select(&mux, 0);
+//  HAL_Delay(2000);
+//
+//
+//      if (TCS3472_Init() != HAL_OK)
+//      {
+//          char msg[] = "TCS3472 initialization failed!\r\n";
+//          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//          Error_Handler();
+//      }
+//
+//      char msg[] = "TCS3472 initialized successfully!\r\n";
+//      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//
+//      /* Run calibration routine */
+//
+//      TCS3472_CalibrateColors();
+//      //TCS3472_CalibrateColors();
+//
+//      uint16_t r, g, b, c;
+//      uint8_t line_color;
+//      char buffer[100];
 
 
   /* USER CODE END 2 */
@@ -874,28 +840,30 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+	  analogReadIRs();
 
-	  /* Get RGB and Clear values */
-	          TCS3472_GetRGBC(&r, &g, &b, &c);
 
-	          /* Detect the line color */
-	          line_color = TCS3472_DetectLineColor(r, g, b, c);
-
-	          /* Print the RGB values and detected color */
-	          char *color_str;
-	          switch(line_color) {
-	              case COLOR_BLACK:  color_str = "BLACK"; break;
-	              case COLOR_WHITE:  color_str = "WHITE"; break;
-	              case COLOR_GREEN:  color_str = "GREEN"; break;
-	              default:           color_str = "UNKNOWN"; break;
-	          }
-
-	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
-	                  r, g, b, c, color_str);
-	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-	          /* Wait 100ms before next reading - reduced for faster response */
-	          HAL_Delay(100);
+//	  /* Get RGB and Clear values */
+//	          TCS3472_GetRGBC(&r, &g, &b, &c);
+//
+//	          /* Detect the line color */
+//	          line_color = TCS3472_DetectLineColor(r, g, b, c);
+//
+//	          /* Print the RGB values and detected color */
+//	          char *color_str;
+//	          switch(line_color) {
+//	              case COLOR_BLACK:  color_str = "BLACK"; break;
+//	              case COLOR_WHITE:  color_str = "WHITE"; break;
+//	              case COLOR_GREEN:  color_str = "GREEN"; break;
+//	              default:           color_str = "UNKNOWN"; break;
+//	          }
+//
+//	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
+//	                  r, g, b, c, color_str);
+//	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//
+//	          /* Wait 100ms before next reading - reduced for faster response */
+//	          HAL_Delay(100);
 
 
 

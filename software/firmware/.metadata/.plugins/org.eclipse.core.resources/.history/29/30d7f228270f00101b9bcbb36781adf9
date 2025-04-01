@@ -1,0 +1,9 @@
+/*
+ * irs.c
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+
+uint16_t IRsensorValues[5] = {0};

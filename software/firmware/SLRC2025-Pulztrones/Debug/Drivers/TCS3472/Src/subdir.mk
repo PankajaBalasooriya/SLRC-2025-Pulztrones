@@ -5,16 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Drivers/TCS3472/Src/TCS3472.c \
-../Drivers/TCS3472/Src/sensor_app.c 
+../Drivers/TCS3472/Src/TCS3472.c 
 
 OBJS += \
-./Drivers/TCS3472/Src/TCS3472.o \
-./Drivers/TCS3472/Src/sensor_app.o 
+./Drivers/TCS3472/Src/TCS3472.o 
 
 C_DEPS += \
-./Drivers/TCS3472/Src/TCS3472.d \
-./Drivers/TCS3472/Src/sensor_app.d 
+./Drivers/TCS3472/Src/TCS3472.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +21,7 @@ Drivers/TCS3472/Src/%.o Drivers/TCS3472/Src/%.su Drivers/TCS3472/Src/%.cyclo: ..
 clean: clean-Drivers-2f-TCS3472-2f-Src
 
 clean-Drivers-2f-TCS3472-2f-Src:
-	-$(RM) ./Drivers/TCS3472/Src/TCS3472.cyclo ./Drivers/TCS3472/Src/TCS3472.d ./Drivers/TCS3472/Src/TCS3472.o ./Drivers/TCS3472/Src/TCS3472.su ./Drivers/TCS3472/Src/sensor_app.cyclo ./Drivers/TCS3472/Src/sensor_app.d ./Drivers/TCS3472/Src/sensor_app.o ./Drivers/TCS3472/Src/sensor_app.su
+	-$(RM) ./Drivers/TCS3472/Src/TCS3472.cyclo ./Drivers/TCS3472/Src/TCS3472.d ./Drivers/TCS3472/Src/TCS3472.o ./Drivers/TCS3472/Src/TCS3472.su
 
 .PHONY: clean-Drivers-2f-TCS3472-2f-Src
 

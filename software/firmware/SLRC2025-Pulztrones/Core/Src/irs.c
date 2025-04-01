@@ -1,0 +1,47 @@
+/*
+ * irs.c
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+#include  "irs.h"
+
+uint16_t IRsensorValues[16] = {0};
+
+
+
+void analogReadIRs(void){
+	for (uint8_t i = 10; i < 15; i++)
+	    {
+	        IRsensorValues[i] = AnalogMux_ReadChannel(i);
+	    }
+}
+
+
+uint16_t readRawIR(IR ir)
+{
+	analogReadIRs();
+
+
+	switch(ir){
+	case IR_FRONT:
+		return IRsensorValues[10];
+		break;
+	case IR_LEFT_BACK:
+		return IRsensorValues[11];
+		break;
+	case IR_LEFT_FORWARD:
+		return IRsensorValues[12];
+		break;
+	case IR_RIGHT_BACK:
+		return IRsensorValues[13];
+		break;
+	case IR_RIGHT_FORWARD:
+		return IRsensorValues[14];
+		break;
+	default:
+		return -1;
+		break;
+	}
+}
+

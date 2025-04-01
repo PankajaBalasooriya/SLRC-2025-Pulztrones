@@ -1,0 +1,36 @@
+/*
+ * irs.c
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+
+uint16_t IRsensorValues[5] = {0};
+
+
+
+void analogReadIRs(void){
+	for (uint8_t i = 10; i < 15; i++)
+	{
+		IRsensorValues[5] = AnalogMux_ReadChannel(i);
+	}
+}
+
+
+uint16_t readRawIR(IR ir)
+{
+	switch(ir){
+	case IR_FRONT:
+		break;
+	case IR_LEFT_BACK:
+		break;
+	case IR_LEFT_FORWARD:
+		break;
+	case IR_RIGHT_BACK:
+		break;
+	case IR_RIGHT_FORWARD:
+		break;
+	}
+}
+

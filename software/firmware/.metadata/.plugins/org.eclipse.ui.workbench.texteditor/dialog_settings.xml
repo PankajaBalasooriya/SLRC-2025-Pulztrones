@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="sensorValues"/>
+		<item value="TCS3472_SetGain"/>
 		<item value="ray"/>
 		<item value="volatile"/>
 		<item value="RPI_GetLine"/>

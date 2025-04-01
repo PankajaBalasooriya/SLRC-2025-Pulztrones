@@ -1,0 +1,2 @@
+../Core/Src/irs.c:13:6:analogReadIRs	2
+../Core/Src/irs.c:21:10:readRawIR	6
