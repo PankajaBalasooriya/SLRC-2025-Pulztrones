@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SLRC2025-Pulztrones/Drivers/PCA9548A/inc&apos; to &apos;Inc&apos;" description="Rename resource &apos;inc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Drivers/PCA9548A/inc" name="Inc" stamp="1743128514205" updateReferences="true"/>
+</session>
