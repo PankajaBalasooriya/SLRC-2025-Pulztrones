@@ -48,7 +48,7 @@
 #include "ballstorage.h"
 #include "RPI_uart_comm.h"
 #include "arm_controller.h"
-#include "PCA9548A.h"
+//#include "PCA9548A.h"
 
 
 
@@ -190,6 +190,11 @@ Controller controller;
 #define TCS3472_ENABLE_WEN           0x08    // Wait Enable
 #define TCS3472_ENABLE_AIEN          0x10    // RGBC Interrupt Enable
 
+/* Line Color Definitions */
+#define COLOR_UNKNOWN                0
+#define COLOR_BLACK                  1
+#define COLOR_WHITE                  2
+#define COLOR_GREEN                  3
 
 uint8_t TCS3472_Init(void);
 uint8_t TCS3472_GetID(void);
@@ -198,9 +203,27 @@ void TCS3472_Disable(void);
 void TCS3472_SetIntegrationTime(uint8_t time);
 void TCS3472_SetGain(uint8_t gain);
 void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
+uint8_t TCS3472_DetectLineColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c);
+void TCS3472_CalibrateColors(void);
 void TCS3472_Write(uint8_t reg, uint8_t value);
 uint8_t TCS3472_Read8(uint8_t reg);
 uint16_t TCS3472_Read16(uint8_t reg);
+
+
+/* Color calibration thresholds */
+struct {
+    uint16_t black_threshold;
+    uint16_t white_threshold;
+    uint16_t green_ratio_min;
+    uint16_t green_ratio_max;
+    uint8_t is_calibrated;
+} color_config = {
+    .black_threshold = 1000,  // Default value, should be calibrated
+    .white_threshold = 5000,  // Default value, should be calibrated
+    .green_ratio_min = 110,   // G/R ratio * 100, default value
+    .green_ratio_max = 150,   // G/R ratio * 100, default value
+    .is_calibrated = 0
+};
 
 
 
@@ -220,10 +243,10 @@ uint8_t TCS3472_Init(void)
     TCS3472_Enable();
 
     /* Set integration time (1 = 2.4ms, 255 = 614.4ms) */
-    TCS3472_SetIntegrationTime(0xFF);  // Maximum integration time
+    TCS3472_SetIntegrationTime(0x00);  // Minimum integration time (2.4ms) for fast readings
 
     /* Set gain (0 = 1x, 1 = 4x, 2 = 16x, 3 = 60x) */
-    TCS3472_SetGain(1);  // 4x gain
+    TCS3472_SetGain(3);  // 60x gain for better contrast in color detection
 
     /* Wait for a moment for the sensor to stabilize */
     HAL_Delay(50);
@@ -288,6 +311,149 @@ void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c)
     *b = TCS3472_Read16(TCS3472_REG_BDATAL);
 }
 
+/* Detect line color based on RGB values */
+uint8_t TCS3472_DetectLineColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c)
+{
+    /* If overall brightness is very low, it's black (background) */
+    if (c < color_config.black_threshold) {
+        return COLOR_BLACK;
+    }
+
+    /* If overall brightness is high, check if it's white or green */
+    if (c > color_config.white_threshold) {
+        /* Calculate green-to-red ratio (multiplied by 100 to avoid floating point) */
+        uint16_t g_to_r_ratio = 0;
+
+        /* Avoid division by zero */
+        if (r > 10) {
+            g_to_r_ratio = (g * 100) / r;
+        }
+
+        /* If green is significantly higher than red, it's green */
+        if (g_to_r_ratio >= color_config.green_ratio_min &&
+            g_to_r_ratio <= color_config.green_ratio_max &&
+            g > r && g > b) {
+            return COLOR_GREEN;
+        }
+
+        /* If all colors are relatively balanced and bright, it's white */
+        if (r > 500 && g > 500 && b > 500 &&
+            (r * 100) / c > 20 && (g * 100) / c > 20 && (b * 100) / c > 20) {
+            return COLOR_WHITE;
+        }
+    }
+
+    /* If we can't identify the color */
+    return COLOR_UNKNOWN;
+}
+
+/* Calibration function - to be called during setup or when a button is pressed */
+void TCS3472_CalibrateColors(void)
+{
+    char buffer[100];
+    uint16_t r, g, b, c;
+    uint16_t black_readings[5] = {0};
+    uint16_t white_readings[5] = {0};
+    uint16_t green_readings_r[5] = {0};
+    uint16_t green_readings_g[5] = {0};
+
+    /* Send calibration instructions */
+    sprintf(buffer, "Starting calibration sequence...\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    /* 1. Calibrate BLACK background */
+    sprintf(buffer, "Place sensor over BLACK surface and press USER button (PA0)...\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    /* Wait for button press */
+    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
+    HAL_Delay(5000); // Debounce
+
+    /* Take 5 readings of black background */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        black_readings[i] = c;
+        HAL_Delay(50);
+    }
+
+    /* Calculate average */
+    uint32_t black_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        black_sum += black_readings[i];
+    }
+    color_config.black_threshold = (black_sum / 5) * 1.5; // 50% margin
+
+    sprintf(buffer, "BLACK calibrated: threshold = %d\r\n", color_config.black_threshold);
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    HAL_Delay(1000);
+
+    /* 2. Calibrate WHITE line */
+    sprintf(buffer, "Place sensor over WHITE line and press USER button (PA0)...\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    /* Wait for button press */
+    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
+    HAL_Delay(5000); // Debounce
+
+    /* Take 5 readings of white line */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        white_readings[i] = c;
+        HAL_Delay(50);
+    }
+
+    /* Calculate average */
+    uint32_t white_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        white_sum += white_readings[i];
+    }
+    color_config.white_threshold = (white_sum / 5) * 0.8; // 20% margin
+
+    sprintf(buffer, "WHITE calibrated: threshold = %d\r\n", color_config.white_threshold);
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    HAL_Delay(1000);
+
+    /* 3. Calibrate GREEN line */
+    sprintf(buffer, "Place sensor over GREEN line and press USER button (PA0)...\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    /* Wait for button press */
+    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
+    HAL_Delay(5000); // Debounce
+
+    /* Take 5 readings of green line */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        green_readings_r[i] = r;
+        green_readings_g[i] = g;
+        HAL_Delay(50);
+    }
+
+    /* Calculate average G/R ratio */
+    uint32_t g_r_ratio_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        if (green_readings_r[i] > 10) { // Avoid division by zero
+            g_r_ratio_sum += (green_readings_g[i] * 100) / green_readings_r[i];
+        }
+    }
+    uint16_t avg_g_r_ratio = g_r_ratio_sum / 5;
+
+    /* Set min and max with 10% margin on each side */
+    color_config.green_ratio_min = avg_g_r_ratio * 0.9;
+    color_config.green_ratio_max = avg_g_r_ratio * 1.1;
+
+    sprintf(buffer, "GREEN calibrated: G/R ratio range = %d-%d\r\n",
+            color_config.green_ratio_min, color_config.green_ratio_max);
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    /* Mark as calibrated */
+    color_config.is_calibrated = 1;
+
+    sprintf(buffer, "Calibration complete!\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    HAL_Delay(1000);
+}
+
 /* Write a byte to the TCS3472 register */
 void TCS3472_Write(uint8_t reg, uint8_t value)
 {
@@ -323,6 +489,7 @@ uint16_t TCS3472_Read16(uint8_t reg)
 }
 
 /* This function is called when a HAL error occurs */
+
 
 #ifdef  USE_FULL_ASSERT
 void assert_failed(uint8_t *file, uint32_t line)
@@ -619,7 +786,8 @@ int main(void)
 
 
 
-  if (TCS3472_Init() != HAL_OK)
+  /* Initialize TCS3472 color sensor */
+      if (TCS3472_Init() != HAL_OK)
       {
           char msg[] = "TCS3472 initialization failed!\r\n";
           HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
@@ -629,7 +797,13 @@ int main(void)
       char msg[] = "TCS3472 initialized successfully!\r\n";
       HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 
+      /* Run calibration routine */
+
+      TCS3472_CalibrateColors();
+      //TCS3472_CalibrateColors();
+
       uint16_t r, g, b, c;
+      uint8_t line_color;
       char buffer[100];
 
 
@@ -647,12 +821,24 @@ int main(void)
 	  /* Get RGB and Clear values */
 	          TCS3472_GetRGBC(&r, &g, &b, &c);
 
-	          /* Print the values */
-	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d\r\n", r, g, b, c);
+	          /* Detect the line color */
+	          line_color = TCS3472_DetectLineColor(r, g, b, c);
+
+	          /* Print the RGB values and detected color */
+	          char *color_str;
+	          switch(line_color) {
+	              case COLOR_BLACK:  color_str = "BLACK"; break;
+	              case COLOR_WHITE:  color_str = "WHITE"; break;
+	              case COLOR_GREEN:  color_str = "GREEN"; break;
+	              default:           color_str = "UNKNOWN"; break;
+	          }
+
+	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
+	                  r, g, b, c, color_str);
 	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-	          /* Wait 500ms before next reading */
-	          HAL_Delay(500);
+	          /* Wait 100ms before next reading - reduced for faster response */
+	          HAL_Delay(100);
 
 
 
