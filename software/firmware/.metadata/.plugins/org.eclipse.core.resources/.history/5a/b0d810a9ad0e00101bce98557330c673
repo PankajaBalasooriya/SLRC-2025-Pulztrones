@@ -1,0 +1,13 @@
+/*
+ * sensor_app.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef TCS3472_INC_SENSOR_APP_H_
+#define TCS3472_INC_SENSOR_APP_H_
+
+
+
+#endif /* TCS3472_INC_SENSOR_APP_H_ */

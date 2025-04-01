@@ -11,6 +11,7 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/VL53L0X/platform/src/subdir.mk
 -include Drivers/VL53L0X/core/src/subdir.mk
+-include Drivers/TCS3472/Src/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Drivers/SSD1306/Src/subdir.mk
 -include Drivers/PCA9548A/Src/subdir.mk

@@ -28,6 +28,7 @@ Core/Startup \
 Drivers/PCA9548A/Src \
 Drivers/SSD1306/Src \
 Drivers/STM32F4xx_HAL_Driver/Src \
+Drivers/TCS3472/Src \
 Drivers/VL53L0X/core/src \
 Drivers/VL53L0X/platform/src \
 

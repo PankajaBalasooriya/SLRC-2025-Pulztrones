@@ -1,0 +1,27 @@
+/*
+ * sensor_app.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef TCS3472_INC_SENSOR_APP_H_
+#define TCS3472_INC_SENSOR_APP_H_
+
+#include "stm32f4xx_hal.h"
+#include "TCS3472.h"
+#include "PCA9548A.h"
+
+/* I2C multiplexer channels */
+#define MUX_CHANNEL_LINE_SENSOR     0
+#define MUX_CHANNEL_OBJECT_SENSOR   1
+
+/* Function declarations */
+HAL_StatusTypeDef InitSensors(void);
+void CalibrateSensors(void);
+void ProcessLineSensor(void);
+void ProcessObjectSensor(void);
+const char* GetLineColorString(uint8_t color);
+const char* GetObjectColorString(uint8_t color);
+
+#endif /* TCS3472_INC_SENSOR_APP_H_ */

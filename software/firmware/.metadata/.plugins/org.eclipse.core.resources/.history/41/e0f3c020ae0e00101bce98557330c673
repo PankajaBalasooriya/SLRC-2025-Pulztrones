@@ -1,0 +1,38 @@
+/*
+ * sensor_app.c
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+
+/**
+ * Implementation file for the multi-sensor color detection application
+ */
+
+#include "sensor_app.h"
+#include <stdio.h>
+#include <string.h>
+
+/* External HAL handler declarations */
+extern I2C_HandleTypeDef hi2c1;
+extern UART_HandleTypeDef huart3;
+
+/* Global variables */
+static i2c_mux_t i2c_mux;
+static TCS3472_t line_sensor;
+static TCS3472_t object_sensor;
+
+/* Initialize sensors and I2C multiplexer */
+HAL_StatusTypeDef InitSensors(void)
+{
+    char msg[100];
+    HAL_StatusTypeDef status = HAL_OK;
+
+    /* Initialize I2C multiplexer */
+    i2c_mux.hi2c = &hi2c1;
+    i2c_mux.rst_port = NULL;  // Set to actual reset port if available
+    i2c_mux.rst_pin = 0;      // Set to actual reset pin if available
+    i2c_mux.addr_offset = 0;  // Adjust based on address pins
+
+    if (i

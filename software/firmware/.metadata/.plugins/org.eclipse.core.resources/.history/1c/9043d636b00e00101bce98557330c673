@@ -1,0 +1,175 @@
+/*
+ * sensor_app.c
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+
+/**
+ * Implementation file for the multi-sensor color detection application
+ */
+
+#include "sensor_app.h"
+#include <stdio.h>
+#include <string.h>
+
+/* External HAL handler declarations */
+extern I2C_HandleTypeDef hi2c1;
+extern UART_HandleTypeDef huart3;
+
+/* Global variables */
+static i2c_mux_t i2c_mux;
+static TCS3472_t line_sensor;
+static TCS3472_t object_sensor;
+
+/* Initialize sensors and I2C multiplexer */
+HAL_StatusTypeDef InitSensors(void)
+{
+    char msg[100];
+    HAL_StatusTypeDef status = HAL_OK;
+
+    /* Initialize I2C multiplexer */
+    i2c_mux.hi2c = &hi2c1;
+    i2c_mux.rst_port = NULL;  // Set to actual reset port if available
+    i2c_mux.rst_pin = 0;      // Set to actual reset pin if available
+    i2c_mux.addr_offset = 0;  // Adjust based on address pins
+
+//    if (PCA9548A_Init(&i2c_mux) != HAL_OK) {
+//        sprintf(msg, "I2C Multiplexer initialization failed\r\n");
+//        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//        return HAL_ERROR;
+//    }
+
+    /* Configure line sensor */
+    line_sensor.hi2c = &hi2c1;
+    line_sensor.sensor_type = SENSOR_LINE;
+    line_sensor.config.line.is_calibrated = 0;  // Not calibrated yet
+
+    /* Configure object sensor */
+    object_sensor.hi2c = &hi2c1;
+    object_sensor.sensor_type = SENSOR_OBJECT;
+    object_sensor.config.object.is_calibrated = 0;  // Not calibrated yet
+
+    /* Initialize line sensor */
+    i2c_mux_select(&i2c_mux, MUX_CHANNEL_LINE_SENSOR);
+    if (TCS3472_Init(&line_sensor) != HAL_OK) {
+        sprintf(msg, "Line sensor initialization failed\r\n");
+        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+        status = HAL_ERROR;
+    } else {
+        sprintf(msg, "Line sensor initialized successfully\r\n");
+        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+    }
+
+    /* Initialize object sensor */
+    PCA9548A_SelectChannel(&i2c_mux, MUX_CHANNEL_OBJECT_SENSOR);
+    if (TCS3472_Init(&object_sensor) != HAL_OK) {
+        sprintf(msg, "Object sensor initialization failed\r\n");
+        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+        status = HAL_ERROR;
+    } else {
+        sprintf(msg, "Object sensor initialized successfully\r\n");
+        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+    }
+
+    return status;
+}
+
+/* Calibrate both sensors */
+void CalibrateSensors(void)
+{
+    char msg[100];
+
+    sprintf(msg, "Starting sensor calibration process...\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+    /* Calibrate line sensor */
+    PCA9548A_SelectChannel(&i2c_mux, MUX_CHANNEL_LINE_SENSOR);
+    TCS3472_CalibrateLineColors(&line_sensor, &huart3);
+
+    /* Calibrate object sensor */
+    PCA9548A_SelectChannel(&i2c_mux, MUX_CHANNEL_OBJECT_SENSOR);
+    TCS3472_CalibrateObjectColors(&object_sensor, &huart3);
+
+    sprintf(msg, "Sensor calibration complete\r\n");
+    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+}
+
+/* Process line sensor and detect color */
+void ProcessLineSensor(void)
+{
+    uint16_t r, g, b, c;
+    uint8_t color;
+    char msg[100];
+
+    /* Select line sensor channel */
+    PCA9548A_SelectChannel(&i2c_mux, MUX_CHANNEL_LINE_SENSOR);
+
+    /* Get color readings */
+    TCS3472_GetRGBC(&line_sensor, &r, &g, &b, &c);
+
+    /* Detect color */
+    color = TCS3472_DetectLineColor(&line_sensor, r, g, b, c);
+
+    /* Print results */
+    sprintf(msg, "Line: R=%d G=%d B=%d C=%d Color=%s\r\n",
+            r, g, b, c, GetLineColorString(color));
+    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+}
+
+/* Process object sensor and detect color */
+void ProcessObjectSensor(void)
+{
+    uint16_t r, g, b, c;
+    uint8_t color;
+    char msg[100];
+
+    /* Select object sensor channel */
+    PCA9548A_SelectChannel(&i2c_mux, MUX_CHANNEL_OBJECT_SENSOR);
+
+    /* Get color readings */
+    TCS3472_GetRGBC(&object_sensor, &r, &g, &b, &c);
+
+    /* Detect color */
+    color = TCS3472_DetectObjectColor(&object_sensor, r, g, b, c);
+
+    /* Print results */
+    sprintf(msg, "Object: R=%d G=%d B=%d C=%d Color=%s\r\n",
+            r, g, b, c, GetObjectColorString(color));
+    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+}
+
+/* Get string representation of line color */
+const char* GetLineColorString(uint8_t color)
+{
+    switch (color) {
+        case COLOR_BLACK:
+            return "BLACK";
+        case COLOR_WHITE:
+            return "WHITE";
+        case COLOR_GREEN:
+            return "GREEN";
+        case COLOR_UNKNOWN:
+        default:
+            return "UNKNOWN";
+    }
+}
+
+/* Get string representation of object color */
+const char* GetObjectColorString(uint8_t color)
+{
+    switch (color) {
+        case OBJ_COLOR_WHITE:
+            return "WHITE";
+        case OBJ_COLOR_ORANGE_YELLOW:
+            return "ORANGE/YELLOW";
+        case OBJ_COLOR_RED:
+            return "RED";
+        case OBJ_COLOR_BLUE:
+            return "BLUE";
+        case OBJ_COLOR_UNKNOWN:
+        default:
+            return "UNKNOWN";
+    }
+}

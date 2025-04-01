@@ -1,0 +1,109 @@
+/*
+ * TCS3472.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef TCS3472_INC_TCS3472_H_
+#define TCS3472_INC_TCS3472_H_
+
+#include "stm32f4xx_hal.h"
+#include <stdint.h>
+
+/* TCS3472 I2C Address */
+#define TCS3472_ADDR                 (0x29 << 1)  // 7-bit address shifted left
+
+/* TCS3472 Registers */
+#define TCS3472_COMMAND_BIT          0x80
+#define TCS3472_REG_ENABLE           0x00
+#define TCS3472_REG_ATIME            0x01
+#define TCS3472_REG_WTIME            0x03
+#define TCS3472_REG_AILTL            0x04
+#define TCS3472_REG_AILTH            0x05
+#define TCS3472_REG_AIHTL            0x06
+#define TCS3472_REG_AIHTH            0x07
+#define TCS3472_REG_PERS             0x0C
+#define TCS3472_REG_CONFIG           0x0D
+#define TCS3472_REG_CONTROL          0x0F
+#define TCS3472_REG_ID               0x12
+#define TCS3472_REG_STATUS           0x13
+#define TCS3472_REG_CDATAL           0x14
+#define TCS3472_REG_CDATAH           0x15
+#define TCS3472_REG_RDATAL           0x16
+#define TCS3472_REG_RDATAH           0x17
+#define TCS3472_REG_GDATAL           0x18
+#define TCS3472_REG_GDATAH           0x19
+#define TCS3472_REG_BDATAL           0x1A
+#define TCS3472_REG_BDATAH           0x1B
+
+/* TCS3472 Enable Register bits */
+#define TCS3472_ENABLE_PON           0x01    // Power ON
+#define TCS3472_ENABLE_AEN           0x02    // RGBC Enable
+#define TCS3472_ENABLE_WEN           0x08    // Wait Enable
+#define TCS3472_ENABLE_AIEN          0x10    // RGBC Interrupt Enable
+
+/* Line Color Definitions */
+#define COLOR_UNKNOWN                0
+#define COLOR_BLACK                  1
+#define COLOR_WHITE                  2
+#define COLOR_GREEN                  3
+
+/* Object Color Definitions */
+#define OBJ_COLOR_UNKNOWN            0
+#define OBJ_COLOR_WHITE              1
+#define OBJ_COLOR_ORANGE_YELLOW      2
+#define OBJ_COLOR_RED                3
+#define OBJ_COLOR_BLUE               4
+
+/* Sensor Type Definitions */
+#define SENSOR_LINE                  0
+#define SENSOR_OBJECT                1
+
+/* Color calibration structure */
+typedef struct {
+    uint16_t black_threshold;
+    uint16_t white_threshold;
+    uint16_t green_ratio_min;
+    uint16_t green_ratio_max;
+    uint8_t is_calibrated;
+} LineColorConfig_t;
+
+/* Object color calibration structure */
+typedef struct {
+    uint16_t white_threshold;
+    uint16_t red_ratio_min;
+    uint16_t red_ratio_max;
+    uint16_t blue_ratio_min;
+    uint16_t blue_ratio_max;
+    uint16_t orange_yellow_ratio_min;
+    uint16_t orange_yellow_ratio_max;
+    uint8_t is_calibrated;
+} ObjectColorConfig_t;
+
+/* TCS3472 Sensor Context */
+typedef struct {
+    I2C_HandleTypeDef *hi2c;
+    uint8_t sensor_type;
+    union {
+        LineColorConfig_t line;
+        ObjectColorConfig_t object;
+    } config;
+} TCS3472_t;
+
+/* Function declarations */
+uint8_t TCS3472_Init(TCS3472_t *sensor);
+uint8_t TCS3472_GetID(TCS3472_t *sensor);
+void TCS3472_Enable(TCS3472_t *sensor);
+void TCS3472_Disable(TCS3472_t *sensor);
+void TCS3472_SetIntegrationTime(TCS3472_t *sensor, uint8_t time);
+void TCS3472_SetGain(TCS3472_t *sensor, uint8_t gain);
+void TCS3472_GetRGBC(TCS3472_t *sensor, uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
+uint8_t TCS3472_DetectLineColor(TCS3472_t *sensor, uint16_t r, uint16_t g, uint16_t b, uint16_t c);
+uint8_t TCS3472_DetectObjectColor(TCS3472_t *sensor, uint16_t r, uint16_t g, uint16_t b, uint16_t c);
+void TCS3472_CalibrateLineColors(TCS3472_t *sensor, UART_HandleTypeDef *huart);
+void TCS3472_CalibrateObjectColors(TCS3472_t *sensor, UART_HandleTypeDef *huart);
+
+
+
+#endif /* TCS3472_INC_TCS3472_H_ */

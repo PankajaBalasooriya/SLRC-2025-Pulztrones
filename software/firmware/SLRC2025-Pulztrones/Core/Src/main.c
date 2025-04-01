@@ -48,7 +48,8 @@
 #include "ballstorage.h"
 #include "RPI_uart_comm.h"
 #include "arm_controller.h"
-//#include "PCA9548A.h"
+#include "PCA9548A.h"
+//#include "sensor_app.h"
 
 
 
@@ -132,6 +133,14 @@ Motion motion;
 Profile forward_profile;
 Profile rotation_profile;
 Controller controller;
+
+
+i2c_mux_t mux = {
+    .hi2c = &hi2c1,   // Assign I2C1 handle
+    .rst_port = NULL,  // No reset pin used (set if needed)
+    .rst_pin = 0,      // No reset pin used
+    .addr_offset = 0   // Change if the address is modified by A0-A2 pins
+};
 
 
 
@@ -695,6 +704,50 @@ int main(void)
   //set_steering_mode(STEERING_OFF_READLINE);
   //tcs3272_init();
 
+
+
+
+
+  ////////////////////////////////////////////////////////////////////
+//  char msg[100];
+//    sprintf(msg, "\r\n\r\nColor Sensor Application Starting...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//
+//    /* Initialize sensors */
+//    if (InitSensors() != HAL_OK) {
+//      sprintf(msg, "Sensor initialization failed. Check connections!\r\n");
+//      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//      Error_Handler();
+//    }
+//
+//    /* Ask if user wants to calibrate sensors */
+//    sprintf(msg, "Press USER button (PA0) to start calibration or wait 5s to skip...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//
+//    /* Wait for button press or timeout */
+////    uint32_t start_time = HAL_GetTick();
+////    while (HAL_GetTick() - start_time < 5000) {
+////      if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_RESET) {
+////        /* Button pressed, start calibration */
+////        HAL_Delay(200); // Debounce
+////        CalibrateSensors();
+////        break;
+////      }
+////    }
+//    HAL_Delay(5000);
+//    CalibrateSensors();
+//
+//    sprintf(msg, "Starting main application loop...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+  ////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
   Buzzer_Toggle(100);
   HAL_Delay(6000);
   Buzzer_Toggle(100);
@@ -787,6 +840,10 @@ int main(void)
 
 
   /* Initialize TCS3472 color sensor */
+  i2c_mux_select(&mux, 1);
+  HAL_Delay(2000);
+
+
       if (TCS3472_Init() != HAL_OK)
       {
           char msg[] = "TCS3472 initialization failed!\r\n";
@@ -904,6 +961,18 @@ int main(void)
 
 	  //setMotorLPWM(1);
 	  //setMotorRPWM(1);
+
+
+//	  ProcessLineSensor();
+//	      HAL_Delay(100);
+//
+//	      ProcessObjectSensor();
+//	      HAL_Delay(100);
+//
+//	      /* Pause between readings */
+//	      HAL_Delay(800);
+
+
   }
   /* USER CODE END 3 */
 }
