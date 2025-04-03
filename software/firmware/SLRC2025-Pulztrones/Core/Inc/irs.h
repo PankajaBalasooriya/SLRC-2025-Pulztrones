@@ -15,17 +15,22 @@
 
 typedef enum
 {
-	IR_LEFT_FORWARD = 0,
-	IR_LEFT_BACK = 1,
-	IR_FRONT = 2,
-	IR_RIGHT_FORWARD = 3,
-	IR_RIGHT_BACK = 4
+	IR_FRONT = 0,
+	IR_LEFT_FORWARD = 1,
+	IR_LEFT_BACK = 2,
+	IR_RIGHT_BACK = 3,
+	IR_RIGHT_FORWARD = 4
 }IR;
+
+typedef struct {
+    float a;
+    float b;
+    float c;
+} IR_Calibration_t;
 
 
 void analogReadIRs(void);
-
 uint16_t readRawIR(IR ir);
-
+uint16_t getIRDistance(IR ir, uint16_t raw);
 
 #endif /* INC_IRS_H_ */

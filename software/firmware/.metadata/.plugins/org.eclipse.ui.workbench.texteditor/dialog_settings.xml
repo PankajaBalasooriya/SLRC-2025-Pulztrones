@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="lws"/>
+		<item value="STEER"/>
 		<item value="sensorValues"/>
 		<item value="TCS3472_SetGain"/>
 		<item value="ray"/>
@@ -14,13 +16,14 @@
 		<item value="mouse\"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="RAYKHA_IsLineDetected"/>
+		<item key="selection" value="lws"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="lws"/>
 			<item value="RAYKHA_IsLineDetected"/>
 			<item value="Pololu"/>
 			<item value="QTR"/>

@@ -51,14 +51,16 @@ uint8_t is_wall_front();
 //void Sensors_Enable();
 //void Sensors_Disable();
 //float Sensors_GetDistance(float sensor_value, float k);
-void send_sensor_data();
+
 float CalculateSteeringAdjustment();
 void set_steering_mode(uint8_t mode);
 void Sensors_Update();
 
+void RangeAllIRSensors(void);
+
 
 /* Extern Variables */
-extern volatile SensorChannel lfs, lss, lws, rss, rfs, rws, cfs;
+extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 extern volatile uint8_t see_front_wall, see_left_wall, see_right_wall;
 
 #endif /* SENSORS_H */

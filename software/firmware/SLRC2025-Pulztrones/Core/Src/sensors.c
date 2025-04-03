@@ -8,6 +8,8 @@
 #include "sensors.h"
 #include "raykha.h"
 #include "config.h"
+#include "irs.h"
+#include "config.h"
 
 
 extern UART_HandleTypeDef huart6;
@@ -17,12 +19,16 @@ static float m_cross_track_error = 0;
 static float m_steering_adjustment = 0;
 
 /* Sensor variables */
-volatile SensorChannel lfs, lss, lws, cfs, rss, rfs, rws;  // Front/side/wall sensors
+volatile SensorChannel lfs, lrs, fs, rfs, rrs;  // Front/side/wall sensors
 volatile uint8_t see_front_wall = 0;
 volatile uint8_t see_left_wall = 0;
 volatile uint8_t see_right_wall = 0;
 volatile float m_front_sum = 0;
 volatile int m_front_diff = 0;
+
+volatile uint8_t left_wall_avg = 0;
+volatile uint8_t right_wall_avg = 0;
+
 volatile uint8_t g_steering_mode = STEERING_OFF;
 
 
@@ -99,12 +105,10 @@ void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16
 
 void init_sensor_value(){
 	lfs.raw = 0;
-	lss.raw = 0;
-	lws.raw = 0;
-	cfs.raw = 0;
-	rss.raw = 0;
+	lrs.raw = 0;
+	fs.raw = 0;
 	rfs.raw = 0;
-	rws.raw = 0;
+	rrs.raw = 0;
 }
 
 
@@ -144,16 +148,7 @@ void set_steering_mode(uint8_t mode){
 	g_steering_mode = mode;
 }
 
-void send_sensor_data(){
-	char buffer[50];  // Buffer to hold the formatted string
 
-	    // Format the float value into the buffer with the specified decimal points
-	    // You can change %.2f to another precision, such as %.3f, %.4f, etc.
-	    sprintf(buffer, ">LW:%d,LF:%d,RF:%d,RW:%d\r\n", lws.value, lfs.value, rfs.value, rws.value);  // Use header string as prefix
-
-	    // Transmit the formatted string via UART
-	    HAL_UART_Transmit(&huart6, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
-}
 
 
 /* Update sensor readings and calculate cross-track error */
@@ -175,39 +170,21 @@ void Sensors_Update() {
 		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
 		junction = DetectJunction();
 	}
-	else if(g_steering_mode == STEER_NORMAL){
-		if(lws.raw < 500)lws.raw = 500;
-		if(rws.raw < 500)rws.raw = 500;
-		if(cfs.raw < 400)cfs.raw = 400;
-		//if(lfs.raw > 250)lfs.raw = 250;
-		//if(rfs.raw > 230)rfs.raw = 230;
+	else if(g_steering_mode == STEER_LEFT_WALL){
+		RangeAllIRSensors();
 
-		// Scale sensor values
-		//lfs.value = tof_get_distance_mm(lfs.raw, 1);
-		//lss.value = tof_get_distance_mm(lss.raw, 0);
-		//rss.value = tof_get_distance_mm(rss.raw, 3);
-		//rfs.value = tof_get_distance_mm(rfs.raw, 2);
-		//lws.value = IR_get_distance_mm(lws.raw, IR_LEFT);
-		//rws.value = IR_get_distance_mm(rws.raw, IR_RIGHT);
-		//cfs.value = IR_get_distance_mm(cfs.raw, IR_FRONT);
+		//int left_error = SIDE_NOMINAL - lws.value;
+		//int right_error = SIDE_NOMINAL - rws.value;
 
-		//UART_Transmit_TOF(&huart6, lfs.value, lws.value, rfs.value, rws.value);
 
 		//UART_Transmit_Int(&huart6, ">L", lws.value);
 		//UART_Transmit_Int(&huart6, ">F", cfs.value);
 		//UART_Transmit_Int(&huart6, ">R", rws.value);
 
-		// Update wall detection flags
+
 
     }
     else if(g_steering_mode == STEERING_FRONT_WALL){
-
-
-    	if(lfs.raw > 250)lfs.raw = 250;
-		if(rfs.raw > 230)rfs.raw = 230;
-		if(cfs.raw < 400)cfs.raw = 400;
-
-
 
 		error = 0;
     }
@@ -221,4 +198,41 @@ void Sensors_Update() {
     //send_sensor_data();
 }
 
+
+void RangeAllIRSensors(void){
+	analogReadIRs();
+
+	lfs.raw = readRawIR(IR_LEFT_FORWARD);
+	lrs.raw = readRawIR(IR_LEFT_BACK);
+
+	fs.raw = readRawIR(IR_FRONT);
+
+	rfs.raw = readRawIR(IR_RIGHT_FORWARD);
+	rrs.raw = readRawIR(IR_RIGHT_BACK);
+
+
+	if(lfs.raw < 400)lfs.raw = 400;
+	if(lrs.raw < 300)lrs.raw = 300;
+
+	if(fs.raw < 400)fs.raw = 400;
+
+	if(rfs.raw < 350)rfs.raw = 350;
+	if(rrs.raw < 200)rrs.raw = 200;
+
+
+	lfs.value = getIRDistance(IR_LEFT_FORWARD, lfs.raw);
+	lrs.value = getIRDistance(IR_LEFT_BACK, lrs.raw);
+
+	fs.value = getIRDistance(IR_FRONT, fs.raw);
+
+	rfs.value = getIRDistance(IR_RIGHT_FORWARD, rfs.raw);
+	rrs.value = getIRDistance(IR_RIGHT_BACK, rrs.raw);
+
+	left_wall_avg = 0.5 * (lfs.value + lrs.value);
+	right_wall_avg = 0.5 * (rfs.value + rrs.value);
+
+//	see_left_wall = (left_wall_avg < LEFT_THRESHOLD);
+//	see_right_wall = (right_wall_avg < RIGHT_THRESHOLD);
+//	see_front_wall = (fs.value < FRONT_THRESHOLD);
+}
 

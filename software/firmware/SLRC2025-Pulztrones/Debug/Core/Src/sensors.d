@@ -34,7 +34,7 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/config.h ../Core/Inc/uartcom.h ../Core/Inc/raykha.h \
  ../Core/Inc/main.h ../Core/Inc/analog_mux.h ../Core/Inc/delay.h \
- ../Core/Inc/config.h
+ ../Core/Inc/config.h ../Core/Inc/irs.h ../Core/Inc/sensors.h
 ../Core/Inc/sensors.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -76,3 +76,5 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
 ../Core/Inc/analog_mux.h:
 ../Core/Inc/delay.h:
 ../Core/Inc/config.h:
+../Core/Inc/irs.h:
+../Core/Inc/sensors.h:

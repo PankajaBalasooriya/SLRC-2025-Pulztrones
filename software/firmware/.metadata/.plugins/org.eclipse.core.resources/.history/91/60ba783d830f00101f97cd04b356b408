@@ -1,0 +1,37 @@
+/*
+ * irs.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef INC_IRS_H_
+#define INC_IRS_H_
+
+#include "sensors.h"
+#include "main.h"
+#include "stm32f4xx.h"
+#include "analog_mux.h"
+
+typedef enum
+{
+	IR_FRONT = 2,
+	IR_LEFT_FORWARD = 0,
+	IR_LEFT_BACK = 1,
+	IR_RIGHT_FORWARD = 3,
+	IR_RIGHT_BACK = 4
+}IR;
+
+typedef struct {
+    float a;
+    float b;
+    float c;
+} IR_Calibration_t;
+
+
+void analogReadIRs(void);
+
+uint16_t readRawIR(IR ir);
+
+
+#endif /* INC_IRS_H_ */

@@ -1,0 +1,234 @@
+/**
+ ******************************************************************************
+ * @file           : sensors.c
+ * @brief          : Sensor handling for STM32-based micromouse.
+ ******************************************************************************
+ */
+
+#include "sensors.h"
+#include "raykha.h"
+#include "config.h"
+#include "irs.h"
+#include "config.h"
+
+
+extern UART_HandleTypeDef huart6;
+/* Variables for steering */
+static float m_last_steering_error = 0;
+static float m_cross_track_error = 0;
+static float m_steering_adjustment = 0;
+
+/* Sensor variables */
+volatile SensorChannel lfs, lrs, fs, rfs, rrs;  // Front/side/wall sensors
+volatile uint8_t see_front_wall = 0;
+volatile uint8_t see_left_wall = 0;
+volatile uint8_t see_right_wall = 0;
+volatile float m_front_sum = 0;
+volatile int m_front_diff = 0;
+
+volatile uint8_t left_wall_avg = 0;
+volatile uint8_t right_wall_avg = 0;
+
+volatile uint8_t g_steering_mode = STEERING_OFF;
+
+
+// Buffer to store values from all IR channels
+uint16_t sensorValues[16] = {0};
+uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+int32_t line_position;
+
+extern RAYKHA_Calibration raykha_calibration;
+
+JunctionType junction = NO_LINE;
+
+
+/**
+ * Detects junctions during line following
+ * @return JunctionType enum value indicating the type of junction detected
+ */
+int numberOfSensorsOnWhite = 0;
+JunctionType DetectJunction() {
+	numberOfSensorsOnWhite = 0;
+
+	for(int i = 0; i < RAYKHA_NUM_SENSORS; i++){
+		if(sensor_values[i] > LINE_THRESHOLD){
+			numberOfSensorsOnWhite++;
+		}
+	}
+
+	int leftSensorValue = sensor_values[0];
+	int rightSensorValue = sensor_values[RAYKHA_NUM_SENSORS - 1];
+
+	if(numberOfSensorsOnWhite > SENSORS_ON_LINE_FOR_JUNCTION_CHECK){
+		if (leftSensorValue > LINE_THRESHOLD && rightSensorValue > LINE_THRESHOLD){
+			return T_JUNCTION;
+		}
+		else if (leftSensorValue > LINE_THRESHOLD){
+			return LEFT_JUNCTION;
+		}
+		else if (rightSensorValue > LINE_THRESHOLD){
+			return RIGHT_JUNCTION;
+		}
+		else{
+			return STRAIGHT_LINE;
+		}
+	}
+	else if(numberOfSensorsOnWhite == 0){
+		return NO_LINE;
+	}
+	else{
+		return STRAIGHT_LINE;
+	}
+}
+
+
+
+// Function to read all channels sequentially
+void ReadAllSensors(void)
+{
+    for (uint8_t i = 0; i < 16; i++)
+    {
+        sensorValues[i] = AnalogMux_ReadChannel(i);
+    }
+}
+
+// Function to read a specific set of channels (more efficient)
+void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results)
+{
+    for (uint8_t i = 0; i < numChannels; i++)
+    {
+        results[i] = AnalogMux_ReadChannel(channelList[i]);
+    }
+}
+
+
+
+void init_sensor_value(){
+	lfs.raw = 0;
+	lrs.raw = 0;
+	fs.raw = 0;
+	rfs.raw = 0;
+	rrs.raw = 0;
+}
+
+
+float get_steering_feedback() {
+  return m_steering_adjustment;
+}
+float get_cross_track_error() {
+  return m_cross_track_error;
+}
+uint8_t is_wall_left(){
+	return see_left_wall;
+}
+uint8_t is_wall_right(){
+	return see_right_wall;
+}
+uint8_t is_wall_front(){
+	return see_front_wall;
+}
+
+
+
+
+/* Calculate steering adjustment */
+float CalculateSteeringAdjustment() {
+    float pTerm = STEERING_KP * m_cross_track_error;
+    float dTerm = STEERING_KD * (m_cross_track_error - m_last_steering_error);
+    float adjustment = pTerm + dTerm * LOOP_FREQUENCY;
+    adjustment = fminf(fmaxf(adjustment, -STEERING_ADJUST_LIMIT), STEERING_ADJUST_LIMIT);
+    m_last_steering_error = m_cross_track_error;
+    m_steering_adjustment = adjustment;
+    return adjustment;
+}
+
+void set_steering_mode(uint8_t mode){
+	m_last_steering_error = m_cross_track_error;
+	m_steering_adjustment = 0;
+	g_steering_mode = mode;
+}
+
+
+
+
+/* Update sensor readings and calculate cross-track error */
+void Sensors_Update() {
+    // Read ADC values for all sensor channels
+	int error = 0;
+
+	if(g_steering_mode == STEERING_CENTER_LINE_FOLLOW){
+		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+
+		/* Get position for PID controller (centered around 0) */
+		line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
+
+		error = line_position;
+
+		junction = DetectJunction();
+	}
+	else if(g_steering_mode == STEERING_OFF_READLINE){
+		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+		junction = DetectJunction();
+	}
+	else if(g_steering_mode == STEER_LEFT_WALL){
+		RangeAllIRSensors();
+
+
+		//UART_Transmit_Int(&huart6, ">L", lws.value);
+		//UART_Transmit_Int(&huart6, ">F", cfs.value);
+		//UART_Transmit_Int(&huart6, ">R", rws.value);
+
+
+
+    }
+    else if(g_steering_mode == STEERING_FRONT_WALL){
+
+		error = 0;
+    }
+
+//    if (see_front_wall) {
+//        error = 0;  // Ignore steering near front walls
+//    }
+
+    m_cross_track_error = error;
+    CalculateSteeringAdjustment();
+    //send_sensor_data();
+}
+
+
+void RangeAllIRSensors(void){
+	analogReadIRs();
+
+	lfs.raw = readRawIR(IR_LEFT_FORWARD);
+	lrs.raw = readRawIR(IR_LEFT_BACK);
+
+	fs.raw = readRawIR(IR_FRONT);
+
+	rfs.raw = readRawIR(IR_RIGHT_FORWARD);
+	rrs.raw = readRawIR(IR_RIGHT_BACK);
+
+
+	if(lfs.raw < 400)lfs.raw = 400;
+	if(lrs.raw < 300)lrs.raw = 300;
+
+	if(fs.raw < 400)fs.raw = 400;
+
+	if(rfs.raw < 350)rfs.raw = 350;
+	if(rrs.raw < 200)rrs.raw = 200;
+
+
+	lfs.value = getIRDistance(IR_LEFT_FORWARD, lfs.raw);
+	lrs.value = getIRDistance(IR_LEFT_BACK, lrs.raw);
+
+	fs.value = getIRDistance(IR_FRONT, fs.raw);
+
+	rfs.value = getIRDistance(IR_RIGHT_FORWARD, rfs.raw);
+	rrs.value = getIRDistance(IR_RIGHT_BACK, rrs.raw);
+
+
+
+	see_left_wall = (lws.value < LEFT_THRESHOLD);
+	see_right_wall = (rws.value < RIGHT_THRESHOLD);
+	see_front_wall = (m_front_sum < FRONT_THRESHOLD);
+}
+

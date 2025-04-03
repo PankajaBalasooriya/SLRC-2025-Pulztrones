@@ -593,7 +593,7 @@ int main(void)
 
   /*---------------------Servo--------------------------------*/
   // Initialize servo system
-  //Servo_Init(50);  // 50Hz frequency for servos
+  Servo_Init(50);  // 50Hz frequency for servos
 
   // Initialize arm controller
   //Arm_Init();
@@ -612,16 +612,17 @@ int main(void)
 
 // int base = Servo_Register(15, "base", 0, 180, 0 );
 // int A = Servo_Register(11, "A", 0, 180, 0);
-// int B = Servo_Register(13, "B", 0, 180, 10);
-// int C = Servo_Register(12, "C", 0, 180, 0);
+//int B = Servo_Register(3, "B", 0, 180, 0);
+  int C = Servo_Register(8, "C", 0, 180, 0);
 ////
 ////
+  HAL_Delay(2000);
 ////
 ////  // Later in your code, use the servos by ID
 // Servo_SetAngle(base, 50);
 //    Servo_SetAngle(A, 0);
-//    Servo_SetAngle(B, 0);
-//    Servo_SetAngle(C, 0);
+//    Servo_SetAngle(B, 90);
+    Servo_SetAngle(C, 90);
 
 
 //  Servo_SetAngle(base, 0);
@@ -793,7 +794,7 @@ int main(void)
 
   	//Motion_Move(&motion, 1000, 100, 0, 120);
 
-  	//set_steering_mode(STEERING_OFF);
+  	//set_steering_mode(STEER_LEFT_WALL);
 //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 //  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
 //Motion_Move(&motion, 600, 200, 0, 200);
@@ -805,29 +806,29 @@ int main(void)
 
 
 //-----workinf code
-//  /* Initialize TCS3472 color sensor */
-//  i2c_mux_select(&mux, 0);
-//  HAL_Delay(2000);
-//
-//
-//      if (TCS3472_Init() != HAL_OK)
-//      {
-//          char msg[] = "TCS3472 initialization failed!\r\n";
-//          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//          Error_Handler();
-//      }
-//
-//      char msg[] = "TCS3472 initialized successfully!\r\n";
-//      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//
-//      /* Run calibration routine */
-//
-//      TCS3472_CalibrateColors();
-//      //TCS3472_CalibrateColors();
-//
-//      uint16_t r, g, b, c;
-//      uint8_t line_color;
-//      char buffer[100];
+  /* Initialize TCS3472 color sensor */
+  i2c_mux_select(&mux, 1);
+  HAL_Delay(2);
+
+
+      if (TCS3472_Init() != HAL_OK)
+      {
+          char msg[] = "TCS3472 initialization failed!\r\n";
+          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+          Error_Handler();
+      }
+
+      char msg[] = "TCS3472 initialized successfully!\r\n";
+      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+      /* Run calibration routine */
+
+      TCS3472_CalibrateColors();
+      //TCS3472_CalibrateColors();
+
+      uint16_t r, g, b, c;
+      uint8_t line_color;
+      char buffer[100];
 
 
   /* USER CODE END 2 */
@@ -840,30 +841,30 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  analogReadIRs();
+	  //analogReadIRs();
 
 
-//	  /* Get RGB and Clear values */
-//	          TCS3472_GetRGBC(&r, &g, &b, &c);
-//
-//	          /* Detect the line color */
-//	          line_color = TCS3472_DetectLineColor(r, g, b, c);
-//
-//	          /* Print the RGB values and detected color */
-//	          char *color_str;
-//	          switch(line_color) {
-//	              case COLOR_BLACK:  color_str = "BLACK"; break;
-//	              case COLOR_WHITE:  color_str = "WHITE"; break;
-//	              case COLOR_GREEN:  color_str = "GREEN"; break;
-//	              default:           color_str = "UNKNOWN"; break;
-//	          }
-//
-//	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
-//	                  r, g, b, c, color_str);
-//	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-//
-//	          /* Wait 100ms before next reading - reduced for faster response */
-//	          HAL_Delay(100);
+	  /* Get RGB and Clear values */
+	          TCS3472_GetRGBC(&r, &g, &b, &c);
+
+	          /* Detect the line color */
+	          line_color = TCS3472_DetectLineColor(r, g, b, c);
+
+	          /* Print the RGB values and detected color */
+	          char *color_str;
+	          switch(line_color) {
+	              case COLOR_BLACK:  color_str = "BLACK"; break;
+	              case COLOR_WHITE:  color_str = "WHITE"; break;
+	              case COLOR_GREEN:  color_str = "GREEN"; break;
+	              default:           color_str = "UNKNOWN"; break;
+	          }
+
+	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
+	                  r, g, b, c, color_str);
+	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+	          /* Wait 100ms before next reading - reduced for faster response */
+	          HAL_Delay(100);
 
 
 
@@ -872,7 +873,7 @@ int main(void)
 //
 //		HAL_Delay(200);
 //
-//		EnableSysTickFunction();
+//	EnableSysTickFunction();
 //
 //		runCurrentTask(TASK_PLANTATION);
 //
@@ -885,10 +886,10 @@ int main(void)
 //	  }
 
 
-//	  left_counts = getLeftEncoderCounts();
-//	  right_counts = getRightEncoderCounts();
-//
-//	  UART_Transmit_IR(&huart3, left_counts, right_counts);
+	  //left_counts = getLeftEncoderCounts();
+	  //right_counts = getRightEncoderCounts();
+
+	  //UART_Transmit_IR(&huart3, left_counts, right_counts);
 
 	  // Format the message with the counter
 

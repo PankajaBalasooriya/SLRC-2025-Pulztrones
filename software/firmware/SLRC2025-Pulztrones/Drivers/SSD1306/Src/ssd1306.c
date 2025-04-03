@@ -21,8 +21,10 @@
    ----------------------------------------------------------------------
  */
 #include "ssd1306.h"
+#include "PCA9548A.h"
 
 extern I2C_HandleTypeDef hi2c1;
+extern i2c_mux_t mux;
 #define SSD1306_I2C &hi2c1
 
 
@@ -49,6 +51,8 @@ static SSD1306_t SSD1306;
 
 
 uint8_t SSD1306_Init(void) {
+
+	i2c_mux_select(&mux, 0);
 
 	/* Init I2C */
 	ssd1306_I2C_Init();
@@ -631,6 +635,7 @@ void SSD1306_OFF(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ssd1306_I2C_Init() {
+	i2c_mux_select(&mux, 0);
 	//MX_I2C1_Init();
 	uint32_t p = 250000;
 	while(p>0)
@@ -643,6 +648,7 @@ void ssd1306_I2C_Init() {
 }
 
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t* data, uint16_t count) {
+i2c_mux_select(&mux, 0);
 uint8_t dt[256];
 dt[0] = reg;
 uint8_t i;
@@ -653,6 +659,7 @@ HAL_I2C_Master_Transmit(SSD1306_I2C, address, dt, count+1, 10);
 
 
 void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) {
+	i2c_mux_select(&mux, 0);
 	uint8_t dt[2];
 	dt[0] = reg;
 	dt[1] = data;
