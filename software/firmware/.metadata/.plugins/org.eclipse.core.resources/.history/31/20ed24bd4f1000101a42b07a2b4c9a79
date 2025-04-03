@@ -1,0 +1,13 @@
+#ifndef BALL_STORAGE_H
+#define BALL_STORAGE_H
+
+#include "servo.h"
+#include "config.h"
+
+int good_potato_storage; // left
+int bad_potato_storage; // right
+
+void init_ball_storage();
+void drop_good_potatos();
+void drop_bad_potatos();
+#endif

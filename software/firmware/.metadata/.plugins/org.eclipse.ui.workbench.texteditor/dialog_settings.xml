@@ -3,6 +3,7 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="color_config"/>
 		<item value="lws"/>
 		<item value="STEER"/>
 		<item value="sensorValues"/>

@@ -1,0 +1,12 @@
+#include "ballstorage.h"
+
+int good_potato_storage;
+int bad_potato_storage;
+
+void init_ball_storage(){
+	good_potato_storage = Servo_Register(4, "good_potato_storage", 0, 180, 0);
+	Servo_SetAngle(good_potato_storage, 90);
+
+	D = Servo_Register(4, "", 0, 180, 0);
+	Servo_SetAngle(C, 90);
+}

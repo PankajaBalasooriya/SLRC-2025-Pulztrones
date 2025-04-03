@@ -4,9 +4,10 @@
 #include "servo.h"
 #include "config.h"
 
-void rotate_360_to_position(uint8_t desired_position);
-uint8_t get_ball_count();
-void store_ball(uint8_t desired_position, BallColor colour);
-void retrieve_ball(BallColor colour);
+extern int good_potato_storage; // left
+extern int bad_potato_storage; // right
 
+void init_ball_storage();
+void drop_good_potatos();
+void drop_bad_potatos();
 #endif

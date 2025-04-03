@@ -1,0 +1,8 @@
+#include "ballstorage.h"
+
+int C;
+
+void init_ball_storage(){
+	  int C = Servo_Register(4, "C", 0, 180, 0);
+	  Servo_SetAngle(C, 90);
+}
