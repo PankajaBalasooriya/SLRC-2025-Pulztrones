@@ -1,0 +1,23 @@
+/*
+ * display.h
+ *
+ *  Created on: Apr 3, 2025
+ *      Author: PANKAJA
+ */
+
+#ifndef SSD1306_INC_DISPLAY_H_
+#define SSD1306_INC_DISPLAY_H_
+
+#include "ssd1306.h"
+#include "fonts.h"
+#include "bitmap.h"
+#include "stdio.h"
+
+void Init_Display();
+void display_big_number(uint8_t number);
+void display_text(const char *text, uint8_t x, uint8_t y);
+void display_clear();
+void display_message(const char *text);s
+
+
+#endif /* SSD1306_INC_DISPLAY_H_ */

@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <stdint.h>
+
 
 //*** Robot state **********************************************//
 typedef enum State
@@ -132,21 +134,50 @@ typedef enum {
 	STRAIGHT_LINE = 4
 } JunctionType;
 
+//typedef enum{
+//	WHITE = 0,
+//	GREEN = 1,
+//	UNKNOWN = 2
+//} LineColor;
+//
+//typedef enum{
+//	WHITE_BALL = 0,
+//	YELLOW_BALL = 1,
+//	NO_BALL = 2
+//}BallColor;
+
+
 typedef enum{
 	WHITE = 0,
 	GREEN = 1,
-	UNKNOWN = 2
-} LineColor;
-
-typedef enum{
-	WHITE_BALL = 0,
-	YELLOW_BALL = 1,
-	NO_BALL = 2
-}BallColor;
+	YELLOW = 2,
+	BLUE = 3,
+	RED = 4,
+	BLACK = 5,
+	UNKNOWN = 6
+}Color;
 
 
 
 extern const int MOTION_DELAY;
+
+
+//***** Pump Controlling functions ******************************************************//
+
+void turn_on_water_pump();
+void turn_off_water_pump();
+void turn_on_air_pump();
+void turn_off_air_pump();
+
+
+//****** Button Handler ***************************************************************************
+extern volatile uint32_t okbtncount;
+extern volatile uint32_t prevokbtncount;
+
+extern volatile uint32_t nextbtncount;
+extern volatile uint32_t prevnextbtncount;
+
+
 
 
 #endif

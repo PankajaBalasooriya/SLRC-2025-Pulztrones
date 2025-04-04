@@ -1,0 +1,6 @@
+../Drivers/SSD1306/Src/display.c:13:6:Init_Display	16	static
+../Drivers/SSD1306/Src/display.c:19:6:display_big_number	16	static
+../Drivers/SSD1306/Src/display.c:30:6:display_text	72	static
+../Drivers/SSD1306/Src/display.c:40:6:display_clear	8	static
+../Drivers/SSD1306/Src/display.c:45:6:display_message	72	static
+../Drivers/SSD1306/Src/display.c:55:6:display_headding	16	static

@@ -2,7 +2,6 @@
 #include "sensors.h"
 #include "robot.h"
 #include "buzzer.h"
-#include "RPI_uart_comm.h"
 #include "ballstorage.h"
 
 
@@ -28,11 +27,11 @@ uint8_t IsDelayComplete(void)
 
 
 //---------Start 0f Plantation Task (Collect and identify potatoes)--------------------
-LineColor Newlinecolor = WHITE;
-LineColor Nextlinecolor = WHITE;
-BallColor ballcolor;
+Color Newlinecolor = WHITE;
+Color Nextlinecolor = WHITE;
+Color ballcolor;
 void executePlantationTask(void) {
-	StartLineColorDetection();
+	//StartLineColorDetection();
 	Buzzer_Toggle(100);
 	HAL_Delay(2000);
 	Buzzer_Toggle(300);
@@ -148,14 +147,14 @@ void moveToCenterofNextColumnfromThiredRow(){
 	moveToCenterofNextColumnfromSecondRow();
 }
 
-BallColor picktheBall(uint8_t column, uint8_t row){
+Color picktheBall(uint8_t column, uint8_t row){
 	ball_pos++;
 	Robot_TurnLeft90Inplace();
 	ballcolor = RPI_GetBallColor();
 	HAL_Delay(MOTION_DELAY);
 	//ToDo: Pick The box
 	//pickup_and_Store();
-	store_ball(ball_pos, ballcolor);
+//	store_ball(ball_pos, ballcolor);
 //	HAL_Delay(2000);
 	//return_home();
 	Buzzer_Toggle(1000);
@@ -190,7 +189,7 @@ void executePotatoSeperationTask(void){
 
 	//Drop the baalls
 
-	retrieve_ball(WHITE_BALL);
+	//retrieve_ball(WHITE_BALL);
 	Buzzer_Toggle(300);
 
 	HAL_Delay(2000);
@@ -205,7 +204,7 @@ void executePotatoSeperationTask(void){
 
 	Robot_MoveForwardUntillLine();
 
-	retrieve_ball(YELLOW_BALL);
+	//retrieve_ball(YELLOW_BALL);
 	Buzzer_Toggle(300);
 
 

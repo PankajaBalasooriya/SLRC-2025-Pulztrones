@@ -5,6 +5,8 @@
 
 #include "raykha.h"
 #include "delay.h"
+#include "ssd1306.h"
+#include "display.h"
 
 // Private function prototypes
 static uint16_t map_range(uint16_t value, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
@@ -30,56 +32,62 @@ void RAYKHA_ReadRaw(uint16_t *sensor_values)
  */
 void RAYKHA_Calibrate(RAYKHA_Calibration *calibration, uint8_t line_type)
 {
+	display_clear();
+	display_headding("Calibration");
 
-		uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+	display_message("RAYKHA Calibration", 2, 25);
+	display_message("Press OK to Start...", 2, 40);
 
-		// Initialize calibration data
-		for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+
+	uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+
+	// Initialize calibration data
+	for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+	{
+		calibration->min_values[i] = 0xFFFF;  // Max possible value
+		calibration->max_values[i] = 0;       // Min possible value
+	}
+
+	calibration->line_type = line_type;
+
+	for(uint8_t i = 0; i < 100; i++){
+		// Take multiple samples for more accurate calibration
+		for (uint8_t sample = 0; sample < RAYKHA_CALIBRATION_SAMPLES; sample++)
 		{
-			calibration->min_values[i] = 0xFFFF;  // Max possible value
-			calibration->max_values[i] = 0;       // Min possible value
-		}
+			// Read raw sensor values
+			RAYKHA_ReadRaw(sensor_values);
 
-		calibration->line_type = line_type;
-
-    	for(uint8_t i = 0; i < 100; i++){
-    		// Take multiple samples for more accurate calibration
-			for (uint8_t sample = 0; sample < RAYKHA_CALIBRATION_SAMPLES; sample++)
-			{
-				// Read raw sensor values
-				RAYKHA_ReadRaw(sensor_values);
-
-				// Update min and max values
-				for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
-				{
-					if (sensor_values[i] < calibration->min_values[i])
-					{
-						calibration->min_values[i] = sensor_values[i];
-					}
-					if (sensor_values[i] > calibration->max_values[i])
-					{
-						calibration->max_values[i] = sensor_values[i];
-					}
-				}
-
-				// Short delay between samples
-				HAL_Delay(10);
-			}
-
-			// Add small margins to avoid edge cases
+			// Update min and max values
 			for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
 			{
-				if (calibration->min_values[i] > 20)
-					calibration->min_values[i] -= 20;
-				else
-					calibration->min_values[i] = 0;
-
-				if (calibration->max_values[i] < 4075)
-					calibration->max_values[i] += 20;
-				else
-					calibration->max_values[i] = 4095;
+				if (sensor_values[i] < calibration->min_values[i])
+				{
+					calibration->min_values[i] = sensor_values[i];
+				}
+				if (sensor_values[i] > calibration->max_values[i])
+				{
+					calibration->max_values[i] = sensor_values[i];
+				}
 			}
-    	}
+
+			// Short delay between samples
+			HAL_Delay(10);
+		}
+
+		// Add small margins to avoid edge cases
+		for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+		{
+			if (calibration->min_values[i] > 20)
+				calibration->min_values[i] -= 20;
+			else
+				calibration->min_values[i] = 0;
+
+			if (calibration->max_values[i] < 4075)
+				calibration->max_values[i] += 20;
+			else
+				calibration->max_values[i] = 4095;
+		}
+	}
 
 }
 

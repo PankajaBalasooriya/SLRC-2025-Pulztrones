@@ -15,6 +15,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "servo.h"
+#include "config.h"
 
 /* Defines -------------------------------------------------------------------*/
 #define ARM_BASE_SERVO       0       // Base servo ID
@@ -86,8 +87,7 @@ int Arm_Home(void);
 void pickup_and_Store(void);
 void retrive_and_drop(void);
 void return_home(void);
-void turn_on_air_pump(void);
-void turn_off_air_pump(void);
+
 
 
 #ifdef __cplusplus

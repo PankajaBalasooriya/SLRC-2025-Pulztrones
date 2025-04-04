@@ -1,0 +1,24 @@
+/*
+ * TCS3472.h
+ *
+ *  Created on: Apr 1, 2025
+ *      Author: PANKAJA
+ */
+
+/**
+ * @file tcs3472_color_sensor.h
+ * @brief Header file for TCS3472 color sensor driver
+ */
+
+#ifndef TCS3472_INC_TCS3472_H_
+#define TCS3472_INC_TCS3472_H_
+
+#include "stm32f4xx_hal.h"
+#include <stdint.h>
+#include "PCA9548A.h"
+
+extern i2c_mux_t mux;
+
+
+
+#endif /* TCS3472_INC_TCS3472_H_ */

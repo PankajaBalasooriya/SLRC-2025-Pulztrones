@@ -3,3 +3,7 @@
 1743486982227	Delete resource 'SLRC2025-Pulztrones/Drivers/TCS3472/Src/sensor_app.c'
 1743486996425	Delete resource 'SLRC2025-Pulztrones/Drivers/TCS3472/Src/TCS3472.c'
 1743487027709	Delete resource 'SLRC2025-Pulztrones/Drivers/TCS3472/Inc/TCS3472'
+1743667587583	Delete resource 'SLRC2025-Pulztrones/Drivers/PCA9685/Inc'
+1743667768668	Delete resource 'SLRC2025-Pulztrones/Core/Src/RPI_uart_comm.c'
+1743667780443	Delete resource 'SLRC2025-Pulztrones/Core/Inc/RPI_uart_comm.h'
+1743683275715	Delete resource 'SLRC2025-Pulztrones/Drivers/SSD1306/Src/display.c'

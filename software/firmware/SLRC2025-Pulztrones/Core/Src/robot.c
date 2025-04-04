@@ -14,9 +14,9 @@
 
 extern Motion motion;
 
-volatile LineColor linecolorRPI = WHITE;
+volatile Color linecolorRPI = WHITE;
 
-volatile BallColor ballcolorRPI = WHITE_BALL;
+volatile Color ballcolorRPI = WHITE;
 
 //volatile int handlecount = 0;
 
@@ -25,73 +25,8 @@ volatile BallColor ballcolorRPI = WHITE_BALL;
 
 extern JunctionType junction;
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
 
-/**
- * @brief Handle line detection data from Raspberry Pi
- * @param data Line detection data
- */
-void HandleLineDetection(uint8_t *data) {
-  /* Extract line position and orientation */
-  int8_t linePosition = (int8_t)data[0]; // Negative = left, Positive = right, 0 = center
-  uint8_t lineAngle = data[1];           // Line angle in degrees
 
-  /* Implement line following logic */
-  if (linePosition < -20) {
-    /* Turn left */
-    //TurnLeft();
-  } else if (linePosition > 20) {
-    /* Turn right */
-    //TurnRight();
-  } else {
-    /* Go straight */
-    //MoveForward();
-  }
-}
-
-/**
- * @brief Handle grid position data from Raspberry Pi
- * @param data Grid position data
- */
-void HandleGridPosition(uint8_t *data) {
-  /* Extract grid coordinates */
-  uint8_t gridX = data[0];
-  uint8_t gridY = data[1];
-  uint8_t orientation = data[2]; // 0=N, 1=E, 2=S, 3=W
-
-  /* Use grid position for navigation */
-  //NavigateGrid(gridX, gridY, orientation);
-}
-
-/**
- * @brief Handle color detection data from Raspberry Pi
- * @param data Color detection data
- */
-void HandleColorDetection(uint8_t *data) {
-  /* Extract color information */
-//  uint8_t colorId = data[0]; // 0=Unknown, 1=Red, 2=Green, 3=Blue, etc.
-//
-//  /* React based on color */
-//  switch (colorId) {
-//    case 1: /* Red */
-//      //HandleRedColor();
-//      break;
-//    case 2: /* Green */
-//      //HandleGreenColor();
-//      break;
-//    case 3: /* Blue */
-//      //HandleBlueColor();
-//      break;
-//    default:
-//      /* Unknown color */
-//      break;
-//  }
-}
 
 void HandleLineColorDetection(uint8_t *data){
 	uint8_t colorId = data[0];
@@ -115,19 +50,19 @@ void HandleLineColorDetection(uint8_t *data){
 
 	switch(ballId){
 	case 0:
-		ballcolorRPI = WHITE_BALL;
+		ballcolorRPI = WHITE;
 		break;
 	case 1:
-		ballcolorRPI = YELLOW_BALL;
+		ballcolorRPI = YELLOW;
 		break;
 	default:
-		ballcolorRPI = WHITE_BALL;
+		ballcolorRPI = WHITE;
 		break;
 	}
 }
 
 //-----------------------------------------------------------------------------------
-LineColor RPI_GetLineColor(){
+Color RPI_GetLineColor(){
 	return linecolorRPI;
 }
 
@@ -177,14 +112,14 @@ LineColor RPI_GetLineColor(){
 //}
 
 
-BallColor RPI_GetBallColor(){
+Color RPI_GetBallColor(){
 	// Need seperate code to handle color detection
 	// use this to acces a global vairable
-	if(ballcolorRPI == WHITE_BALL){
+	if(ballcolorRPI == WHITE){
 		Buzzer_Toggle(100);
 		HAL_Delay(100);
 	}
-	else if(ballcolorRPI == YELLOW_BALL){
+	else if(ballcolorRPI == YELLOW){
 		Buzzer_Toggle(100);
 		HAL_Delay(100);
 		Buzzer_Toggle(100);

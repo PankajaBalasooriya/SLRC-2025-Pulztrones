@@ -3,6 +3,12 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="TCS3472_SelectSensor"/>
+		<item value="buff"/>
+		<item value="line_color_str"/>
+		<item value="TCS3472_DetectObjectColor"/>
+		<item value="TCS3472_DetectLineColor"/>
+		<item value="line_color"/>
 		<item value="color_config"/>
 		<item value="lws"/>
 		<item value="STEER"/>
@@ -12,9 +18,6 @@
 		<item value="volatile"/>
 		<item value="RPI_GetLine"/>
 		<item value="RPI"/>
-		<item value="RPI_GetLineColor"/>
-		<item value="mouse"/>
-		<item value="mouse\"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="selection" value="lws"/>

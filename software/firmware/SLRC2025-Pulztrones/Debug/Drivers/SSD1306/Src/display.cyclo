@@ -1,0 +1,6 @@
+../Drivers/SSD1306/Src/display.c:13:6:Init_Display	1
+../Drivers/SSD1306/Src/display.c:19:6:display_big_number	1
+../Drivers/SSD1306/Src/display.c:30:6:display_text	1
+../Drivers/SSD1306/Src/display.c:40:6:display_clear	1
+../Drivers/SSD1306/Src/display.c:45:6:display_message	1
+../Drivers/SSD1306/Src/display.c:55:6:display_headding	1

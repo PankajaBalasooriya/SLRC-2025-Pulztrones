@@ -3,3 +3,4 @@
 ../Core/Src/buzzer.c:17:6:Buzzer_Toggle	16	static
 ../Core/Src/buzzer.c:25:6:Buzzer_UniquePattern	8	static
 ../Core/Src/buzzer.c:57:6:Buzzer_TaskCompletion	16	static
+../Core/Src/buzzer.c:92:6:Buzzer_ErrorPattern	24	static

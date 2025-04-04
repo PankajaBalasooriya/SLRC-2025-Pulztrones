@@ -1,0 +1,17 @@
+/*
+ * display.c
+ *
+ *  Created on: Apr 3, 2025
+ *      Author: PANKAJA
+ */
+
+
+#include "display.h"
+
+
+
+void Init_Display(){
+	SSD1306_Init();
+	SSD1306_DrawBitmap(0, 0, logo, 128, 64, 1);
+	SSD1306_UpdateScreen();
+}

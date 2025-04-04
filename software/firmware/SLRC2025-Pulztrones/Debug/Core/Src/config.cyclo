@@ -1,0 +1,5 @@
+../Core/Src/config.c:104:6:turn_on_water_pump	1
+../Core/Src/config.c:108:6:turn_off_water_pump	1
+../Core/Src/config.c:112:6:turn_on_air_pump	1
+../Core/Src/config.c:116:6:turn_off_air_pump	1
+../Core/Src/config.c:132:6:HAL_GPIO_EXTI_Callback	5

@@ -1,0 +1,33 @@
+/**
+ * @file tcs3472.c
+ * @brief TCS3472 Color Sensor Driver Implementation
+ */
+
+#include <string.h>
+#include <stdio.h>
+#include "TCS3472.h"
+
+/* Color calibration thresholds */
+color_config_t color_config = {
+    .black_threshold = 1000,  // Default value, should be calibrated
+    .white_threshold = 5000,  // Default value, should be calibrated
+    .green_ratio_min = 110,   // G/R ratio * 100, default value
+    .green_ratio_max = 150,   // G/R ratio * 100, default value
+    .is_calibrated = 0
+};
+
+/* Object color calibration thresholds */
+object_color_config_t object_color_config = {
+    .white_min_c = 5000,           // Minimum clear value for white
+
+    .red_min_ratio_r_to_g = 150,   // R must be 1.5x greater than G
+    .red_min_ratio_r_to_b = 150,   // R must be 1.5x greater than B
+
+    .blue_min_ratio_b_to_r = 150,  // B must be 1.5x greater than R
+    .blue_min_ratio_b_to_g = 120,  // B must be 1.2x greater than G
+
+    .yellow_min_ratio_r_to_b = 150, // R must be 1.5x greater than B
+    .yellow_min_ratio_g_to_b = 150, // G must be 1.5x greater than B
+    .yellow_r_g_diff_percent = 80   // R and G must be within 20% of each other
+};
+

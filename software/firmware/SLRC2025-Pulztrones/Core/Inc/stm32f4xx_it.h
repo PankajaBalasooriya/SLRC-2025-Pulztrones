@@ -27,20 +27,14 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "RPI_uart_comm.h"
+
 
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 extern UART_HandleTypeDef huart6;
-extern uint8_t rxByte;
-extern uint8_t rxBuffer[];
-extern uint8_t rxCmd;
-extern uint8_t rxLength;
-extern uint8_t rxIndex;
-extern RxState rxState;
-extern void ProcessCommand(void);
+
 
 /* USER CODE END ET */
 

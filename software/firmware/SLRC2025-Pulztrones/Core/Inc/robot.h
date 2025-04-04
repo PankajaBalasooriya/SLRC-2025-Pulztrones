@@ -20,8 +20,8 @@ extern "C" {
 
 // In robot.h
 extern int colorcounter;
-extern volatile LineColor linecolorRPI;
-extern volatile BallColor ballcolorRPI;
+extern volatile Color linecolorRPI;
+extern volatile Color ballcolorRPI;
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -36,9 +36,9 @@ void HandleLineColorDetection(uint8_t *data);
 
 //Dummy functions
 //LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
-LineColor RPI_GetLineColor();
+Color RPI_GetLineColor();
 //BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
-BallColor RPI_GetBallColor();
+Color RPI_GetBallColor();
 
 
 

@@ -1,0 +1,6 @@
+../Drivers/Buzzer/Src/buzzer.c:5:6:Buzzer_On	8	static
+../Drivers/Buzzer/Src/buzzer.c:11:6:Buzzer_Off	8	static
+../Drivers/Buzzer/Src/buzzer.c:17:6:Buzzer_Toggle	16	static
+../Drivers/Buzzer/Src/buzzer.c:25:6:Buzzer_UniquePattern	8	static
+../Drivers/Buzzer/Src/buzzer.c:57:6:Buzzer_TaskCompletion	16	static
+../Drivers/Buzzer/Src/buzzer.c:92:6:Buzzer_ErrorPattern	24	static

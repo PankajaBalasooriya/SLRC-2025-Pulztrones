@@ -1,0 +1,29 @@
+/*
+ * display.c
+ *
+ *  Created on: Apr 3, 2025
+ *      Author: PANKAJA
+ */
+char bufnum[7];
+
+#include "display.h"
+
+
+
+void Init_Display(){
+	SSD1306_Init();
+	SSD1306_DrawBitmap(0, 0, logo, 128, 64, 1);
+	SSD1306_UpdateScreen();
+}
+
+
+//  int num = 123456; float flt = 123.45;
+//   char bufflt[7];
+//  SSD1306_Init (); // initialise the display
+//  sprintf (bufnum, "%d", num);
+//  sprintf (bufflt, "%.2f", flt);
+//  SSD1306_GotoXY (10,10); // goto 10, 10
+//  SSD1306_Puts (bufnum, &Font_11x18, 1); // print Hello
+//  SSD1306_GotoXY (10, 30);
+//  SSD1306_Puts (bufflt, &Font_11x18, 1);
+//  SSD1306_UpdateScreen(); // update screen

@@ -46,11 +46,11 @@
 #include "robot.h"
 #include "tasks.h"
 #include "ballstorage.h"
-#include "RPI_uart_comm.h"
 #include "arm_controller.h"
 #include "PCA9548A.h"
 #include "TCS3472.h"
 #include "irs.h"
+#include "display.h"
 
 
 
@@ -95,18 +95,18 @@ volatile uint8_t systick_function_enabled = 0;
 int16_t left_counts = 0;
 int16_t right_counts = 0;
 
-char uart_rx_buffer[BUFFER_SIZE];  // Buffer to store received data
-volatile uint8_t data_received = 0;  // Flag to indicate new data received
-
-
 
 RAYKHA_Calibration raykha_calibration;
 uint8_t calibration_complete = 0;
 
 
- volatile uint8_t task_ready = 0;  // Global flag
+volatile uint8_t task_ready = 0;  // Global flag
 
+extern uint16_t r_line, g_line, b_line, c_line;
+extern uint16_t r_obj, g_obj, b_obj, c_obj;
+extern Color line_color, object_color;
 
+char buffer[100];
 
 
 /* USER CODE END PV */
@@ -145,625 +145,6 @@ i2c_mux_t mux = {
 
 
 
-
-
-// UART Transmit function (send string)
-//void UART_Transmit(UART_HandleTypeDef *huart, char *data)
-//{
-//    // Transmit the string over UART
-//    HAL_UART_Transmit(huart, (uint8_t *)data, strlen(data), HAL_MAX_DELAY);
-//}
-//
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//    if (huart->Instance == USART6)  // Check if it's UART6
-//    {
-//        data_received = 1;  // Set flag to indicate new data
-//        HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Restart reception
-//    }
-//}
-
-
-
-//-------------------------color sensor----------------
-
-
-/* TCS3472 I2C Address */
-#define TCS3472_ADDR                 (0x29 << 1)  // 7-bit address shifted left
-
-/* TCS3472 Registers */
-#define TCS3472_COMMAND_BIT          0x80
-#define TCS3472_REG_ENABLE           0x00
-#define TCS3472_REG_ATIME            0x01
-#define TCS3472_REG_WTIME            0x03
-#define TCS3472_REG_AILTL            0x04
-#define TCS3472_REG_AILTH            0x05
-#define TCS3472_REG_AIHTL            0x06
-#define TCS3472_REG_AIHTH            0x07
-#define TCS3472_REG_PERS             0x0C
-#define TCS3472_REG_CONFIG           0x0D
-#define TCS3472_REG_CONTROL          0x0F
-#define TCS3472_REG_ID               0x12
-#define TCS3472_REG_STATUS           0x13
-#define TCS3472_REG_CDATAL           0x14
-#define TCS3472_REG_CDATAH           0x15
-#define TCS3472_REG_RDATAL           0x16
-#define TCS3472_REG_RDATAH           0x17
-#define TCS3472_REG_GDATAL           0x18
-#define TCS3472_REG_GDATAH           0x19
-#define TCS3472_REG_BDATAL           0x1A
-#define TCS3472_REG_BDATAH           0x1B
-
-/* TCS3472 Enable Register bits */
-#define TCS3472_ENABLE_PON           0x01    // Power ON
-#define TCS3472_ENABLE_AEN           0x02    // RGBC Enable
-#define TCS3472_ENABLE_WEN           0x08    // Wait Enable
-#define TCS3472_ENABLE_AIEN          0x10    // RGBC Interrupt Enable
-
-/* Define the second sensor's mux channel and color definitions */
-#define MUX_CHANNEL_LINE_SENSOR     1
-#define MUX_CHANNEL_OBJECT_SENSOR   2
-
-/* Additional Object Color Definitions */
-#define COLOR_UNKNOWN               0
-#define COLOR_BLACK                 1
-#define COLOR_WHITE                 2
-#define COLOR_GREEN                 3
-#define COLOR_YELLOW_ORANGE         4
-#define COLOR_RED                   5
-#define COLOR_BLUE                  6
-
-
-
-uint8_t TCS3472_Init(void);
-uint8_t TCS3472_GetID(void);
-void TCS3472_Enable(void);
-void TCS3472_Disable(void);
-void TCS3472_SetIntegrationTime(uint8_t time);
-void TCS3472_SetGain(uint8_t gain);
-void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
-uint8_t TCS3472_DetectLineColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c);
-void TCS3472_CalibrateColors(void);
-void TCS3472_Write(uint8_t reg, uint8_t value);
-uint8_t TCS3472_Read8(uint8_t reg);
-uint16_t TCS3472_Read16(uint8_t reg);
-
-uint8_t TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c);
-void TCS3472_CalibrateObjectColors(void);
-
-
-/* Color calibration thresholds */
-/* Color calibration thresholds */
-struct {
-    uint16_t black_threshold;
-    uint16_t white_threshold;
-    uint16_t green_ratio_min;
-    uint16_t green_ratio_max;
-    uint8_t is_calibrated;
-} color_config = {
-    .black_threshold = 1000,  // Default value, should be calibrated
-    .white_threshold = 5000,  // Default value, should be calibrated
-    .green_ratio_min = 110,   // G/R ratio * 100, default value
-    .green_ratio_max = 150,   // G/R ratio * 100, default value
-    .is_calibrated = 0
-};
-
-/* Object color calibration thresholds */
-struct {
-    uint16_t white_min_c;
-
-    /* Red color parameters */
-    uint16_t red_min_ratio_r_to_g;  // (r/g)*100 ratio threshold
-    uint16_t red_min_ratio_r_to_b;  // (r/b)*100 ratio threshold
-
-    /* Blue color parameters */
-    uint16_t blue_min_ratio_b_to_r;  // (b/r)*100 ratio threshold
-    uint16_t blue_min_ratio_b_to_g;  // (b/g)*100 ratio threshold
-
-    /* Yellow-Orange parameters */
-    uint16_t yellow_min_ratio_r_to_b;  // (r/b)*100 ratio threshold
-    uint16_t yellow_min_ratio_g_to_b;  // (g/b)*100 ratio threshold
-    uint8_t yellow_r_g_diff_percent;   // How close r and g should be (as percentage)
-} object_color_config = {
-    .white_min_c = 5000,           // Minimum clear value for white
-
-    .red_min_ratio_r_to_g = 150,   // R must be 1.5x greater than G
-    .red_min_ratio_r_to_b = 150,   // R must be 1.5x greater than B
-
-    .blue_min_ratio_b_to_r = 150,  // B must be 1.5x greater than R
-    .blue_min_ratio_b_to_g = 120,  // B must be 1.2x greater than G
-
-    .yellow_min_ratio_r_to_b = 150, // R must be 1.5x greater than B
-    .yellow_min_ratio_g_to_b = 150, // G must be 1.5x greater than B
-    .yellow_r_g_diff_percent = 80   // R and G must be within 20% of each other
-};
-
-
-
-
-/* TCS3472 Color Sensor Functions */
-
-
-void TCS3472_SelectSensor(uint8_t channel) {
-    i2c_mux_select(&mux, channel);
-    HAL_Delay(2); // Small delay for mux to stabilize
-}
-
-
-
-
-
-
-/* Initialize TCS3472 sensor */
-uint8_t TCS3472_Init(void)
-{
-    /* Check if sensor is responding */
-    uint8_t id = TCS3472_GetID();
-    if (id != 0x44 && id != 0x4D) {
-        return HAL_ERROR;  // Sensor not detected
-    }
-
-    /* Power ON the device */
-    TCS3472_Enable();
-
-    /* Set integration time (1 = 2.4ms, 255 = 614.4ms) */
-    TCS3472_SetIntegrationTime(0x00);  // Minimum integration time (2.4ms) for fast readings
-
-    /* Set gain (0 = 1x, 1 = 4x, 2 = 16x, 3 = 60x) */
-    TCS3472_SetGain(3);  // 60x gain for better contrast in color detection
-
-    /* Wait for a moment for the sensor to stabilize */
-    HAL_Delay(50);
-
-    return HAL_OK;
-}
-
-/* Get device ID */
-uint8_t TCS3472_GetID(void)
-{
-    return TCS3472_Read8(TCS3472_REG_ID);
-}
-
-/* Enable the device */
-void TCS3472_Enable(void)
-{
-    /* Power ON */
-    TCS3472_Write(TCS3472_REG_ENABLE, TCS3472_ENABLE_PON);
-    HAL_Delay(3);  // Wait 2.4ms for power-up
-
-    /* Enable RGBC sensor */
-    TCS3472_Write(TCS3472_REG_ENABLE, TCS3472_ENABLE_PON | TCS3472_ENABLE_AEN);
-}
-
-/* Disable the device */
-void TCS3472_Disable(void)
-{
-    /* Get current value */
-    uint8_t val = TCS3472_Read8(TCS3472_REG_ENABLE);
-
-    /* Turn off AEN and PON */
-    TCS3472_Write(TCS3472_REG_ENABLE, val & ~(TCS3472_ENABLE_PON | TCS3472_ENABLE_AEN));
-}
-
-/* Set integration time */
-void TCS3472_SetIntegrationTime(uint8_t time)
-{
-    /* Write integration time to the register */
-    TCS3472_Write(TCS3472_REG_ATIME, time);
-}
-
-/* Set gain */
-void TCS3472_SetGain(uint8_t gain)
-{
-    /* Check if gain is valid (0-3) */
-    if (gain > 3) gain = 3;
-
-    /* Write gain to the register */
-    TCS3472_Write(TCS3472_REG_CONTROL, gain);
-}
-
-/* Get RGB and Clear values */
-void TCS3472_GetRGBC(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c)
-{
-    /* Wait for data to be valid */
-    while (!(TCS3472_Read8(TCS3472_REG_STATUS) & 0x01));
-
-    /* Read all values */
-    *c = TCS3472_Read16(TCS3472_REG_CDATAL);
-    *r = TCS3472_Read16(TCS3472_REG_RDATAL);
-    *g = TCS3472_Read16(TCS3472_REG_GDATAL);
-    *b = TCS3472_Read16(TCS3472_REG_BDATAL);
-}
-
-/* Detect line color based on RGB values */
-uint8_t TCS3472_DetectLineColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c)
-{
-    /* If overall brightness is very low, it's black (background) */
-    if (c < color_config.black_threshold) {
-        return COLOR_BLACK;
-    }
-
-    /* If overall brightness is high, check if it's white or green */
-    if (c > color_config.white_threshold) {
-        /* Calculate green-to-red ratio (multiplied by 100 to avoid floating point) */
-        uint16_t g_to_r_ratio = 0;
-
-        /* Avoid division by zero */
-        if (r > 10) {
-            g_to_r_ratio = (g * 100) / r;
-        }
-
-        /* If green is significantly higher than red, it's green */
-        if (g_to_r_ratio >= color_config.green_ratio_min &&
-            g_to_r_ratio <= color_config.green_ratio_max &&
-            g > r && g > b) {
-            return COLOR_GREEN;
-        }
-
-        /* If all colors are relatively balanced and bright, it's white */
-        if (r > 500 && g > 500 && b > 500 &&
-            (r * 100) / c > 20 && (g * 100) / c > 20 && (b * 100) / c > 20) {
-            return COLOR_WHITE;
-        }
-    }
-
-    /* If we can't identify the color */
-    return COLOR_UNKNOWN;
-}
-
-/* Calibration function - to be called during setup or when a button is pressed */
-void TCS3472_CalibrateColors(void)
-{
-    char buffer[100];
-    uint16_t r, g, b, c;
-    uint16_t black_readings[5] = {0};
-    uint16_t white_readings[5] = {0};
-    uint16_t green_readings_r[5] = {0};
-    uint16_t green_readings_g[5] = {0};
-
-    /* Send calibration instructions */
-    sprintf(buffer, "Starting calibration sequence...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* 1. Calibrate BLACK background */
-    sprintf(buffer, "Place sensor over BLACK surface and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* Wait for button press */
-    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
-
-    /* Take 5 readings of black background */
-    for (int i = 0; i < 5; i++) {
-        TCS3472_GetRGBC(&r, &g, &b, &c);
-        black_readings[i] = c;
-        HAL_Delay(50);
-    }
-
-    /* Calculate average */
-    uint32_t black_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        black_sum += black_readings[i];
-    }
-    color_config.black_threshold = (black_sum / 5) * 1.5; // 50% margin
-
-    sprintf(buffer, "BLACK calibrated: threshold = %d\r\n", color_config.black_threshold);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-
-    /* 2. Calibrate WHITE line */
-    sprintf(buffer, "Place sensor over WHITE line and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* Wait for button press */
-    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
-
-    /* Take 5 readings of white line */
-    for (int i = 0; i < 5; i++) {
-        TCS3472_GetRGBC(&r, &g, &b, &c);
-        white_readings[i] = c;
-        HAL_Delay(50);
-    }
-
-    /* Calculate average */
-    uint32_t white_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        white_sum += white_readings[i];
-    }
-    color_config.white_threshold = (white_sum / 5) * 0.8; // 20% margin
-
-    sprintf(buffer, "WHITE calibrated: threshold = %d\r\n", color_config.white_threshold);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-
-    /* 3. Calibrate GREEN line */
-    sprintf(buffer, "Place sensor over GREEN line and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* Wait for button press */
-    //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
-
-    /* Take 5 readings of green line */
-    for (int i = 0; i < 5; i++) {
-        TCS3472_GetRGBC(&r, &g, &b, &c);
-        green_readings_r[i] = r;
-        green_readings_g[i] = g;
-        HAL_Delay(50);
-    }
-
-    /* Calculate average G/R ratio */
-    uint32_t g_r_ratio_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        if (green_readings_r[i] > 10) { // Avoid division by zero
-            g_r_ratio_sum += (green_readings_g[i] * 100) / green_readings_r[i];
-        }
-    }
-    uint16_t avg_g_r_ratio = g_r_ratio_sum / 5;
-
-    /* Set min and max with 10% margin on each side */
-    color_config.green_ratio_min = avg_g_r_ratio * 0.9;
-    color_config.green_ratio_max = avg_g_r_ratio * 1.1;
-
-    sprintf(buffer, "GREEN calibrated: G/R ratio range = %d-%d\r\n",
-            color_config.green_ratio_min, color_config.green_ratio_max);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* Mark as calibrated */
-    color_config.is_calibrated = 1;
-
-    sprintf(buffer, "Calibration complete!\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-}
-
-/* Write a byte to the TCS3472 register */
-void TCS3472_Write(uint8_t reg, uint8_t value)
-{
-    uint8_t data[2];
-    data[0] = TCS3472_COMMAND_BIT | reg;
-    data[1] = value;
-
-    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, data, 2, 100);
-}
-
-/* Read 8-bit value from TCS3472 register */
-uint8_t TCS3472_Read8(uint8_t reg)
-{
-    uint8_t cmd = TCS3472_COMMAND_BIT | reg;
-    uint8_t value;
-
-    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, &cmd, 1, 100);
-    HAL_I2C_Master_Receive(&hi2c1, TCS3472_ADDR, &value, 1, 100);
-
-    return value;
-}
-
-/* Read 16-bit value from TCS3472 register */
-uint16_t TCS3472_Read16(uint8_t reg)
-{
-    uint8_t cmd = TCS3472_COMMAND_BIT | reg;
-    uint8_t data[2];
-
-    HAL_I2C_Master_Transmit(&hi2c1, TCS3472_ADDR, &cmd, 1, 100);
-    HAL_I2C_Master_Receive(&hi2c1, TCS3472_ADDR, data, 2, 100);
-
-    return (data[1] << 8) | data[0];
-}
-
-/* This function is called when a HAL error occurs */
-
-
-/* Detect object color based on RGB values */
-uint8_t TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c) {
-    /* Avoid division by zero */
-    if (r < 10) r = 10;
-    if (g < 10) g = 10;
-    if (b < 10) b = 10;
-
-    /* Calculate ratios (multiplied by 100 to avoid floating point) */
-    uint16_t r_to_g_ratio = (r * 100) / g;
-    uint16_t r_to_b_ratio = (r * 100) / b;
-    uint16_t g_to_b_ratio = (g * 100) / b;
-    uint16_t b_to_r_ratio = (b * 100) / r;
-    uint16_t b_to_g_ratio = (b * 100) / g;
-
-    /* Calculate how close R and G are to each other as a percentage */
-    uint16_t r_g_similarity;
-    if (r > g) {
-        r_g_similarity = (g * 100) / r;
-    } else {
-        r_g_similarity = (r * 100) / g;
-    }
-
-    /* For debugging - uncomment if needed */
-    /*
-    char debug[100];
-    sprintf(debug, "Ratios: R/G=%d, R/B=%d, G/B=%d, B/R=%d, B/G=%d, RG_sim=%d\r\n",
-            r_to_g_ratio, r_to_b_ratio, g_to_b_ratio, b_to_r_ratio, b_to_g_ratio, r_g_similarity);
-    HAL_UART_Transmit(&huart3, (uint8_t*)debug, strlen(debug), HAL_MAX_DELAY);
-    */
-
-    /* White detection */
-    if (c > object_color_config.white_min_c &&
-        r > 1000 && g > 1000 && b > 1000 &&
-        r_g_similarity > 80 && /* R and G within 20% of each other */
-        (b * 100) / ((r + g) / 2) > 80) { /* B is at least 80% of average of R and G */
-        return COLOR_WHITE;
-    }
-
-    /* Red detection */
-    if (r_to_g_ratio > object_color_config.red_min_ratio_r_to_g &&
-        r_to_b_ratio > object_color_config.red_min_ratio_r_to_b) {
-        return COLOR_RED;
-    }
-
-    /* Blue detection */
-    if (b_to_r_ratio > object_color_config.blue_min_ratio_b_to_r &&
-        b_to_g_ratio > object_color_config.blue_min_ratio_b_to_g) {
-        return COLOR_BLUE;
-    }
-
-    /* Yellow-Orange detection */
-    if (r_to_b_ratio > object_color_config.yellow_min_ratio_r_to_b &&
-        g_to_b_ratio > object_color_config.yellow_min_ratio_g_to_b &&
-        r_g_similarity > object_color_config.yellow_r_g_diff_percent) {
-        return COLOR_YELLOW_ORANGE;
-    }
-
-    /* If we can't identify the color */
-    return COLOR_UNKNOWN;
-}
-
-
-/* Calibration function for object colors - simplified version */
-void TCS3472_CalibrateObjectColors(void) {
-    char buffer[100];
-    uint16_t r, g, b, c;
-
-    /* Send calibration instructions */
-    sprintf(buffer, "Starting object color calibration sequence...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-    /* 1. Calibrate WHITE object */
-    sprintf(buffer, "Place sensor over WHITE object and wait 5 seconds...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(5000);
-
-    /* Take reading of white object */
-    TCS3472_GetRGBC(&r, &g, &b, &c);
-    object_color_config.white_min_c = c * 0.8; // 20% margin
-
-    sprintf(buffer, "WHITE calibrated: min_c = %d | R:%d G:%d B:%d C:%d\r\n",
-            object_color_config.white_min_c, r, g, b, c);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-
-    sprintf(buffer, "Object color calibration complete!\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-
-    /* Note: Red and Blue calibration requires more complex processing
-       and is purposely left out. We'll use predefined values instead. */
-}
-
-/* Initialize both TCS3472 color sensors */
-uint8_t TCS3472_InitAll(void) {
-    uint8_t status = HAL_OK;
-    char msg[100];
-
-    /* Initialize line sensor */
-    TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
-    if (TCS3472_Init() != HAL_OK) {
-        sprintf(msg, "Line sensor (TCS3472) initialization failed!\r\n");
-        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-        status = HAL_ERROR;
-    } else {
-        sprintf(msg, "Line sensor (TCS3472) initialized successfully!\r\n");
-        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-    }
-
-    /* Initialize object sensor */
-    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-    if (TCS3472_Init() != HAL_OK) {
-        sprintf(msg, "Object sensor (TCS3472) initialization failed!\r\n");
-        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-        status = HAL_ERROR;
-    } else {
-        sprintf(msg, "Object sensor (TCS3472) initialized successfully!\r\n");
-        HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-    }
-
-    return status;
-}
-
-
-/* Main function for the project with both sensors */
-void TCS3472_DualSensorExample(void) {
-    /* Initialize both sensors */
-    if (TCS3472_InitAll() != HAL_OK) {
-        Error_Handler();
-        return;
-    }
-
-    /* Run calibration routine for line sensor */
-    TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
-    TCS3472_CalibrateColors();
-
-    /* Run simplified calibration for object sensor (just for white) */
-    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-    TCS3472_CalibrateObjectColors();
-
-    uint16_t r_line, g_line, b_line, c_line;
-    uint16_t r_obj, g_obj, b_obj, c_obj;
-    uint8_t line_color, object_color;
-    char buffer[100];
-
-    while (1) {
-        /* Get RGB and Clear values from line sensor */
-        TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
-        TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
-        line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
-
-        /* Get RGB and Clear values from object sensor */
-        TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-        TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
-        object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
-
-        /* Get line color string */
-        char *line_color_str;
-        switch(line_color) {
-            case COLOR_BLACK:  line_color_str = "BLACK"; break;
-            case COLOR_WHITE:  line_color_str = "WHITE"; break;
-            case COLOR_GREEN:  line_color_str = "GREEN"; break;
-            default:           line_color_str = "UNKNOWN"; break;
-        }
-
-        /* Get object color string */
-        char *object_color_str;
-        switch(object_color) {
-            case COLOR_BLACK:          object_color_str = "BLACK"; break;
-            case COLOR_WHITE:          object_color_str = "WHITE"; break;
-            case COLOR_GREEN:          object_color_str = "GREEN"; break;
-            case COLOR_YELLOW_ORANGE:  object_color_str = "YELLOW-ORANGE"; break;
-            case COLOR_RED:            object_color_str = "RED"; break;
-            case COLOR_BLUE:           object_color_str = "BLUE"; break;
-            default:                   object_color_str = "UNKNOWN"; break;
-        }
-
-        /* Print the combined results */
-        sprintf(buffer, "Line: %s (%d,%d,%d,%d) | Object: %s (%d,%d,%d,%d)\r\n",
-                line_color_str, r_line, g_line, b_line, c_line,
-                object_color_str, r_obj, g_obj, b_obj, c_obj);
-        HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-        /* Wait before next reading */
-        HAL_Delay(100);
-    }
-}
-
-
-
-
-#ifdef  USE_FULL_ASSERT
-void assert_failed(uint8_t *file, uint32_t line)
-{
-    /* User can add his own implementation to report the file name and line number */
-    printf("Wrong parameters value: file %s on line %d\r\n", file, line);
-}
-#endif /* USE_FULL_ASSERT */
-
-
-
-
-//------------------------------------------------------
-
-
-
-
-
-
 /* USER CODE END 0 */
 
 /**
@@ -773,324 +154,207 @@ void assert_failed(uint8_t *file, uint32_t line)
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-//	uint32_t count = 0; // Initialize the counter
-//	char buffer[50]; // Buffer to hold formatted string
+	/* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* USER CODE END 1 */
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* USER CODE BEGIN Init */
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
+	/* USER CODE BEGIN Init */
 
 
-  /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/* USER CODE END Init */
 
-  /* USER CODE BEGIN SysInit */
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* USER CODE END SysInit */
+	/* USER CODE BEGIN SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_USART2_UART_Init();
-  MX_TIM1_Init();
-  MX_TIM2_Init();
-  MX_I2C2_Init();
-  MX_USART3_UART_Init();
-  MX_USART6_UART_Init();
-  MX_ADC1_Init();
-  MX_I2C1_Init();
-  MX_TIM3_Init();
-  /* USER CODE BEGIN 2 */
-  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
-  HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
+	/* USER CODE END SysInit */
 
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_USART2_UART_Init();
+	MX_TIM1_Init();
+	MX_TIM2_Init();
+	MX_I2C2_Init();
+	MX_USART3_UART_Init();
+	MX_USART6_UART_Init();
+	MX_ADC1_Init();
+	MX_I2C1_Init();
+	MX_TIM3_Init();
+	/* USER CODE BEGIN 2 */
+	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
 
-  SSD1306_Init();
-    SSD1306_DrawBitmap(0, 0, logo, 128, 64, 1);
-    SSD1306_UpdateScreen(); // update screen
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
+	turn_off_air_pump();
+	turn_on_water_pump();
 
 
+	/*--------------------- OLED Display --------------------------------*/
+	Init_Display();
 
-	  Buzzer_UniquePattern();
 
-  /*---------------------Delay--------------------------------*/
-  Delay_Init();
-  /*-------------------------------------------------------------------*/
+	/*---------------------Delay--------------------------------*/
+	Delay_Init();
+	/*-------------------------------------------------------------------*/
 
-  //AnalogMux_Init();
-  // This is the uart for the bluetooth
-  //UART_Init(&huart3);
-  //RPI_UART_Init();
+	/*---------------------Servos--------------------------------*/
+	// Initialize servo system
+	Servo_Init(50);  // 50Hz frequency for servos
+	// Initialize arm
+	Arm_Init();
 
-  /*---------------------Servo--------------------------------*/
-  // Initialize servo system
-  Servo_Init(50);  // 50Hz frequency for servos
-  init_ball_storage();
+	// Init ball storage
+	init_ball_storage();
 
-  // Initialize arm controller
-  //Arm_Init();
 
-  //Arm_MoveServo(ARM_BASE_SERVO, 100.0f);
+	/*-------------------------------------------------------------------*/
 
-  //Arm_MoveTo(180.0f, 5.0f, 90.0f, 100.0f);
+	Controller_Init(&controller);
+	Profile_Reset(&forward_profile);
+	Profile_Reset(&rotation_profile);
+	Motion_Init(&motion, &controller, &forward_profile, &rotation_profile);
+	Controller_ResetControllers(&controller);
 
-  //Examples
-  // Register servos (do this once)
+	Buzzer_UniquePattern();
 
+	Buzzer_Toggle(200);
+	HAL_Delay(2000);
+	/*--------------- Raykha calibration ----------------------------------*/
+//	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+	/*-------------------------------------------------------------------*/
+	HAL_Delay(2000);
+	Buzzer_Toggle(200);
 
- //int ball_storage = Servo_Register(14, "ball_storage", 0, 360.0,0);
 
+	/*----------------- Begin color sensor init--------------------------------*/
+	Buzzer_Toggle(100);
+	//init_color_sensors();
+	//caliberate_color_sensors();
 
+	/*----------------- End color sensor init-----------------------------------*/
 
-// int base = Servo_Register(15, "base", 0, 180, 0 );
-// int A = Servo_Register(11, "A", 0, 180, 0);
-//int B = Servo_Register(3, "B", 0, 180, 0);
-  int C = Servo_Register(8, "C", 0, 180, 0);
-////
-////
-  HAL_Delay(2000);
-////
-////  // Later in your code, use the servos by ID
-// Servo_SetAngle(base, 50);
-//    Servo_SetAngle(A, 0);
-//    Servo_SetAngle(B, 90);
-    Servo_SetAngle(C, 90);
+	//display_big_number(2);
 
 
-drop_bad_potatos();
-drop_good_potatos();
-
-
-//  Servo_SetAngle(base, 0);
-//  HAL_Delay(1000);
-
-//  Servo_SetAngle(base, 140);
-//  HAL_Delay(1000);
-////  Servo_SetAngle(base, 180);
-//  Servo_SetAngle(A, 0);
-//  Servo_SetAngle(B, 40);
-//  Servo_SetAngle(C, 120);
-//  HAL_Delay(1000);
-//  Servo_SetAngle(A, 60);
-//  Servo_SetAngle(B, 90);
-////  Servo_SetAngle(C, 40);
-//  HAL_Delay(1000);
-//  Servo_SetAngle(A, 70);
-
-//  Servo_SetAngle(base, 25);
-//  Servo_SetAngle(A, 70);
-//  Servo_SetAngle(B, 90);
-//  Servo_SetAngle(C, 35);
-
-  //PCA9685_SetServoAngle(14, 100);
-
-  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
-
-  HAL_GPIO_WritePin(WATERPUMP_GPIO_Port, WATERPUMP_Pin, 1);
-////
-//  HAL_Delay(3000);
-//
-//  Servo_SetAngle(A, 5);
-//  Servo_SetAngle(C, 100);
-//  HAL_Delay(1000);
-//  Servo_SetAngle(base, 180);
-//  Servo_SetAngle(A, 15);
-//  HAL_Delay(200);
-//  Servo_SetAngle(B, 70);
-//  HAL_Delay(200);
-//  Servo_SetAngle(C, 120);
-//  HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
-
-//  for (int i=0; i<20;i++){
-//
-//	  Servo_SetAngle(B, 90-i);
-//	  HAL_Delay(200);
-//	  Servo_SetAngle(C, 100+i);
-//	  HAL_Delay(200);
-//
-//  }
-//  Servo_SetAngle(A, 0);
-//  HAL_Delay(1000);
-//  Servo_SetAngle(B, 70);
-
-
-
-
-
-
-  // Or use them by name
-  //Servo_SetAngleByName("base", 90);  // Set base to 120 degrees
-
-  HAL_Delay(1000);
-  Controller_Init(&controller);
-    Profile_Reset(&forward_profile);
-    Profile_Reset(&rotation_profile);
-    Motion_Init(&motion, &controller, &forward_profile, &rotation_profile);
-    Controller_ResetControllers(&controller);
-
-  // Reset all servos to center position
-  //Servo_ResetAll();
-
-  Buzzer_Toggle(100);
-
-  /*-------------------------------------------------------------------*/
-  //HAL_UART_Receive_IT(&huart6, (uint8_t *)uart_rx_buffer, BUFFER_SIZE);  // Enable UART interrupt
-
-  HAL_Delay(2000);
-  //RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
-  HAL_Delay(200);
-  Buzzer_Toggle(100);
-
-  //set_steering_mode(STEERING_OFF_READLINE);
-  //tcs3272_init();
-
-
-
-
-
-
-
-
-
-
-  Buzzer_Toggle(100);
-  HAL_Delay(6000);
-  Buzzer_Toggle(100);
-
-//  HAL_Delay(200);
-//
-//  EnableSysTickFunction();
-//
-//  runCurrentTask(TASK_PLANTATION);
-//
-//  Buzzer_Toggle(500);
-//
-//  runCurrentTask(TASK_SORTING_POTATOS);
-//
-//  Buzzer_TaskCompletion();
-
-  //Robot_MoveForwardUntillLine();
-
-
-
-  //Turn360Servo();
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
 
-//store_ball(1, WHITE_BALL);
-////
-////
-//store_ball(2, YELLOW_BALL);
-////
-//  store_ball(3, WHITE_BALL);
-//
-//  store_ball(4, YELLOW_BALL);
-//
-//  store_ball(5, WHITE_BALL);
-//
-//
-//  retrieve_ball(YELLOW_BALL);
+	//store_ball(1, WHITE_BALL);
+	////
+	////
+	//store_ball(2, YELLOW_BALL);
+	////
+	//  store_ball(3, WHITE_BALL);
+	//
+	//  store_ball(4, YELLOW_BALL);
+	//
+	//  store_ball(5, WHITE_BALL);
+	//
+	//
+	//  retrieve_ball(YELLOW_BALL);
 
-//////////////////////Lines for Oshadha's mechanism testing only
-//  rotate_360_to_position(1);
-//  HAL_Delay(1000);
-//  rotate_360_to_position(3);
-//  HAL_Delay(1000);
-//  rotate_360_to_position(5);
-//  HAL_Delay(1000);
-//  rotate_360_to_position(2);
-//  HAL_Delay(1000);
-//  rotate_360_to_position(1);
-//  HAL_Delay(1000);
-//////////////////////Lines for Oshadha's mechanism testing only ends
+	//////////////////////Lines for Oshadha's mechanism testing only
+	//  rotate_360_to_position(1);
+	//  HAL_Delay(1000);
+	//  rotate_360_to_position(3);
+	//  HAL_Delay(1000);
+	//  rotate_360_to_position(5);
+	//  HAL_Delay(1000);
+	//  rotate_360_to_position(2);
+	//  HAL_Delay(1000);
+	//  rotate_360_to_position(1);
+	//  HAL_Delay(1000);
+	//////////////////////Lines for Oshadha's mechanism testing only ends
 
-//  pickup_and_Store();
-////  retrive_and_drop();
-//  return_home();
+	//  pickup_and_Store();
+	////  retrive_and_drop();
+//	  return_home();
+
+	//  pickup_and_Store();
+	//retrive_and_drop();
+	//  HAL_Delay(3000);
+//	 return_home();
+
+
+	//Arm_MoveServo(ARM_BASE_SERVO, 10);//105
+
+	Arm_MoveServo(ARM_LINK2_SERVO, 25);
+	HAL_Delay(1000);
+	Arm_MoveServo(ARM_LINK3_SERVO,100);
+	HAL_Delay(1000);
+	Arm_MoveServo(ARM_BASE_SERVO, 180);
+
+	HAL_Delay(5000);
+//	Arm_MoveServo(ARM_BASE_SERVO, 105);
+//	Arm_MoveServo(ARM_LINK3_SERVO,80);
+//	Arm_MoveServo(ARM_LINK2_SERVO, 95);
+
+
+//	Arm_MoveServo(ARM_LINK2_SERVO,135);
+
+
+	//Arm_MoveServo(ARM_BASE_SERVO, 105);
+	//return_home();
+//	Arm_MoveServo(ARM_LINK1_SERVO,10);
+//	Arm_MoveServo(ARM_LINK3_SERVO,135);
+
+
+
 
   ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
 
 
-//  pickup_and_Store();
-  //retrive_and_drop();
-//  HAL_Delay(3000);
- // return_home();
-
-
-  //Robot_TurnRight90Inplace();
-  //Robot_TurnLeft90Inplace();
-
-  //setMotorLPWM(1);
-  //setMotorRPWM(1);
-
-//  Motion_StartMove(&motion, 1500, 200, 0, 120);
-//  HAL_Delay(1000);
-//  //Motion_StopAt(&motion, 600);
-//  Motion_StopAfter(&motion, 100);
-  //Robot_LineFollowUntillJunction();
-  	 // set_steering_mode(STEERING_OFF_READLINE);
-
-  	//Motion_Move(&motion, 1000, 100, 0, 120);
-
-  	//set_steering_mode(STEER_LEFT_WALL);
-//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
-//  Motion_SpinTurn(&motion, -90, 200.0, 20.0);
-//Motion_Move(&motion, 600, 200, 0, 200);
-
-
-  //Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
-//set_steering_mode(STEERING_OFF);
-  //Motion_SpinTurn(&motion, 90, 200.0, 20.0);
-
-
-//-----workinf code
-//  /* Initialize TCS3472 color sensor */
-//  i2c_mux_select(&mux, 1);
-//  HAL_Delay(2);
-//
-//
-//      if (TCS3472_Init() != HAL_OK)
-//      {
-//          char msg[] = "TCS3472 initialization failed!\r\n";
-//          HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//          Error_Handler();
-//      }
-//
-//      char msg[] = "TCS3472 initialized successfully!\r\n";
-//      HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-//
-//      /* Run calibration routine */
-//
-//      TCS3472_CalibrateColors();
-//      //TCS3472_CalibrateColors();
-//
-//      uint16_t r, g, b, c;
-//      uint8_t line_color;
-//      char buffer[100];
-
-//---------- new color code ----------------------
-
-  TCS3472_DualSensorExample();
-
-//---------- end of new color code ---------------
+	//----------- Drop potatos test code ----------------------------------------------
+//	drop_bad_potatos();
+//	drop_good_potatos();
+	//---------------------------------------------------------------------------------
 
 
 
+  //---------------- Begining of Motion controller tests---------------------------------------------
+    //EnableSysTickFunction();
 
+  	//set_steering_mode(STEERING_OFF_READLINE);
+
+	//Robot_TurnRight90Inplace();
+	//Robot_TurnLeft90Inplace();
+
+	//setMotorLPWM(1);
+	//setMotorRPWM(1);
+
+	//  Motion_StartMove(&motion, 1500, 200, 0, 120);
+	//  HAL_Delay(1000);
+	//  //Motion_StopAt(&motion, 600);
+	//  Motion_StopAfter(&motion, 100);
+	//Robot_LineFollowUntillJunction();
+	// set_steering_mode(STEERING_OFF_READLINE);
+
+	//Motion_Move(&motion, 1000, 100, 0, 120);
+
+	//set_steering_mode(STEER_LEFT_WALL);
+	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+	//Motion_SpinTurn(&motion, -90, 200.0, 20.0);
+	//Motion_Move(&motion, 600, 200, 0, 200);
+
+
+	//Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	//set_steering_mode(STEERING_OFF);
+	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
+
+  //---------------- End of Motion controller tests---------------------------------------------
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -1101,30 +365,44 @@ drop_good_potatos();
 
     /* USER CODE BEGIN 3 */
 
-	  //analogReadIRs();
+	  TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	  TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
+	  line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
 
+	  /* Get RGB and Clear values from object sensor */
+	  TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+	  TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
+	  object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
 
-	  /* Get RGB and Clear values */
-//	          TCS3472_GetRGBC(&r, &g, &b, &c);
-//
-//	          /* Detect the line color */
-//	          line_color = TCS3472_DetectLineColor(r, g, b, c);
-//
-//	          /* Print the RGB values and detected color */
-//	          char *color_str;
-//	          switch(line_color) {
-//	              case COLOR_BLACK:  color_str = "BLACK"; break;
-//	              case COLOR_WHITE:  color_str = "WHITE"; break;
-//	              case COLOR_GREEN:  color_str = "GREEN"; break;
-//	              default:           color_str = "UNKNOWN"; break;
-//	          }
-//
-//	          sprintf(buffer, "R: %5d, G: %5d, B: %5d, C: %5d | Line: %s\r\n",
-//	                  r, g, b, c, color_str);
-//	          HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-//
-//	          /* Wait 100ms before next reading - reduced for faster response */
-//	          HAL_Delay(100);
+	  /* Get line color string */
+	  char *line_color_str;
+	  switch(line_color) {
+		  case BLACK:  line_color_str = "BLACK"; break;
+		  case WHITE:  line_color_str = "WHITE"; break;
+		  case GREEN:  line_color_str = "GREEN"; break;
+		  default:           line_color_str = "UNKNOWN"; break;
+	  }
+
+	  /* Get object color string */
+	  char *object_color_str;
+	  switch(object_color) {
+		  case BLACK:          object_color_str = "BLACK"; break;
+		  case WHITE:          object_color_str = "WHITE"; break;
+		  case GREEN:          object_color_str = "GREEN"; break;
+		  case YELLOW:  object_color_str = "YELLOW-ORANGE"; break;
+		  case RED:            object_color_str = "RED"; break;
+		  case BLUE:           object_color_str = "BLUE"; break;
+		  default:                   object_color_str = "UNKNOWN"; break;
+	  }
+
+	  /* Print the combined results */
+	  sprintf(buffer, "Line: %s (%d,%d,%d,%d) | Object: %s (%d,%d,%d,%d)\r\n",
+			  line_color_str, r_line, g_line, b_line, c_line,
+			  object_color_str, r_obj, g_obj, b_obj, c_obj);
+	  HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+	  /* Wait before next reading */
+	  HAL_Delay(100);
 
 
 
@@ -1148,60 +426,10 @@ drop_good_potatos();
 
 	  //left_counts = getLeftEncoderCounts();
 	  //right_counts = getRightEncoderCounts();
-
 	  //UART_Transmit_IR(&huart3, left_counts, right_counts);
-
-	  // Format the message with the counter
-
-
-//		  snprintf(buffer, sizeof(buffer), "Hello, Raspberry Pi, From STM32! Count: %lu\r\n", count++);
-//
-//		  // Transmit the formatted message
-//		  UART_Transmit(&huart6, buffer);
-//
-//		  // Wait for 1 second
-//		  HAL_Delay(50);
-
-//	  Turn360Servo();
-//	    HAL_Delay(780);
-//	    Stop360Servo();
-//	    HAL_Delay(1000);
-
-
-//	  if (data_received)  // Check if new data is received
-//	  {
-//		  data_received = 0;  // Reset flag
-//
-//		  // Print received data back (optional, for debugging)
-//		  HAL_UART_Transmit(&huart6, (uint8_t *)uart_rx_buffer, strlen(uart_rx_buffer), HAL_MAX_DELAY);
-//	  }
-
-
-
-	  //RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
-
-	     /* Get position for PID controller (centered around 0) */
-	  //line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
-
-
-	  //ReadAllSensors();
-
-
 
 	  //setMotorLPWM(1);
 	  //setMotorRPWM(1);
-
-
-//	  ProcessLineSensor();
-//	      HAL_Delay(100);
-//
-//	      ProcessObjectSensor();
-//	      HAL_Delay(100);
-//
-//	      /* Pause between readings */
-//	      HAL_Delay(800);
-
-
   }
   /* USER CODE END 3 */
 }
@@ -1750,6 +978,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+	  Buzzer_ErrorPattern();
   }
   /* USER CODE END Error_Handler_Debug */
 }

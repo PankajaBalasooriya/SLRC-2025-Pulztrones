@@ -1,0 +1,66 @@
+/*
+ * display.c
+ *
+ *  Created on: Apr 3, 2025
+ *      Author: PANKAJA
+ */
+
+
+#include "display.h"
+
+char bufnum[7];
+
+void Init_Display(){
+	SSD1306_Init();
+	SSD1306_DrawBitmap(0, 0, logo, 128, 64, 1);
+	SSD1306_UpdateScreen();
+}
+
+void display_big_number(uint8_t number){
+	SSD1306_Clear();
+	sprintf (bufnum, "%d", number);
+
+    SSD1306_GotoXY (25,10); // goto 10, 10
+    SSD1306_Puts (bufnum, &Font_16x26, 1); // print Hello
+
+    SSD1306_UpdateScreen(); // update screen
+}
+
+
+void display_text(const char *text, uint8_t x, uint8_t y) {
+    char buffer[50];  // Adjust size based on your needs
+    strncpy(buffer, text, sizeof(buffer) - 1);
+    buffer[sizeof(buffer) - 1] = '\0';  // Ensure null-termination
+
+    SSD1306_GotoXY(x, y); // Set cursor position
+    SSD1306_Puts(buffer, &Font_11x18, 1); // Display the text with the specified font
+    SSD1306_UpdateScreen(); // Refresh the screen to show the text
+}
+
+void display_clear(){
+	SSD1306_Clear();
+	SSD1306_UpdateScreen(); // update screen
+}
+
+void display_message(const char *text){
+	display_text(text, 10, 25);
+}
+
+void display_headding(const char *text){
+	display_text(text, 5, 3);
+}
+
+
+
+
+
+//  int num = 123456; float flt = 123.45;
+//   char bufflt[7];
+//  SSD1306_Init (); // initialise the display
+//  sprintf (bufnum, "%d", num);
+//  sprintf (bufflt, "%.2f", flt);
+//  SSD1306_GotoXY (10,10); // goto 10, 10
+//  SSD1306_Puts (bufnum, &Font_11x18, 1); // print Hello
+//  SSD1306_GotoXY (10, 30);
+//  SSD1306_Puts (bufflt, &Font_11x18, 1);
+//  SSD1306_UpdateScreen(); // update screen

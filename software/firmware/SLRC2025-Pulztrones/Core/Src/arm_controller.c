@@ -10,10 +10,10 @@
 #include <math.h>
 
 /* Private defines -----------------------------------------------------------*/
-#define ARM_HOME_BASE_ANGLE   90.0f
-#define ARM_HOME_LINK1_ANGLE  0.0f
-#define ARM_HOME_LINK2_ANGLE  100.0f
-#define ARM_HOME_LINK3_ANGLE  85.0f
+#define ARM_HOME_BASE_ANGLE   105.0f //105
+#define ARM_HOME_LINK1_ANGLE  10.0f //15
+#define ARM_HOME_LINK2_ANGLE  95.0f // 155
+#define ARM_HOME_LINK3_ANGLE  80.0f //70
 
 /* Private variables ---------------------------------------------------------*/
 static int initialized = 0;
@@ -33,19 +33,19 @@ int Arm_Init(void)
 
     // Register the four servos for the arm if they don't exist already
     if (servoIds[0] == -1) {
-        servoIds[0] = Servo_Register(15, "Base", 0.0f, 180.0f, ARM_HOME_BASE_ANGLE);
+        servoIds[0] = Servo_Register(12, "Base", 0.0f, 180.0f, ARM_HOME_BASE_ANGLE);
     }
 
     if (servoIds[1] == -1) {
-        servoIds[1] = Servo_Register(11, "Link1", 0.0f, 180.0f, ARM_HOME_LINK1_ANGLE);
+        servoIds[1] = Servo_Register(13, "Link1", 0.0f, 180.0f, ARM_HOME_LINK1_ANGLE);
     }
 
     if (servoIds[2] == -1) {
-        servoIds[2] = Servo_Register(13, "Link2", 0.0f, 180.0f, ARM_HOME_LINK2_ANGLE);
+        servoIds[2] = Servo_Register(14, "Link2", 0.0f, 180.0f, ARM_HOME_LINK2_ANGLE);
     }
 
     if (servoIds[3] == -1) {
-        servoIds[3] = Servo_Register(12, "Link3", 0.0f, 180.0f, ARM_HOME_LINK3_ANGLE);
+        servoIds[3] = Servo_Register(15, "Link3", 0.0f, 180.0f, ARM_HOME_LINK3_ANGLE);
     }
 
     // Check if all servos were registered successfully
@@ -110,6 +110,7 @@ int Arm_MoveServoGradually(int servoId, float targetAngle, float stepSize, uint1
 
     return 0;
 }
+
 
 /**
   * @brief  Move a servo to target position gradually using default parameters
@@ -225,24 +226,26 @@ int Arm_Home(void)
 }
 
 void pickup_and_Store(void){
-	Arm_MoveServo(ARM_LINK2_SERVO,100);
-	Arm_MoveServo(ARM_BASE_SERVO,6);
-	Arm_MoveServo(ARM_LINK3_SERVO,35);
-	Arm_MoveServo(ARM_LINK1_SERVO,55);
-//	HAL_Delay(1000);
-	Arm_MoveServo(ARM_LINK1_SERVO,70);
-	Arm_MoveServo(ARM_LINK2_SERVO,94);
-	turn_on_air_pump();
-	HAL_Delay(3000);
-	Arm_MoveServo(ARM_LINK1_SERVO,0);
-	Arm_MoveServo(ARM_LINK3_SERVO,85);
-	Arm_MoveServo(ARM_LINK2_SERVO,30);
+//	Arm_MoveServo(ARM_LINK2_SERVO,100);
+//	Arm_MoveServo(ARM_BASE_SERVO,6);
+//	Arm_MoveServo(ARM_LINK3_SERVO,35);
+//	Arm_MoveServo(ARM_LINK1_SERVO,55);
+////	HAL_Delay(1000);
+//	Arm_MoveServo(ARM_LINK1_SERVO,70);
+//	Arm_MoveServo(ARM_LINK2_SERVO,94);
+//	turn_on_air_pump();
+//	HAL_Delay(3000);
+//	Arm_MoveServo(ARM_LINK1_SERVO,0);
+//	Arm_MoveServo(ARM_LINK3_SERVO,85);
+//	Arm_MoveServo(ARM_LINK2_SERVO,30);
+////	turn_off_air_pump();
+//	Arm_MoveServo(ARM_BASE_SERVO,148);
+//	Arm_MoveServo(ARM_LINK3_SERVO,121);
+//	Arm_MoveServo(ARM_LINK2_SERVO,55);//45
 //	turn_off_air_pump();
-	Arm_MoveServo(ARM_BASE_SERVO,148);
-	Arm_MoveServo(ARM_LINK3_SERVO,121);
-	Arm_MoveServo(ARM_LINK2_SERVO,55);//45
-	turn_off_air_pump();
-	HAL_Delay(10000);
+//	HAL_Delay(10000);
+
+// after pickup
 
 
 
@@ -301,18 +304,9 @@ void retrive_and_drop(void){
 
 
 void return_home(void){
-	Arm_MoveServo(ARM_BASE_SERVO,90);
-	Arm_MoveServo(ARM_LINK1_SERVO,0);
-	Arm_MoveServo(ARM_LINK3_SERVO,85);
-//	Arm_MoveServo(ARM_LINK2_SERVO,60);
-	HAL_Delay(500);
-	Arm_MoveServo(ARM_LINK2_SERVO,100);
+	Arm_MoveServo(ARM_LINK3_SERVO,80);
+	Arm_MoveServo(ARM_LINK1_SERVO,10);
+	Arm_MoveServo(ARM_LINK2_SERVO, 95);//135
+	Arm_MoveServo(ARM_BASE_SERVO, 105);
 }
 
-void turn_on_air_pump(void) {
-	HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 0);
-}
-
-void turn_off_air_pump(void) {
-	HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
-}

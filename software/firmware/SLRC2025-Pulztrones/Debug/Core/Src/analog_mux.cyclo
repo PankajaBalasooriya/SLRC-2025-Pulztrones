@@ -1,4 +1,0 @@
-../Core/Src/analog_mux.c:21:6:AnalogMux_Init	1
-../Core/Src/analog_mux.c:34:6:AnalogMux_SelectChannel	6
-../Core/Src/analog_mux.c:73:10:AnalogMux_ReadADC	2
-../Core/Src/analog_mux.c:98:10:AnalogMux_ReadChannel	1

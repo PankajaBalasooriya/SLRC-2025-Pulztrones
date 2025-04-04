@@ -1,5 +1,7 @@
 #include "config.h"
 #include "buzzer.h"
+#include "stm32f4xx.h"
+#include "main.h"
 
 //*** Robot state **********************************************//
 
@@ -97,8 +99,47 @@ const int DISTACE_TO_CENTER_OF_CELL = 150;
 
 
 
+//***** Pump Controlling functions ******************************************************//
+
+void turn_on_water_pump(){
+	HAL_GPIO_WritePin(WATERPUMP_GPIO_Port, WATERPUMP_Pin, 0);
+}
+
+void turn_off_water_pump(){
+	HAL_GPIO_WritePin(WATERPUMP_GPIO_Port, WATERPUMP_Pin, 1);
+}
+
+void turn_on_air_pump(){
+	HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 0);
+}
+
+void turn_off_air_pump(){
+	HAL_GPIO_WritePin(AIRPUMP_GPIO_Port, AIRPUMP_Pin, 1);
+}
 
 
 
+//****** Button Handler ***************************************************************************
+volatile uint32_t previousMillis = 0;
+volatile uint32_t currentMillis = 0;
 
+volatile uint32_t okbtncount = 0;
+volatile uint32_t prevokbtncount = 0;
+
+volatile uint32_t nextbtncount = 0;
+volatile uint32_t prevnextbtncount = 0;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	currentMillis = HAL_GetTick();
+    if (GPIO_Pin == B1_Pin && (currentMillis - previousMillis > 650))  // Replace BUTTON_PIN with actual GPIO pin
+	{
+    	okbtncount++; // Set flag when button is pressed
+		//Buzzer_On();
+	}
+    else if (GPIO_Pin == GPIO_PIN_11 && (currentMillis - previousMillis > 650)){
+    	nextbtncount++;
+    }
+
+    previousMillis = currentMillis;
+}
 

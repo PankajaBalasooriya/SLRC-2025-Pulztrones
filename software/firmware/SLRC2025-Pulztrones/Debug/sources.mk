@@ -25,7 +25,9 @@ SUBDIRS := \
 Core/.metadata/.plugins/org.eclipse.cdt.make.core \
 Core/Src \
 Core/Startup \
+Drivers/Buzzer/Src \
 Drivers/PCA9548A/Src \
+Drivers/PCA9685/Src \
 Drivers/SSD1306/Src \
 Drivers/STM32F4xx_HAL_Driver/Src \
 Drivers/TCS3472/Src \

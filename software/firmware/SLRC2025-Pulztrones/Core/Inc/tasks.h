@@ -29,7 +29,7 @@ void moveToCenterofNextColumnfromFirstRow();
 void moveToCenterofNextColumnfromSecondRow();
 void moveToCenterofNextColumnfromThiredRow();
 
-BallColor picktheBall(uint8_t column, uint8_t row);
+Color picktheBall(uint8_t column, uint8_t row);
 
 
 void executePotatoSeperationTask(void);
