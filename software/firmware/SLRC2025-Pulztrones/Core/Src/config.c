@@ -87,7 +87,7 @@ const int FRONT_NOMINAL = 80;
 // the values above which, a wall is seen
 const int LEFT_THRESHOLD = 80;   // minimum value to register a wall
 const int RIGHT_THRESHOLD = 80;  // minimum value to register a wall
-const int FRONT_THRESHOLD = 100;  // minimum value to register a wall
+const int FRONT_THRESHOLD = 180;  // minimum value to register a wall
 
 
 //***** Robot constants ******************************************************//
@@ -126,7 +126,7 @@ volatile uint32_t currentMillis = 0;
 volatile uint32_t okbtncount = 0;
 volatile uint32_t prevokbtncount = 0;
 
-volatile uint32_t nextbtncount = 0;
+volatile uint32_t nextbtncount = 1;
 volatile uint32_t prevnextbtncount = 0;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -150,3 +150,6 @@ void Reset_buttons(){
 	nextbtncount = 0;
 	prevnextbtncount = 0;
 }
+
+
+

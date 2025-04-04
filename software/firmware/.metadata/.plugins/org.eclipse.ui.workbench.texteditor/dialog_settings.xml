@@ -3,6 +3,9 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="error"/>
+		<item value="Robot_LineFollowUntillJunctionAndNotStop"/>
+		<item value="TaskType"/>
 		<item value="TCS3472_SelectSensor"/>
 		<item value="buff"/>
 		<item value="line_color_str"/>
@@ -15,9 +18,6 @@
 		<item value="sensorValues"/>
 		<item value="TCS3472_SetGain"/>
 		<item value="ray"/>
-		<item value="volatile"/>
-		<item value="RPI_GetLine"/>
-		<item value="RPI"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="selection" value="lws"/>

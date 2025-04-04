@@ -9,5 +9,5 @@
 ../Core/Src/sensors.c:127:9:is_wall_front	1
 ../Core/Src/sensors.c:135:7:CalculateSteeringAdjustment	1
 ../Core/Src/sensors.c:145:6:set_steering_mode	1
-../Core/Src/sensors.c:155:6:Sensors_Update	5
-../Core/Src/sensors.c:202:6:RangeAllIRSensors	6
+../Core/Src/sensors.c:155:6:Sensors_Update	6
+../Core/Src/sensors.c:206:6:RangeAllIRSensors	6

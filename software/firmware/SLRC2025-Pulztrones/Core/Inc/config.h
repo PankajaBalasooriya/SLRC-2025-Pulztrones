@@ -180,4 +180,9 @@ extern volatile uint32_t prevnextbtncount;
 void Reset_buttons();
 
 
+extern const int LEFT_THRESHOLD;
+extern const int RIGHT_THRESHOLD;
+extern const int FRONT_THRESHOLD;
+
+
 #endif

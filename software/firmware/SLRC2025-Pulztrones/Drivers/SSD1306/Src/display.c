@@ -17,10 +17,10 @@ void Init_Display(){
 }
 
 void display_big_number(uint8_t number){
-	SSD1306_Clear();
+	//SSD1306_Clear();
 	sprintf (bufnum, "%d", number);
 
-    SSD1306_GotoXY (25,10); // goto 10, 10
+    SSD1306_GotoXY (25,22); // goto 10, 10
     SSD1306_Puts (bufnum, &Font_16x26, 1); // print Hello
 
     SSD1306_UpdateScreen(); // update screen

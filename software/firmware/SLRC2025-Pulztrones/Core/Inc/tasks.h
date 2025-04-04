@@ -8,9 +8,10 @@
 // Task definitions
 typedef enum {
     TASK_PLANTATION,
-	TASK_SORTING_POTATOS,
     TASK_MUDDY_ROAD,
+	TASK_RAMP,
     TASK_COLLECTION_POINT,
+	TASK_SORTING_POTATOS,
     TASK_OLD_WAREHOUSE,
     TASK_NEW_WAREHOUSE,
     TASK_OUTDOOR,
@@ -28,6 +29,7 @@ void moveToCenterofNextCellandNotStop();
 void moveToCenterofNextColumnfromFirstRow();
 void moveToCenterofNextColumnfromSecondRow();
 void moveToCenterofNextColumnfromThiredRow();
+void moveTocolumn0Fromcolumn4();
 
 Color picktheBall(uint8_t column, uint8_t row);
 
@@ -44,6 +46,7 @@ void executeNewWarehouseTask(void);
 void executeOutdoorTask(void);
 
 // Task manager functions
-void runCurrentTask(TaskType task);
+void selectTask();
+void runCurrentTask();
 
 #endif // TASKS_H

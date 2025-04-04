@@ -168,6 +168,7 @@ void Sensors_Update() {
 	}
 	else if(g_steering_mode == STEERING_OFF_READLINE){
 		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
+		line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
 		junction = DetectJunction();
 	}
 	else if(g_steering_mode == STEER_LEFT_WALL){
@@ -187,6 +188,9 @@ void Sensors_Update() {
     else if(g_steering_mode == STEERING_FRONT_WALL){
 
 		error = 0;
+    }
+    else if(g_steering_mode == STEERING_OFF_READIR){
+    	RangeAllIRSensors();
     }
 
 //    if (see_front_wall) {
@@ -233,6 +237,6 @@ void RangeAllIRSensors(void){
 
 //	see_left_wall = (left_wall_avg < LEFT_THRESHOLD);
 //	see_right_wall = (right_wall_avg < RIGHT_THRESHOLD);
-//	see_front_wall = (fs.value < FRONT_THRESHOLD);
+	see_front_wall = (fs.value < FRONT_THRESHOLD);
 }
 

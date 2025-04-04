@@ -35,10 +35,10 @@ void HandleLineColorDetection(uint8_t *data);
 
 
 //Dummy functions
-//LineColor RPI_GetLineColor(uint8_t column, uint8_t row);
-Color RPI_GetLineColor();
-//BallColor RPI_GetBallColor(uint8_t column, uint8_t row);
-Color RPI_GetBallColor();
+Color GetLineColor(uint8_t column, uint8_t row);
+//Color GetLineColor();
+Color GetBallColor(uint8_t column, uint8_t row);
+//Color GetBallColor();
 
 
 
@@ -51,6 +51,8 @@ void Robot_MoveForwardGivenDistance(int distnace);
 void Robot_MoveReverseGivenDistance(int distnace);
 void Robot_TurnRight90Inplace();
 void Robot_TurnLeft90Inplace();
+void robot_TurnRight180Inplace();
+float Robot_moveForwardUntillFrontWall();
 
 
 #ifdef __cplusplus

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 extern UART_HandleTypeDef huart3;
 
 /* Enum for steering modes */
@@ -21,6 +22,7 @@ enum {
     STEER_RIGHT_WALL,
     STEERING_OFF,
 	STEERING_OFF_READLINE,
+	STEERING_OFF_READIR,
 	STEERING_FRONT_WALL,
 	STEERING_CENTER_LINE_FOLLOW,
 	STEERING_CENTER_GRID_FOLLOW,

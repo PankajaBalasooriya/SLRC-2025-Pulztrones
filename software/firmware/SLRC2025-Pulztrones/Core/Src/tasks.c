@@ -3,15 +3,26 @@
 #include "robot.h"
 #include "buzzer.h"
 #include "ballstorage.h"
+#include "display.h"
+#include "systick.h"
 
+
+
+extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
 // Initialize task status globally
+extern volatile uint32_t okbtncount;
+extern volatile uint32_t prevokbtncount;
 
+extern volatile uint32_t nextbtncount;
+extern volatile uint32_t prevnextbtncount;
 
 // Function to update task status
 volatile uint32_t delay_end_time = 0;
 
 uint8_t ball_pos = 0;
+
+extern volatile TaskType currentTask;
 
 // Start a non-blocking delay (delay in milliseconds)
 void NonBlockingDelay(uint32_t delay_ms)
@@ -29,7 +40,14 @@ uint8_t IsDelayComplete(void)
 //---------Start 0f Plantation Task (Collect and identify potatoes)--------------------
 Color Newlinecolor = WHITE;
 Color Nextlinecolor = WHITE;
+uint8_t prev_potato_row = 4;
+
+Color linecolor = WHITE;
+
 Color ballcolor;
+
+int potato_row[5] = {-1, -1, -1, -1, -1};
+
 void executePlantationTask(void) {
 	//StartLineColorDetection();
 	Buzzer_Toggle(100);
@@ -37,79 +55,62 @@ void executePlantationTask(void) {
 	Buzzer_Toggle(300);
 	Robot_MoveForwardUntillLine();
 	Robot_TurnLeft90Inplace();
+	moveToCenterofNextCell();
 
 	//Start the task
-	for(uint8_t column = 0; column < 5; column ++){
-		for(uint8_t row = 0; row < 4; row ++){
-				if(row == 0){
-					//linecolor = RPI_GetLineColor(column, row);
-					NonBlockingDelay(2000);
-					while (!IsDelayComplete());
-
-					Newlinecolor = RPI_GetLineColor();
-					moveToCenterofCellinZeroRow();
-
-					if(Newlinecolor == GREEN){
-
-						// Here we get the ball color after picking
-						// ToDo: Handle that
-						picktheBall(column, row);
+	for(uint8_t row = 0; row < 3; row ++){
+		for(uint8_t column = 0; column < 5; column ++){
 
 
-						moveToCenterofNextColumnfromFirstRow();
-						//#HAL_Delay(MOTION_DELAY);
-						break;
-					}
+			if(potato_row[column] == -1){
+				linecolor = GetLineColor(column, row);
+
+				if(linecolor == GREEN){
+					potato_row[column] = row;
+
+					//Dummy function
+					ballcolor = picktheBall(column, row);
+
+					//Todo: store the ball based on color
 				}
-				else if(row == 1){
-					//linecolor = RPI_GetLineColor(column, row);
-					NonBlockingDelay(2000);
-					while (!IsDelayComplete());
+			}
+			if(column != 4){
+				moveToCenterofNextCell();
+			}
+			else{
+				Robot_MoveReverseGivenDistance(50);
+				robot_TurnRight180Inplace();
 
-					Newlinecolor = RPI_GetLineColor(); //white
-					moveToCenterofNextCell();
-					//
-					Nextlinecolor = RPI_GetLineColor();
-
-					NonBlockingDelay(2000);
-					while (!IsDelayComplete());
-
-					//
-
-					if(Newlinecolor == GREEN && Nextlinecolor == WHITE){
-						// Here we get the ball color after picking
-						// ToDo: Handle that
-						picktheBall(column, row);
-						moveToCenterofNextColumnfromSecondRow();
-						//#HAL_Delay(MOTION_DELAY);
-						break;
-					}
-
-				}else if(row == 2){
-					//linecolor = RPI_GetLineColor(column, row);
-					NonBlockingDelay(2000);
-					while (!IsDelayComplete());
-
-					//Newlinecolor = RPI_GetLineColor();
-					moveToCenterofNextCell();
-
-//					if(Newlinecolor == GREEN){
-//						// Here we get the ball color after picking
-//						// ToDo: Handle that
-//						picktheBall(column, row);
-//						moveToCenterofNextColumnfromThiredRow();
-//						HAL_Delay(MOTION_DELAY);
-//						break;
-//					}
-					picktheBall(column, row);
-					moveToCenterofNextColumnfromThiredRow();
-					//#HAL_Delay(MOTION_DELAY);
-
+				if(row == 2){
+					Robot_LineFollowUntillJunction();
+					Robot_TurnRight90Inplace();
+					moveToCenterofNextColumnfromSecondRow();
+					break;
+				}
+				moveTocolumn0Fromcolumn4();
+			}
 		}
-
 	}
+}
 
-  }
+
+void moveTocolumn0Fromcolumn4(){
+	moveToCenterofNextCellandNotStop();
+	moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+	//moveToCenterofNextCell();
+	moveToCenterofNextCellandNotStop();
+
+	//Robot_LineFollowUntillJunction();
+	moveToCenterofNextCell();
+
+	Robot_TurnLeft90Inplace();
+	//Robot_LineFollowUntillJunction();
+	Robot_MoveForwardUntillLine();
+	Robot_TurnLeft90Inplace();
+	//Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
+	moveToCenterofNextCell();
+
 }
 
 void moveToCenterofNextCell(){
@@ -148,25 +149,50 @@ void moveToCenterofNextColumnfromThiredRow(){
 }
 
 Color picktheBall(uint8_t column, uint8_t row){
-	ball_pos++;
-	Robot_TurnLeft90Inplace();
-	ballcolor = RPI_GetBallColor();
-	HAL_Delay(MOTION_DELAY);
-	//ToDo: Pick The box
-	//pickup_and_Store();
-//	store_ball(ball_pos, ballcolor);
-//	HAL_Delay(2000);
-	//return_home();
+
+
+	Robot_TurnRight90Inplace();
+
+
+
+
+	//ToDo: Get ball color
+	ballcolor = GetBallColor(column, row);
+
+	//ToDo: Pick The ball
 	Buzzer_Toggle(1000);
-	HAL_Delay(MOTION_DELAY);
 
 	Robot_TurnLeft90Inplace();
+
+
+
+	//Robot_TurnLeft90Inplace();
 
 	return ballcolor;
 }
 
 
 //---------end 0f Plantation Task (Collect and identify potatoes)---------------------
+
+
+//================================================================================================
+
+//---------Start 0f Muddy Road Task (Navigate through random walls)--------------------
+void executeMuddyRoadTask(void){
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_MoveForwardGivenDistance(145);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_moveForwardUntillFrontWall();
+
+	Robot_TurnLeft90Inplace();
+
+
+
+}
+
+//---------end 0f Muddy Road Task (Collect and identify potatoes)---------------------
 
 //================================================================================================
 
@@ -223,16 +249,54 @@ void executePotatoSeperationTask(void){
 
 
 // -----------------------------Task manager function---------------------------------
-void runCurrentTask(TaskType task) {
+void selectTask(){
+	display_clear();
+	display_headding("Tasks");
 
-    switch (task) {
+	while(1){
+		if(prevnextbtncount != nextbtncount){
+			display_big_number(nextbtncount);
+			switch(nextbtncount){
+			case 1:
+				display_message("Plantation Task", 12, 45);
+				currentTask = TASK_PLANTATION;
+				break;
+			case 2:
+				display_message("Muddy Road", 12, 45);
+				currentTask = TASK_MUDDY_ROAD;
+				break;
+			default:
+				break;
+			}
+			prevnextbtncount = nextbtncount;
+		}
+		if(prevokbtncount != okbtncount){
+			prevokbtncount = okbtncount;
+			break;
+		}
+	}
+	display_headding("Start Task");
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+	runCurrentTask();
+}
+
+
+
+void runCurrentTask() {
+	EnableSysTickFunction();
+	//Buzzer_Toggle(500);
+
+    switch (currentTask) {
         case TASK_PLANTATION:
             executePlantationTask();
+            currentTask = TASK_MUDDY_ROAD;
             break;
-        case TASK_SORTING_POTATOS:
-        	executePotatoSeperationTask();
+        case TASK_MUDDY_ROAD:
+        	executeMuddyRoadTask();
+		    currentTask = TASK_RAMP;
+		    break;
         default:
-
             break;
     }
 

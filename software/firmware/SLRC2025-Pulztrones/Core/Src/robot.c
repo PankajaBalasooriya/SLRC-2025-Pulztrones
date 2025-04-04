@@ -11,6 +11,8 @@
 #include "sensors.h"
 #include "motion.h"
 #include "buzzer.h"
+#include "TCS3472.h"
+#include "encoders.h"
 
 extern Motion motion;
 
@@ -18,9 +20,11 @@ volatile Color linecolorRPI = WHITE;
 
 volatile Color ballcolorRPI = WHITE;
 
-//volatile int handlecount = 0;
+extern uint16_t r_line, g_line, b_line, c_line;
+extern uint16_t r_obj, g_obj, b_obj, c_obj;
+extern Color line_color, object_color;
 
-
+extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
 
 extern JunctionType junction;
@@ -62,12 +66,11 @@ void HandleLineColorDetection(uint8_t *data){
 }
 
 //-----------------------------------------------------------------------------------
-Color RPI_GetLineColor(){
-	return linecolorRPI;
-}
+//Color GetLineColor(){
+//	return linecolorRPI;
+//}
 
-
-//LineColor RPI_GetLineColor(uint8_t column, uint8_t row){
+//Color GetLineColor(uint8_t column, uint8_t row){
 //	// Need seperate code to handle color detection
 //	// use this to acces a global vairable
 //
@@ -89,45 +92,54 @@ Color RPI_GetLineColor(){
 //	return WHITE;
 //}
 
-//BallColor RPI_GetBallColor(uint8_t column, uint8_t row){
-//	// Need seperate code to handle color detection
-//	// use this to acces a global vairable
-//
-//	if(column == 0 && row == 0){
-//		return WHITE_BALL;
-//	}
-//	if(column == 1 && row == 1){
-//		return YELLOW_BALL;
-//	}
-//	if(column == 2 && row == 2){
-//		return YELLOW_BALL;
-//	}
-//	if(column == 3 && row == 0){
-//		return WHITE_BALL;
-//	}
-//	if(column == 4 && row == 1){
-//		return WHITE_BALL;
-//	}
-//	return WHITE_BALL;
-//}
+
+Color GetLineColor(uint8_t column, uint8_t row){
+	TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
+	line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
+	return line_color;
+}
 
 
-Color RPI_GetBallColor(){
+Color GetBallColor(uint8_t column, uint8_t row){
 	// Need seperate code to handle color detection
 	// use this to acces a global vairable
-	if(ballcolorRPI == WHITE){
-		Buzzer_Toggle(100);
-		HAL_Delay(100);
-	}
-	else if(ballcolorRPI == YELLOW){
-		Buzzer_Toggle(100);
-		HAL_Delay(100);
-		Buzzer_Toggle(100);
-		HAL_Delay(100);
-	}
 
-	return ballcolorRPI;
+	if(column == 0 && row == 0){
+		return WHITE;
+	}
+	if(column == 1 && row == 1){
+		return YELLOW;
+	}
+	if(column == 2 && row == 2){
+		return YELLOW;
+	}
+	if(column == 3 && row == 0){
+		return WHITE;
+	}
+	if(column == 4 && row == 1){
+		return WHITE;
+	}
+	return WHITE;
 }
+
+
+//Color GetBallColor(){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//	if(ballcolorRPI == WHITE){
+//		Buzzer_Toggle(100);
+//		HAL_Delay(100);
+//	}
+//	else if(ballcolorRPI == YELLOW){
+//		Buzzer_Toggle(100);
+//		HAL_Delay(100);
+//		Buzzer_Toggle(100);
+//		HAL_Delay(100);
+//	}
+//
+//	return ballcolorRPI;
+//}
 
 
 
@@ -185,7 +197,7 @@ void Robot_FollowLineGivenDistanceandNotStop(int distnace){
 
 JunctionType Robot_MoveForwardUntillLine(){
 	set_steering_mode(STEERING_OFF_READLINE);
-	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, FORWARD_SPEED_1, FORWARD_ACCELERATION_1);
+	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 	junction = NO_LINE;
 	while(1){
 		if(junction != NO_LINE){
@@ -212,9 +224,17 @@ void Robot_MoveReverseGivenDistance(int distnace){
 
 void Robot_TurnRight90Inplace(){
 	HAL_Delay(MOTION_DELAY);
-	Motion_SpinTurn(&motion, -90, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+	Motion_SpinTurn(&motion, -87, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
 
+
+	Motion_ResetDriveSystem(&motion);
+}
+
+void robot_TurnRight180Inplace(){
 	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -180, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
 	Motion_ResetDriveSystem(&motion);
 }
 
@@ -222,8 +242,22 @@ void Robot_TurnLeft90Inplace(){
 	HAL_Delay(MOTION_DELAY);
 	Motion_SpinTurn(&motion, 86, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
 
-	HAL_Delay(MOTION_DELAY);
+
 	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(MOTION_DELAY);
+}
+
+
+float Robot_moveForwardUntillFrontWall(){
+	 set_steering_mode(STEERING_OFF_READIR);
+	    Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	    while(!see_front_wall){
+		}
+	    Motion_StopAfter(&motion, 100);
+		set_steering_mode(STEERING_OFF);
+		Motion_ResetDriveSystem(&motion);
+
+		return 1.00;
 }
 
 

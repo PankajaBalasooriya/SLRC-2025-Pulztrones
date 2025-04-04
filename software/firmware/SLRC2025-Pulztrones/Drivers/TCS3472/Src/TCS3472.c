@@ -569,10 +569,10 @@ void caliberate_color_sensors(){
 	TCS3472_CalibrateColors();
 
 	/* Run simplified calibration for object sensor (just for white) */
-	Arm_color_calibration_position();
-	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-	TCS3472_CalibrateObjectColors();
-	return_home();
+//	Arm_color_calibration_position();
+//	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+//	TCS3472_CalibrateObjectColors();
+//	return_home();
 }
 
 

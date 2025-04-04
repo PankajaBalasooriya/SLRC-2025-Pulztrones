@@ -10,4 +10,4 @@
 ../Core/Src/sensors.c:135:7:CalculateSteeringAdjustment	24	static
 ../Core/Src/sensors.c:145:6:set_steering_mode	16	static
 ../Core/Src/sensors.c:155:6:Sensors_Update	16	static
-../Core/Src/sensors.c:202:6:RangeAllIRSensors	8	static
+../Core/Src/sensors.c:206:6:RangeAllIRSensors	8	static
