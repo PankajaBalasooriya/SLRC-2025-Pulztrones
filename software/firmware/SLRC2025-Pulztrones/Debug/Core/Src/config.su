@@ -3,3 +3,4 @@
 ../Core/Src/config.c:112:6:turn_on_air_pump	8	static
 ../Core/Src/config.c:116:6:turn_off_air_pump	8	static
 ../Core/Src/config.c:132:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/config.c:146:6:Reset_buttons	4	static

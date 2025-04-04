@@ -87,6 +87,7 @@ int Arm_Home(void);
 void pickup_and_Store(void);
 void retrive_and_drop(void);
 void return_home(void);
+void Arm_color_calibration_position();
 
 
 

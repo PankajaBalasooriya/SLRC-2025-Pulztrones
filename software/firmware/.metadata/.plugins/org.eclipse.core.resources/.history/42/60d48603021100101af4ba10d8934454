@@ -1,0 +1,257 @@
+/**
+ * @file RAYKHA_sensor.c
+ * @brief Implementation file for RAYKHA-8A IR sensor array with CD74HC4067 multiplexer
+ */
+
+#include "raykha.h"
+#include "delay.h"
+#include "ssd1306.h"
+#include "display.h"
+#include "buzzer.h"
+
+extern volatile uint32_t okbtncount;
+extern volatile uint32_t prevokbtncount;
+
+extern volatile uint32_t nextbtncount;
+extern volatile uint32_t prevnextbtncount;
+
+
+// Private function prototypes
+static uint16_t map_range(uint16_t value, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+
+
+/**
+ * @brief Read raw values from all sensors
+ * @param sensor_values Array to store the raw sensor values (must be at least RAYKHA_NUM_SENSORS in size)
+ */
+void RAYKHA_ReadRaw(uint16_t *sensor_values)
+{
+    // Read each sensor
+    for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+    {
+        sensor_values[i] = AnalogMux_ReadChannel(RAYKHA_FIRST_MUX_CHANNEL + i);
+    }
+}
+
+/**
+ * @brief Calibrate the sensor array
+ * @param calibration Pointer to calibration data structure
+ * @param line_type Type of line (RAYKHA_LINE_WHITE or RAYKHA_LINE_BLACK)
+ */
+void RAYKHA_Calibrate(RAYKHA_Calibration *calibration, uint8_t line_type)
+{
+	display_clear();
+	display_headding("Calibration");
+
+	display_message("RAYKHA Calibration", 2, 25);
+	display_message("Press OK to Start...", 2, 40);
+
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+
+	HAL_Delay(1000);
+	Buzzer_Toggle(100);
+	HAL_Delay(1000);
+
+
+	uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+
+	// Initialize calibration data
+	for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+	{
+		calibration->min_values[i] = 0xFFFF;  // Max possible value
+		calibration->max_values[i] = 0;       // Min possible value
+	}
+
+	calibration->line_type = line_type;
+
+	for(uint8_t i = 0; i < 100; i++){
+		// Take multiple samples for more accurate calibration
+		for (uint8_t sample = 0; sample < RAYKHA_CALIBRATION_SAMPLES; sample++)
+		{
+			// Read raw sensor values
+			RAYKHA_ReadRaw(sensor_values);
+
+			// Update min and max values
+			for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+			{
+				if (sensor_values[i] < calibration->min_values[i])
+				{
+					calibration->min_values[i] = sensor_values[i];
+				}
+				if (sensor_values[i] > calibration->max_values[i])
+				{
+					calibration->max_values[i] = sensor_values[i];
+				}
+			}
+
+			// Short delay between samples
+			HAL_Delay(10);
+		}
+
+		// Add small margins to avoid edge cases
+		for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+		{
+			if (calibration->min_values[i] > 20)
+				calibration->min_values[i] -= 20;
+			else
+				calibration->min_values[i] = 0;
+
+			if (calibration->max_values[i] < 4075)
+				calibration->max_values[i] += 20;
+			else
+				calibration->max_values[i] = 4095;
+		}
+	}
+
+	Buzzer_Toggle(100);
+	HAL_Delay(300);
+	Buzzer_Toggle(200);
+
+}
+
+/**
+ * @brief Read calibrated values from all sensors
+ * @param sensor_values Array to store the calibrated sensor values (must be at least RAYKHA_NUM_SENSORS in size)
+ * @param calibration Pointer to calibration data structure
+ */
+void RAYKHA_ReadCalibrated(uint16_t *sensor_values, const RAYKHA_Calibration *calibration)
+{
+    uint16_t raw_values[RAYKHA_NUM_SENSORS];
+
+    // Read raw values
+    RAYKHA_ReadRaw(raw_values);
+
+    // Apply calibration
+    for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+    {
+        if (raw_values[i] < calibration->min_values[i])
+        {
+            sensor_values[i] = 0;
+        }
+        else if (raw_values[i] > calibration->max_values[i])
+        {
+            sensor_values[i] = 1000;
+        }
+        else
+        {
+            // Map to 0-1000 range
+            sensor_values[i] = map_range(raw_values[i],
+                                        calibration->min_values[i],
+                                        calibration->max_values[i],
+                                        0, 1000);
+
+		// Invert if needed (for white line on black background)
+		if (calibration->line_type == RAYKHA_LINE_WHITE)
+		{
+			sensor_values[i] = 1000 - sensor_values[i];
+		}
+        }
+    }
+}
+
+/**
+ * @brief Get line position (0 to 7000) using weighted average
+ * @param sensor_values Array of calibrated sensor values
+ * @param calibration Pointer to calibration data structure
+ * @return Line position (0 to 7000, where 0 is the leftmost sensor and 7000 is the rightmost sensor)
+ *         Returns -1 if no line is detected
+ */
+int32_t RAYKHA_GetLinePosition(const uint16_t *sensor_values, const RAYKHA_Calibration *calibration)
+{
+    uint32_t weighted_sum = 0;
+    uint32_t sum = 0;
+    uint8_t line_detected = 0;
+
+    // Calculate weighted average
+    for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+    {
+        uint16_t value = sensor_values[i];
+
+        // A value above 200 indicates a line
+        if (value > 200)
+        {
+            line_detected = 1;
+        }
+
+        weighted_sum += (uint32_t)value * (i * 1000);
+        sum += value;
+    }
+
+    // Check if line is detected
+    if (!line_detected || sum < 100)
+    {
+        return -1;
+    }
+
+    return weighted_sum / sum;
+}
+
+/**
+ * @brief Get line position for PID controller (centered around 0)
+ * @param sensor_values Array of calibrated sensor values
+ * @param calibration Pointer to calibration data structure
+ * @return Line position centered around 0 (-3500 to 3500)
+ *         Returns a large value (9999) if no line is detected
+ */
+int32_t RAYKHA_GetPositionForPID(const uint16_t *sensor_values, const RAYKHA_Calibration *calibration)
+{
+    int32_t position = RAYKHA_GetLinePosition(sensor_values, calibration);
+
+    // If no line detected, return a large value
+    if (position == -1)
+    {
+        return 9999;
+    }
+
+    // Center the position around 0
+    // The center of the sensor array is at 3500
+    return position - 4500;
+}
+
+/**
+ * @brief Check if a line is detected
+ * @param sensor_values Array of calibrated sensor values
+ * @param calibration Pointer to calibration data structure
+ * @return 1 if line is detected, 0 otherwise
+ */
+uint8_t RAYKHA_IsLineDetected(const uint16_t *sensor_values, const RAYKHA_Calibration *calibration)
+{
+    uint8_t line_detected = 0;
+
+    // Check if any sensor detects a line
+    for (uint8_t i = 0; i < RAYKHA_NUM_SENSORS; i++)
+    {
+        if (sensor_values[i] > 200)
+        {
+            line_detected = 1;
+            break;
+        }
+    }
+
+    return line_detected;
+}
+
+/**
+ * @brief Map a value from one range to another
+ * @param value Value to map
+ * @param in_min Minimum input value
+ * @param in_max Maximum input value
+ * @param out_min Minimum output value
+ * @param out_max Maximum output value
+ * @return Mapped value
+ */
+static uint16_t map_range(uint16_t value, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max)
+{
+    // Check for division by zero
+    if (in_max <= in_min) return out_min;
+
+    // Map the value
+    int32_t result = (int32_t)(value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+    // Constrain the result
+    if (result < out_min) result = out_min;
+    if (result > out_max) result = out_max;
+
+    return (uint16_t)result;
+}

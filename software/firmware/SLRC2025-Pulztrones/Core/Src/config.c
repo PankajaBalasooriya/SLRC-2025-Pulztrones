@@ -133,13 +133,20 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	currentMillis = HAL_GetTick();
     if (GPIO_Pin == B1_Pin && (currentMillis - previousMillis > 650))  // Replace BUTTON_PIN with actual GPIO pin
 	{
-    	okbtncount++; // Set flag when button is pressed
+    	nextbtncount++; // Set flag when button is pressed
 		//Buzzer_On();
 	}
     else if (GPIO_Pin == GPIO_PIN_11 && (currentMillis - previousMillis > 650)){
-    	nextbtncount++;
+    	okbtncount++;
     }
 
     previousMillis = currentMillis;
 }
 
+void Reset_buttons(){
+	okbtncount = 0;
+	prevokbtncount = 0;
+
+	nextbtncount = 0;
+	prevnextbtncount = 0;
+}

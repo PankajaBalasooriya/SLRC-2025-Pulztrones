@@ -7,6 +7,15 @@
 #include "delay.h"
 #include "ssd1306.h"
 #include "display.h"
+#include "buzzer.h"
+#include "config.h"
+
+extern volatile uint32_t okbtncount;
+extern volatile uint32_t prevokbtncount;
+
+extern volatile uint32_t nextbtncount;
+extern volatile uint32_t prevnextbtncount;
+
 
 // Private function prototypes
 static uint16_t map_range(uint16_t value, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
@@ -37,6 +46,18 @@ void RAYKHA_Calibrate(RAYKHA_Calibration *calibration, uint8_t line_type)
 
 	display_message("RAYKHA Calibration", 2, 25);
 	display_message("Press OK to Start...", 2, 40);
+
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("RAYKHA", 2, 25);
+	display_message("Calibrating....", 2, 40);
+
+	HAL_Delay(1000);
+	Buzzer_Toggle(100);
+	HAL_Delay(1000);
 
 
 	uint16_t sensor_values[RAYKHA_NUM_SENSORS];
@@ -88,6 +109,15 @@ void RAYKHA_Calibrate(RAYKHA_Calibration *calibration, uint8_t line_type)
 				calibration->max_values[i] = 4095;
 		}
 	}
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("RAYKHA", 2, 25);
+	display_message("Calibrated.", 2, 40);
+
+	Buzzer_Toggle(100);
+	HAL_Delay(300);
+	Buzzer_Toggle(200);
 
 }
 

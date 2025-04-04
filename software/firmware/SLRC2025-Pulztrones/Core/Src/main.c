@@ -233,7 +233,7 @@ int main(void)
 	Buzzer_Toggle(200);
 	HAL_Delay(2000);
 	/*--------------- Raykha calibration ----------------------------------*/
-//	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 	/*-------------------------------------------------------------------*/
 	HAL_Delay(2000);
 	Buzzer_Toggle(200);
@@ -241,8 +241,8 @@ int main(void)
 
 	/*----------------- Begin color sensor init--------------------------------*/
 	Buzzer_Toggle(100);
-	//init_color_sensors();
-	//caliberate_color_sensors();
+	init_color_sensors();
+	caliberate_color_sensors();
 
 	/*----------------- End color sensor init-----------------------------------*/
 
@@ -291,13 +291,13 @@ int main(void)
 
 	//Arm_MoveServo(ARM_BASE_SERVO, 10);//105
 
-	Arm_MoveServo(ARM_LINK2_SERVO, 25);
-	HAL_Delay(1000);
-	Arm_MoveServo(ARM_LINK3_SERVO,100);
-	HAL_Delay(1000);
-	Arm_MoveServo(ARM_BASE_SERVO, 180);
-
-	HAL_Delay(5000);
+//	Arm_MoveServo(ARM_LINK2_SERVO, 25);
+//	HAL_Delay(1000);
+//	Arm_MoveServo(ARM_LINK3_SERVO,100);
+//	HAL_Delay(1000);
+//	Arm_MoveServo(ARM_BASE_SERVO, 180);
+//
+//	HAL_Delay(5000);
 //	Arm_MoveServo(ARM_BASE_SERVO, 105);
 //	Arm_MoveServo(ARM_LINK3_SERVO,80);
 //	Arm_MoveServo(ARM_LINK2_SERVO, 95);
@@ -365,44 +365,44 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
-	  TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
-	  line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
-
-	  /* Get RGB and Clear values from object sensor */
-	  TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-	  TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
-	  object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
-
-	  /* Get line color string */
-	  char *line_color_str;
-	  switch(line_color) {
-		  case BLACK:  line_color_str = "BLACK"; break;
-		  case WHITE:  line_color_str = "WHITE"; break;
-		  case GREEN:  line_color_str = "GREEN"; break;
-		  default:           line_color_str = "UNKNOWN"; break;
-	  }
-
-	  /* Get object color string */
-	  char *object_color_str;
-	  switch(object_color) {
-		  case BLACK:          object_color_str = "BLACK"; break;
-		  case WHITE:          object_color_str = "WHITE"; break;
-		  case GREEN:          object_color_str = "GREEN"; break;
-		  case YELLOW:  object_color_str = "YELLOW-ORANGE"; break;
-		  case RED:            object_color_str = "RED"; break;
-		  case BLUE:           object_color_str = "BLUE"; break;
-		  default:                   object_color_str = "UNKNOWN"; break;
-	  }
-
-	  /* Print the combined results */
-	  sprintf(buffer, "Line: %s (%d,%d,%d,%d) | Object: %s (%d,%d,%d,%d)\r\n",
-			  line_color_str, r_line, g_line, b_line, c_line,
-			  object_color_str, r_obj, g_obj, b_obj, c_obj);
-	  HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-	  /* Wait before next reading */
-	  HAL_Delay(100);
+//	  TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+//	  TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
+//	  line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
+//
+//	  /* Get RGB and Clear values from object sensor */
+//	  TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+//	  TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
+//	  object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
+//
+//	  /* Get line color string */
+//	  char *line_color_str;
+//	  switch(line_color) {
+//		  case BLACK:  line_color_str = "BLACK"; break;
+//		  case WHITE:  line_color_str = "WHITE"; break;
+//		  case GREEN:  line_color_str = "GREEN"; break;
+//		  default:           line_color_str = "UNKNOWN"; break;
+//	  }
+//
+//	  /* Get object color string */
+//	  char *object_color_str;
+//	  switch(object_color) {
+//		  case BLACK:          object_color_str = "BLACK"; break;
+//		  case WHITE:          object_color_str = "WHITE"; break;
+//		  case GREEN:          object_color_str = "GREEN"; break;
+//		  case YELLOW:  object_color_str = "YELLOW-ORANGE"; break;
+//		  case RED:            object_color_str = "RED"; break;
+//		  case BLUE:           object_color_str = "BLUE"; break;
+//		  default:                   object_color_str = "UNKNOWN"; break;
+//	  }
+//
+//	  /* Print the combined results */
+//	  sprintf(buffer, "Line: %s (%d,%d,%d,%d) | Object: %s (%d,%d,%d,%d)\r\n",
+//			  line_color_str, r_line, g_line, b_line, c_line,
+//			  object_color_str, r_obj, g_obj, b_obj, c_obj);
+//	  HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//
+//	  /* Wait before next reading */
+//	  HAL_Delay(100);
 
 
 

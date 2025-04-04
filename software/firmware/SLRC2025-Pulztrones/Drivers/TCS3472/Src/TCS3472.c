@@ -6,6 +6,16 @@
 #include <string.h>
 #include <stdio.h>
 #include "TCS3472.h"
+#include "display.h"
+#include "buzzer.h"
+#include "config.h"
+#include "arm_controller.h"
+
+extern volatile uint32_t okbtncount;
+extern volatile uint32_t prevokbtncount;
+
+extern volatile uint32_t nextbtncount;
+extern volatile uint32_t prevnextbtncount;
 
 
 uint16_t r_line, g_line, b_line, c_line;
@@ -167,7 +177,7 @@ Color TCS3472_DetectLineColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c)
 /* Calibration function - to be called during setup or when a button is pressed */
 void TCS3472_CalibrateColors(void)
 {
-    char buffer[100];
+    //char buffer[100];
     uint16_t r, g, b, c;
     uint16_t black_readings[5] = {0};
     uint16_t white_readings[5] = {0};
@@ -175,16 +185,38 @@ void TCS3472_CalibrateColors(void)
     uint16_t green_readings_g[5] = {0};
 
     /* Send calibration instructions */
-    sprintf(buffer, "Starting calibration sequence...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "Starting calibration sequence...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+
 
     /* 1. Calibrate BLACK background */
-    sprintf(buffer, "Place sensor over BLACK surface and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "Place sensor over BLACK surface and press USER button (PA0)...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_message("Black", 2, 40);
+    display_message("Press OK to Start", 2, 52);
+    while(okbtncount == prevokbtncount){
+
+    }
+
+	Reset_buttons();
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("Black", 2, 40);
+	display_message("Calibrating...", 2, 52);
+
+	HAL_Delay(1000);
+	TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	HAL_Delay(1000);
+
 
     /* Wait for button press */
     //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
+    //HAL_Delay(2000); // Debounce
 
     /* Take 5 readings of black background */
     for (int i = 0; i < 5; i++) {
@@ -200,17 +232,40 @@ void TCS3472_CalibrateColors(void)
     }
     color_config.black_threshold = (black_sum / 5) * 1.5; // 50% margin
 
-    sprintf(buffer, "BLACK calibrated: threshold = %d\r\n", color_config.black_threshold);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
+//    sprintf(buffer, "BLACK calibrated: threshold = %d\r\n", color_config.black_threshold);
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("Black", 2, 40);
+	display_message("Calibrated.", 2, 52);
+    HAL_Delay(2000);
 
     /* 2. Calibrate WHITE line */
-    sprintf(buffer, "Place sensor over WHITE line and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "Place sensor over WHITE line and press USER button (PA0)...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Press OK to Start", 2, 52);
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Calibrating...", 2, 52);
+
+	HAL_Delay(1000);
+	TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	HAL_Delay(1000);
 
     /* Wait for button press */
     //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
+    //HAL_Delay(2000); // Debounce
 
     /* Take 5 readings of white line */
     for (int i = 0; i < 5; i++) {
@@ -226,17 +281,42 @@ void TCS3472_CalibrateColors(void)
     }
     color_config.white_threshold = (white_sum / 5) * 0.8; // 20% margin
 
-    sprintf(buffer, "WHITE calibrated: threshold = %d\r\n", color_config.white_threshold);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
+//    sprintf(buffer, "WHITE calibrated: threshold = %d\r\n", color_config.white_threshold);
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Calibrated.", 2, 52);
+	HAL_Delay(2000);
+
+    //AL_Delay(1000);
 
     /* 3. Calibrate GREEN line */
-    sprintf(buffer, "Place sensor over GREEN line and press USER button (PA0)...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "Place sensor over GREEN line and press USER button (PA0)...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("Green", 2, 40);
+	display_message("Press OK to Start", 2, 52);
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("Green", 2, 40);
+	display_message("Calibrating...", 2, 52);
+	//HAL_Delay(1000);
 
     /* Wait for button press */
     //while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
-    HAL_Delay(5000); // Debounce
+    //HAL_Delay(2000); // Debounce
+
+	HAL_Delay(1000);
+	TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	HAL_Delay(1000);
 
     /* Take 5 readings of green line */
     for (int i = 0; i < 5; i++) {
@@ -259,16 +339,29 @@ void TCS3472_CalibrateColors(void)
     color_config.green_ratio_min = avg_g_r_ratio * 0.9;
     color_config.green_ratio_max = avg_g_r_ratio * 1.1;
 
-    sprintf(buffer, "GREEN calibrated: G/R ratio range = %d-%d\r\n",
-            color_config.green_ratio_min, color_config.green_ratio_max);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "GREEN calibrated: G/R ratio range = %d-%d\r\n",
+//            color_config.green_ratio_min, color_config.green_ratio_max);
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("Green", 2, 40);
+	display_message("Calibrated.", 2, 52);
+	HAL_Delay(2000);
 
     /* Mark as calibrated */
     color_config.is_calibrated = 1;
 
-    sprintf(buffer, "Calibration complete!\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
+//    sprintf(buffer, "Calibration complete!\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    HAL_Delay(1000);
+
+    display_clear();
+	display_headding("Calibration");
+	display_message("Line Color sensor", 2, 25);
+	display_message("All lines", 2, 40);
+	display_message("Calibrated.", 2, 52);
+	HAL_Delay(5000);
 }
 
 /* Write a byte to the TCS3472 register */
@@ -372,30 +465,61 @@ Color TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c) 
 
 /* Calibration function for object colors - simplified version */
 void TCS3472_CalibrateObjectColors(void) {
-    char buffer[100];
+    //char buffer[100];
     uint16_t r, g, b, c;
 
     /* Send calibration instructions */
-    sprintf(buffer, "Starting object color calibration sequence...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    sprintf(buffer, "Starting object color calibration sequence...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    display_clear();
+	display_headding("Calibration");
+	display_message("Arm Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Press OK to Start", 2, 52);
+	while(okbtncount == prevokbtncount);
+	Reset_buttons();
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("Arm Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Calibrating...", 2, 52);
+
+	HAL_Delay(1000);
+	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+	HAL_Delay(1000);
 
     /* 1. Calibrate WHITE object */
-    sprintf(buffer, "Place sensor over WHITE object and wait 5 seconds...\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(5000);
+//    sprintf(buffer, "Place sensor over WHITE object and wait 5 seconds...\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    HAL_Delay(5000);
 
     /* Take reading of white object */
     TCS3472_GetRGBC(&r, &g, &b, &c);
     object_color_config.white_min_c = c * 0.8; // 20% margin
 
-    sprintf(buffer, "WHITE calibrated: min_c = %d | R:%d G:%d B:%d C:%d\r\n",
-            object_color_config.white_min_c, r, g, b, c);
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
+//    sprintf(buffer, "WHITE calibrated: min_c = %d | R:%d G:%d B:%d C:%d\r\n",
+//            object_color_config.white_min_c, r, g, b, c);
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    HAL_Delay(1000);
+    display_clear();
+	display_headding("Calibration");
+	display_message("Arm Color sensor", 2, 25);
+	display_message("White", 2, 40);
+	display_message("Calibrated.", 2, 52);
+	HAL_Delay(2000);
 
-    sprintf(buffer, "Object color calibration complete!\r\n");
-    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-    HAL_Delay(1000);
+//    sprintf(buffer, "Object color calibration complete!\r\n");
+//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//    HAL_Delay(1000);
+
+	display_clear();
+	display_headding("Calibration");
+	display_message("Arm Color sensor", 2, 25);
+	display_message("Calibration", 2, 40);
+	display_message("Completed.", 2, 52);
+	HAL_Delay(2000);
 
     /* Note: Red and Blue calibration requires more complex processing
        and is purposely left out. We'll use predefined values instead. */
@@ -445,8 +569,10 @@ void caliberate_color_sensors(){
 	TCS3472_CalibrateColors();
 
 	/* Run simplified calibration for object sensor (just for white) */
+	Arm_color_calibration_position();
 	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
 	TCS3472_CalibrateObjectColors();
+	return_home();
 }
 
 

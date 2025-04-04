@@ -177,7 +177,7 @@ extern volatile uint32_t prevokbtncount;
 extern volatile uint32_t nextbtncount;
 extern volatile uint32_t prevnextbtncount;
 
-
+void Reset_buttons();
 
 
 #endif

@@ -7,3 +7,4 @@
 ../Core/Src/arm_controller.c:228:6:pickup_and_Store	4	static
 ../Core/Src/arm_controller.c:258:6:retrive_and_drop	8	static
 ../Core/Src/arm_controller.c:306:6:return_home	8	static
+../Core/Src/arm_controller.c:314:6:Arm_color_calibration_position	8	static

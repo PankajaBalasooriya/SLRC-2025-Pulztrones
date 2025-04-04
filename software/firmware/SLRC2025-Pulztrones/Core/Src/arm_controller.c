@@ -306,7 +306,13 @@ void retrive_and_drop(void){
 void return_home(void){
 	Arm_MoveServo(ARM_LINK3_SERVO,80);
 	Arm_MoveServo(ARM_LINK1_SERVO,10);
-	Arm_MoveServo(ARM_LINK2_SERVO, 95);//135
+//	Arm_MoveServo(ARM_LINK2_SERVO, 95);//135
 	Arm_MoveServo(ARM_BASE_SERVO, 105);
+	Arm_MoveServo(ARM_LINK2_SERVO, 95);
+}
+
+void Arm_color_calibration_position(){
+	Arm_MoveServo(ARM_LINK2_SERVO, 85);
+	Arm_MoveServo(ARM_BASE_SERVO, 10);
 }
 
