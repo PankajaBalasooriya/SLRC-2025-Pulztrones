@@ -15,6 +15,7 @@
 #include "encoders.h"
 #include "tasks.h"
 #include "config.h"
+#include "uartcom.h"
 
 extern Motion motion;
 
@@ -35,6 +36,8 @@ extern volatile uint8_t see_front_wall;
 
 extern JunctionType junction;
 
+
+extern UART_HandleTypeDef huart3;
 
 
 
@@ -315,10 +318,11 @@ int Robot_moveForwardUntillBox(uint16_t input_distance){
 	
 	set_steering_mode(STEERING_OFF_READIR);
 	   Motion_StartMove(&motion, input_distance, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	   see_box = 0;
 	   while(!see_box){
 	   }
-	   Motion_StopAfter(&motion, 10);
 	   set_steering_mode(STEERING_OFF);
+	   Motion_StopAfter(&motion, 80);
 	   float distance = robot_distance();
 	   int integer_distance = (int)distance;
 	   Motion_ResetDriveSystem(&motion);
@@ -360,10 +364,12 @@ uint8_t Robot_read_Barcode(){
 		if(currentColor == 0 && previousColor == 1){
 			if(stripCounter == 0){
 				stripCounter++;
-				previousColor = 0;
+				previousColor = 1;
 				continue;
 			}
 			float strip_length = distance - lastStripStart;
+
+			UART_Transmit_Float(&huart3, "l", strip_length, 2);
 
 			if(strip_length < 40 && strip_length > 20){
 				consecutiveEdges++;

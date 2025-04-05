@@ -248,8 +248,8 @@ int main(void)
 
 	/*----------------- Begin color sensor init--------------------------------*/
 	Buzzer_Toggle(100);
-	//init_color_sensors();
-	//caliberate_color_sensors();
+	init_color_sensors();
+	caliberate_color_sensors();
 
 	/*--------------- End color sensor init-----------------------------------*/
 
@@ -348,9 +348,11 @@ int main(void)
 
 
   //---------------- Begining of Motion controller tests---------------------------------------------
-    //EnableSysTickFunction();
+    EnableSysTickFunction();
+
+    //Robot_moveForwardUntillBox(600);
     //Robot_moveForwardUntillFrontWall();
-    //set_steering_mode(STEERING_FRONT_WALL);
+    //set_steering_mode(STEERING_OFF_READIR);
     //Motion_StartMove(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 //    while(!see_front_wall){
 //	}
@@ -359,7 +361,7 @@ int main(void)
 //	Motion_ResetDriveSystem(&motion);
 
 
-
+    //Robot_moveForwardUntillBox(600);
   	//set_steering_mode(STEER_LEFT_WALL);
 
 	//Robot_TurnRight90Inplace();
@@ -388,7 +390,8 @@ int main(void)
 	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
   //---------------- End of Motion controller tests---------------------------------------------
-	selectTask();
+	box_manupilation();
+	//selectTask();
 
   /* USER CODE END 2 */
 
@@ -402,7 +405,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  runCurrentTask();
+	  //runCurrentTask();
 	  //RangeAllIRSensors();
 
 

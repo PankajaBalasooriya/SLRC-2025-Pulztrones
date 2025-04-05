@@ -105,7 +105,7 @@ const int MOTION_DELAY = 800;
 const int DISTACE_TO_CENTER_OF_CELL = 165; //150
 
 //***** Box manupilation constants ******************************************************//
-const int BOX_THRESHOLD = 100; // minimum value to register a box
+const int BOX_THRESHOLD = 50; // minimum value to register a box
 
 
 //***** Pump Controlling functions ******************************************************//

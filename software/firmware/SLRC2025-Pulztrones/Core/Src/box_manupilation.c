@@ -16,7 +16,7 @@ uint8_t meassure_box_colour(){
     //Dummy function. Change it later.
     //return 1; //white box
     //return 0; //yellow box
-    return 1; //white box
+    return 0; //white box
 }
 
 void pickup(){
@@ -29,11 +29,16 @@ void exit_the_area(){
 }
 
 void box_manupilation(){
+//	Robot_LineFollowUntillJunction();
+//	Robot_MoveReverseGivenDistance(50);
+//	robot_TurnRight180Inplace();
+//	Robot_FollowLineGivenDistance(243);
+//	Robot_TurnLeft90Inplace();
     box_manupilation_876();
 }
 
 void box_manupilation_876(){
-    remaining_distance = 60;
+    remaining_distance = 720;
     
     //Robot_MoveForwardGivenDistance(60);                //entering to the area between 5,8 and going between te 2nd and 3rd rows.
     // if(is_box_detected()==1){       //Box detected at 8?
@@ -46,24 +51,26 @@ void box_manupilation_876(){
     current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
     remaining_distance = remaining_distance - current_dist;
 
-    if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 8?
+    if(remaining_distance >= 550  && correct_box_detected == 0){       //Box detected at 8?
         if(meassure_box_colour()==1){   
             correct_box_detected = 1;
             pickup();
         }
-
-        Robot_moveForwardUntillBox(remaining_distance);
+        //Robot_MoveForwardGivenDistance(65);
+        current_dist = Robot_moveForwardUntillBox(remaining_distance);
         remaining_distance = remaining_distance - current_dist;
 
-        if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 7?
+        if(remaining_distance >= 200  && correct_box_detected == 0){   //Box detected at 7?
                 if(meassure_box_colour()==1){
                     correct_box_detected = 1;
                     pickup();
                 }
-            current_dist = Robot_moveForwardUntillBox(remaining_distance);
-            remaining_distance = remaining_distance - current_dist;
+			//Robot_MoveForwardGivenDistance(50);
+            //current_dist = Robot_moveForwardUntillBox(remaining_distance);
+            //remaining_distance = remaining_distance - current_dist;
+            Robot_MoveForwardGivenDistance(300);
     
-            if(remaining_distance >= 10 && correct_box_detected == 0){       //Box detected at 6?
+            if(see_box && correct_box_detected == 0){       //Box detected at 6?
                 if(meassure_box_colour()==1){
                     correct_box_detected = 1;
                     pickup();
@@ -74,7 +81,7 @@ void box_manupilation_876(){
     }
 
     //Now robot is at near the 6 location. In between 3,4,6,7.
-    Robot_MoveReverseGivenDistanceSLOW(10); //go_back(10);
+    Robot_MoveReverseGivenDistance(140); //go_back(10);
     if(correct_box_detected == 1){
         Robot_TurnLeft90Inplace(); //turn_left_carefully();
         exit_the_area();
