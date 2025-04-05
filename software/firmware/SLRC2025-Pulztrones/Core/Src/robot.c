@@ -27,6 +27,8 @@ extern Color line_color, object_color;
 
 extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
+extern volatile uint8_t see_front_wall;
+
 
 extern JunctionType junction;
 
@@ -270,12 +272,17 @@ void Robot_TurnLeftInplace(float angle){
 
 
 float Robot_moveForwardUntillFrontWall(){
-	 set_steering_mode(STEERING_OFF_READIR);
+		see_front_wall = 0;
+	 	set_steering_mode(STEERING_OFF_READIR);
 	    Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
-	    while(!see_front_wall){
+	    while(1){
+	    	if(see_front_wall){
+	    		break;
+	    	}
 		}
-	    Motion_StopAfter(&motion, 50);
 		set_steering_mode(STEERING_OFF);
+	    Motion_StopAfter(&motion, 30);
+
 		float distance = robot_distance();
 		Motion_ResetDriveSystem(&motion);
 
@@ -285,7 +292,7 @@ float Robot_moveForwardUntillFrontWall(){
 
 void Robot_adjust_using_front_wall(){
 	set_steering_mode(STEERING_FRONT_WALL);
-	NonBlockingDelay(2000);
+	NonBlockingDelay(2500);
 	while(!IsDelayComplete()){
 
 	}

@@ -92,7 +92,7 @@ const int FRONT_NOMINAL = 80;
 // the values above which, a wall is seen
 const int LEFT_THRESHOLD = 80;   // minimum value to register a wall
 const int RIGHT_THRESHOLD = 80;  // minimum value to register a wall
-const int FRONT_THRESHOLD = 100;  // minimum value to register a wall-
+const int FRONT_THRESHOLD = 75;  // minimum value to register a wall-
 
 
 const int WALL_ANGLE_WEIGHT = 0.1;

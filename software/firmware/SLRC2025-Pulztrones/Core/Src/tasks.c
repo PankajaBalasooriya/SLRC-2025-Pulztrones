@@ -275,24 +275,43 @@ void executePotatoSeperationTask(void){
 
 
 void executeRampTask(void){
-	Robot_MoveReverseGivenDistanceSLOW(680);
+	Robot_MoveReverseGivenDistanceSLOW(675);
 	Robot_TurnRightInplace(183);
 
-	Robot_MoveForwardGivenDistanceSLOW(490);
+	Robot_MoveForwardGivenDistanceSLOW(590); // 490
 
-	Robot_moveForwardUntillFrontWall();
+	Buzzer_Toggle(100);
 
-	Robot_adjust_using_front_wall();
 
-	Robot_MoveReverseGivenDistance(50);
 
-	Robot_TurnRight90Inplace();
 
-	Robot_moveForwardUntillFrontWall();
+//	Robot_TurnRight90Inplace();
+//
+//	Robot_moveForwardUntillFrontWall();
 	//Robot_MoveForwardGivenDistanceFAST(100);
 	//Robot_MoveForwardGivenDistanceFAST(325);
 
 
+}
+
+
+void navigateToQR(){
+//	Robot_TurnRight90Inplace();
+
+		Robot_moveForwardUntillFrontWall();
+
+		Robot_adjust_using_front_wall();
+
+		Robot_MoveReverseGivenDistance(120);
+
+		Robot_TurnRight90Inplace();
+
+//		Buzzer_Toggle(100);
+//
+//		Robot_MoveForwardGivenDistance(600);
+
+		Robot_moveForwardUntillFrontWall();
+		Buzzer_Toggle(500);
 }
 
 
@@ -319,6 +338,10 @@ void selectTask(){
 			case 3:
 				display_message("Ramp", 12, 45);
 				currentTask = TASK_RAMP;
+				break;
+			case 4:
+				display_message("NAV QR", 12, 45);
+				currentTask = NAVIGATE_T0_QR;
 			default:
 				break;
 			}
@@ -331,7 +354,7 @@ void selectTask(){
 	}
 	display_headding("Start Task");
 	while(okbtncount == prevokbtncount);
-	//Reset_buttons();
+	Reset_buttons();
 	runCurrentTask();
 }
 
@@ -339,7 +362,7 @@ void selectTask(){
 
 void runCurrentTask() {
 	EnableSysTickFunction();
-	//Buzzer_Toggle(500);
+	Buzzer_Toggle(500);
 
     switch (currentTask) {
         case TASK_PLANTATION:
@@ -352,6 +375,10 @@ void runCurrentTask() {
 		    break;
         case TASK_RAMP:
         	executeRampTask();
+        	currentTask = NAVIGATE_T0_QR;
+        	break;
+        case NAVIGATE_T0_QR:
+        	navigateToQR();
         	currentTask = TASK_QR;
         	break;
         default:

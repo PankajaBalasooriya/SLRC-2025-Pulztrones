@@ -10,6 +10,7 @@ typedef enum {
     TASK_PLANTATION,
     TASK_MUDDY_ROAD,
 	TASK_RAMP,
+	NAVIGATE_T0_QR,
 	TASK_QR,
     TASK_COLLECTION_POINT,
 	TASK_SORTING_POTATOS,
@@ -48,6 +49,7 @@ void executePotatoSeperationTask(void);
 
 void executeMuddyRoadTask(void);
 void executeRampTask(void);
+void navigateToQR();
 void executeCollectionPointTask(void);
 void executeOldWarehouseTask(void);
 void executeNewWarehouseTask(void);

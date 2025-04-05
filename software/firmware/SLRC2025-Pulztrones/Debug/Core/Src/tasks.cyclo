@@ -12,5 +12,6 @@
 ../Core/Src/tasks.c:190:6:executeMuddyRoadTask	1
 ../Core/Src/tasks.c:233:6:executePotatoSeperationTask	1
 ../Core/Src/tasks.c:277:6:executeRampTask	1
-../Core/Src/tasks.c:303:6:selectTask	8
-../Core/Src/tasks.c:340:6:runCurrentTask	5
+../Core/Src/tasks.c:298:6:navigateToQR	1
+../Core/Src/tasks.c:322:6:selectTask	8
+../Core/Src/tasks.c:363:6:runCurrentTask	5

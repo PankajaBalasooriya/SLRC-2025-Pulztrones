@@ -252,11 +252,11 @@ void RangeAllIRSensors(void){
 	rfs.value = getIRDistance(IR_RIGHT_FORWARD, rfs.raw);
 	rrs.value = getIRDistance(IR_RIGHT_BACK, rrs.raw);
 
-	left_wall_avg = 0.5 * (lfs.value + lrs.value);
-	right_wall_avg = 0.5 * (rfs.value + rrs.value);
+	//left_wall_avg = 0.5 * (lfs.value + lrs.value);
+	//right_wall_avg = 0.5 * (rfs.value + rrs.value);
 
 //	see_left_wall = (left_wall_avg < LEFT_THRESHOLD);
 //	see_right_wall = (right_wall_avg < RIGHT_THRESHOLD);
-	see_front_wall = (fs.value < FRONT_THRESHOLD);
+	see_front_wall = (rfs.value < FRONT_THRESHOLD);
 }
 
