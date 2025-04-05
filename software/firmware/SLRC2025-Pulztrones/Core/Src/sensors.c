@@ -33,6 +33,8 @@ volatile uint8_t right_wall_avg = 0;
 
 volatile uint8_t g_steering_mode = STEERING_OFF;
 
+//Box manupilation sensing
+volatile uint8_t see_box = 0;
 
 // Buffer to store values from all IR channels
 uint16_t sensorValues[16] = {0};
@@ -258,6 +260,8 @@ void RangeAllIRSensors(void){
 
 //	see_left_wall = (left_wall_avg < LEFT_THRESHOLD);
 //	see_right_wall = (right_wall_avg < RIGHT_THRESHOLD);
+
 	see_front_wall = (rfs.value < FRONT_THRESHOLD);
+	see_box = (lrs.value < BOX_THRESHOLD);
 }
 

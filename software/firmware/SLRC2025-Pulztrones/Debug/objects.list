@@ -1,6 +1,7 @@
 "./Core/.metadata/.plugins/org.eclipse.cdt.make.core/specs.o"
 "./Core/Src/arm_controller.o"
 "./Core/Src/ballstorage.o"
+"./Core/Src/box_manupilation.o"
 "./Core/Src/config.o"
 "./Core/Src/controller.o"
 "./Core/Src/delay.o"

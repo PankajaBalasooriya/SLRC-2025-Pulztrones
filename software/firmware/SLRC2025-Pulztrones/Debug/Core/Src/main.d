@@ -33,35 +33,36 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/encoders.h ../Core/Inc/motors.h ../Core/Inc/main.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h \
  ../Core/Inc/servo.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h \
  ../Core/Inc/delay.h ../Core/Inc/raykha.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api_strings.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_device.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_types.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform_log.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api_strings.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_device.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_types.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform_log.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h \
  ../Core/Inc/uartcom.h ../Core/Inc/systick.h ../Core/Inc/motion.h \
  ../Core/Inc/motors.h ../Core/Inc/profile.h ../Core/Inc/config.h \
  ../Core/Inc/encoders.h ../Core/Inc/controller.h ../Core/Inc/profile.h \
  ../Core/Inc/controller.h ../Core/Inc/sensors.h ../Core/Inc/uartcom.h \
  ../Core/Inc/robot.h ../Core/Inc/tasks.h ../Core/Inc/ballstorage.h \
  ../Core/Inc/servo.h ../Core/Inc/arm_controller.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9548A/Inc/PCA9548A.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/TCS3472/Inc/TCS3472.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9548A/Inc/PCA9548A.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/TCS3472/Inc/TCS3472.h \
  ../Core/Inc/config.h ../Core/Inc/irs.h ../Core/Inc/sensors.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/display.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/display.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h \
+ ../Core/Inc/box_manupilation.h ../Core/Inc/robot.h ../Core/Inc/motion.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -99,24 +100,24 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/encoders.h:
 ../Core/Inc/motors.h:
 ../Core/Inc/main.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h:
 ../Core/Inc/servo.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h:
 ../Core/Inc/delay.h:
 ../Core/Inc/raykha.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api_strings.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_device.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_types.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform_log.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_api_strings.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_device.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_types.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/core/inc/vl53l0x_def.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/VL53L0X/platform/inc/vl53l0x_platform_log.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h:
 ../Core/Inc/uartcom.h:
 ../Core/Inc/systick.h:
 ../Core/Inc/motion.h:
@@ -134,11 +135,14 @@ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/S
 ../Core/Inc/ballstorage.h:
 ../Core/Inc/servo.h:
 ../Core/Inc/arm_controller.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9548A/Inc/PCA9548A.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/TCS3472/Inc/TCS3472.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9548A/Inc/PCA9548A.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/TCS3472/Inc/TCS3472.h:
 ../Core/Inc/config.h:
 ../Core/Inc/irs.h:
 ../Core/Inc/sensors.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/display.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/display.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h:
+../Core/Inc/box_manupilation.h:
+../Core/Inc/robot.h:
+../Core/Inc/motion.h:

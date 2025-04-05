@@ -31,6 +31,8 @@ extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 extern volatile uint8_t see_front_wall;
 
 
+
+
 extern JunctionType junction;
 
 
@@ -307,6 +309,21 @@ void Robot_adjust_using_front_wall(){
 
 	set_steering_mode(STEERING_OFF);
 	Motion_ResetDriveSystem(&motion);
+}
+
+int Robot_moveForwardUntillBox(uint16_t input_distance){
+	
+	set_steering_mode(STEERING_OFF_READIR);
+	   Motion_StartMove(&motion, input_distance, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	   while(!see_box){
+	   }
+	   Motion_StopAfter(&motion, 10);
+	   set_steering_mode(STEERING_OFF);
+	   float distance = robot_distance();
+	   int integer_distance = (int)distance;
+	   Motion_ResetDriveSystem(&motion);
+
+	   return integer_distance;
 }
 
 

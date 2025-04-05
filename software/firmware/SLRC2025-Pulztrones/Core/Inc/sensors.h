@@ -63,8 +63,9 @@ void RangeAllIRSensors(void);
 
 /* Extern Variables */
 extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
-extern volatile uint8_t see_front_wall, see_left_wall, see_right_wall;
+extern volatile uint8_t see_front_wall, see_left_wall, see_right_wall,see_box;
 //extern uint16_t sensor_values[RAYKHA_NUM_SENSORS];
 extern JunctionType junction;
+
 
 #endif /* SENSORS_H */
