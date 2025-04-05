@@ -17,3 +17,4 @@
 ../Core/Src/robot.c:262:6:Robot_TurnLeftInplace	1
 ../Core/Src/robot.c:272:7:Robot_moveForwardUntillFrontWall	2
 ../Core/Src/robot.c:286:6:Robot_adjust_using_front_wall	2
+../Core/Src/robot.c:297:5:Robot_moveForwardUntillBox	2

@@ -1,3 +1,7 @@
+#include <stdint.h>
+#include "box_manupilation.h"
+#include "robot.h"
+#include "config.h"
 //0 1 2
 //3 4 5
 //6 7 8
@@ -6,14 +10,13 @@ uint8_t correct_box_detected = 0;
 int current_dist = 0;
 int remaining_distance = 0;
 
-void box_manupilation(){
-    box_manupilation_876();
+uint8_t meassure_box_colour(){
+    //Dummy function. Change it later.
+    //return 1; //white box
+    //return 0; //yellow box
+    return 1; //white box
 }
 
-uint8_t meassure_box_colour(){
-    //Check the box colour and return the value.
-    return 1; //Dummy function. Change it later.
-}
 void pickup(){
     //Pickup the box.
     //Dummy function. Change it later.
@@ -21,6 +24,10 @@ void pickup(){
 void exit_the_area(){
     //Exit the area.
     //Dummy function. Change it later.
+}
+
+void box_manupilation(){
+    box_manupilation_876();
 }
 
 void box_manupilation_876(){
@@ -43,7 +50,7 @@ void box_manupilation_876(){
             pickup();
         }
 
-        Robot_MoveForwardGivenDistance(remaining_distance);
+        Robot_moveForwardUntillBox(remaining_distance);
         remaining_distance = remaining_distance - current_dist;
 
         if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 7?
@@ -51,7 +58,7 @@ void box_manupilation_876(){
                     correct_box_detected = 1;
                     pickup();
                 }
-            current_dist =Robot_MoveForwardGivenDistance(remaining_distance);
+            current_dist = Robot_moveForwardUntillBox(remaining_distance);
             remaining_distance = remaining_distance - current_dist;
     
             if(remaining_distance >= 10 && correct_box_detected == 0){       //Box detected at 6?
@@ -78,7 +85,7 @@ void box_manupilation_876(){
 
 }
 
-box_manupilation_630(){
+void box_manupilation_630(){
 
     current_dist = Robot_moveForwardUntillBox(remaining_distance);    //go_straight(remaining_distance);
     remaining_distance = remaining_distance - current_dist;
@@ -89,7 +96,7 @@ box_manupilation_630(){
             pickup();
         }
 
-        Robot_MoveForwardGivenDistance(remaining_distance);
+        current_dist = Robot_moveForwardUntillBox(remaining_distance);
         remaining_distance = remaining_distance - current_dist;
 
         if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 3?
@@ -97,7 +104,7 @@ box_manupilation_630(){
                     correct_box_detected = 1;
                     pickup();
                 }
-            current_dist =Robot_MoveForwardGivenDistance(remaining_distance);
+            current_dist = Robot_moveForwardUntillBox(remaining_distance);
             remaining_distance = remaining_distance - current_dist;
     
             if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 0?
@@ -138,15 +145,15 @@ void box_manupilation_258(){
             pickup();
         }
 
-        Robot_MoveForwardGivenDistance(remaining_distance);
-        remaining_distance = remaining_distance - current_dist;
+        Robot_moveForwardUntillBox(remaining_distance);
+        current_dist = remaining_distance = remaining_distance - current_dist;
 
         if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 5?
                 if(meassure_box_colour()==1){
                     correct_box_detected = 1;
                     pickup();
                 }
-            current_dist =Robot_MoveForwardGivenDistance(remaining_distance);
+            current_dist = Robot_moveForwardUntillBox(remaining_distance);
             remaining_distance = remaining_distance - current_dist;
     
             if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 8?
@@ -185,7 +192,7 @@ void box_manupilation_741(){
     if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 7?
         //Pass if there is a box at 7.
 
-        Robot_MoveForwardGivenDistance(remaining_distance);
+        current_dist = Robot_moveForwardUntillBox(remaining_distance);
         remaining_distance = remaining_distance - current_dist;
 
         if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 4?
@@ -193,7 +200,7 @@ void box_manupilation_741(){
                     correct_box_detected = 1;
                     pickup();
                 }
-            current_dist =Robot_MoveForwardGivenDistance(remaining_distance);
+            current_dist =Robot_moveForwardUntillBox(remaining_distance);
             remaining_distance = remaining_distance - current_dist;
     
             if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 1?
@@ -214,5 +221,5 @@ void box_manupilation_741(){
     Robot_LineFollowUntillJunction();   // line_follow_until_junction();
 
     Robot_MoveForwardUntillLine();      // go_straight_until_line();
-    exit_area();
+    exit_the_area();
 }

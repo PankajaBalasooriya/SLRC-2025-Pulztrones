@@ -1,0 +1,8 @@
+../Core/Src/box_manupilation.c:13:9:meassure_box_colour	4	static
+../Core/Src/box_manupilation.c:20:6:pickup	4	static
+../Core/Src/box_manupilation.c:24:6:exit_the_area	4	static
+../Core/Src/box_manupilation.c:29:6:box_manupilation	8	static
+../Core/Src/box_manupilation.c:33:6:box_manupilation_876	8	static
+../Core/Src/box_manupilation.c:88:6:box_manupilation_630	8	static
+../Core/Src/box_manupilation.c:138:6:box_manupilation_258	8	static
+../Core/Src/box_manupilation.c:179:6:box_manupilation_741	8	static

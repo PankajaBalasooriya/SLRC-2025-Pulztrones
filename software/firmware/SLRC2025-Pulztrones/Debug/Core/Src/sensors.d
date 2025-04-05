@@ -34,7 +34,7 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/config.h ../Core/Inc/uartcom.h ../Core/Inc/raykha.h \
  ../Core/Inc/main.h \
- C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h \
+ D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h \
  ../Core/Inc/main.h ../Core/Inc/delay.h ../Core/Inc/config.h \
  ../Core/Inc/irs.h ../Core/Inc/sensors.h
 ../Core/Inc/sensors.h:
@@ -75,7 +75,7 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
 ../Core/Inc/uartcom.h:
 ../Core/Inc/raykha.h:
 ../Core/Inc/main.h:
-C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h:
+D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/analog_mux.h:
 ../Core/Inc/main.h:
 ../Core/Inc/delay.h:
 ../Core/Inc/config.h:
