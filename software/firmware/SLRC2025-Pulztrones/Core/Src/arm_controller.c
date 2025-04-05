@@ -228,25 +228,25 @@ int Arm_Home(void)
 
 void pickup_and_Store(void){
 	Arm_MoveServo(ARM_LINK2_SERVO,75);
-	Arm_MoveServo(ARM_BASE_SERVO,20);
+	Arm_MoveServo(ARM_BASE_SERVO,14);
 	Arm_MoveServo(ARM_LINK2_SERVO,90);
-	Arm_MoveServo(ARM_LINK3_SERVO,16);
+	Arm_MoveServo(ARM_LINK3_SERVO,15);
 	Arm_MoveServo(ARM_LINK1_SERVO,70);
 
 // read color
 	Color Ball_color = GetBallColor();
 	HAL_Delay(2000);
 	Arm_MoveServo(ARM_LINK1_SERVO,50);
-	Arm_MoveServo(ARM_BASE_SERVO,13);
-	Arm_MoveServo(ARM_LINK3_SERVO,16);
-	Arm_MoveServo(ARM_LINK1_SERVO,72);
+	Arm_MoveServo(ARM_BASE_SERVO,8);
+	Arm_MoveServo(ARM_LINK3_SERVO,15);
+	Arm_MoveServo(ARM_LINK1_SERVO,77);
 
 
 // vaccum pump on
 	turn_on_air_pump();
 
 //time to suck the ball
-	HAL_Delay(1000);
+	HAL_Delay(2000);
 
 // vaccum pump off
 	turn_off_air_pump();
@@ -260,20 +260,19 @@ void pickup_and_Store(void){
 	if(Ball_color == WHITE){
 		// bad potatoes - white
 		Arm_MoveServo(ARM_BASE_SERVO,180);
-		Arm_MoveServo(ARM_LINK3_SERVO,128);
+		Arm_MoveServo(ARM_LINK3_SERVO,120);
 		//HAL_Delay(8000);
 	}
 	else{
 		//good potatoes -yellow
 		Arm_MoveServo(ARM_BASE_SERVO,160);
-		Arm_MoveServo(ARM_LINK3_SERVO,115);
+		Arm_MoveServo(ARM_LINK3_SERVO,110);
 		//HAL_Delay(8000);
 	}
 
 
 
-
-	HAL_Delay(8000);
+	HAL_Delay(10000);
 	// time to drop the ball
 
 

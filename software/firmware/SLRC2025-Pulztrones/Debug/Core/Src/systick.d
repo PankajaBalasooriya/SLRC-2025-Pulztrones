@@ -37,7 +37,7 @@ Core/Src/systick.o: ../Core/Src/systick.c ../Core/Inc/main.h \
  ../Core/Inc/config.h ../Core/Inc/encoders.h ../Core/Inc/controller.h \
  ../Core/Inc/sensors.h ../Core/Inc/uartcom.h ../Core/Inc/arm_controller.h \
  ../Core/Inc/servo.h \
- D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h \
+ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h \
  ../Core/Inc/robot.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -86,5 +86,5 @@ Core/Src/systick.o: ../Core/Src/systick.c ../Core/Inc/main.h \
 ../Core/Inc/uartcom.h:
 ../Core/Inc/arm_controller.h:
 ../Core/Inc/servo.h:
-D:/Oshadha/Professional\ Projects/SLRC\ 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h:
+C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h:
 ../Core/Inc/robot.h:

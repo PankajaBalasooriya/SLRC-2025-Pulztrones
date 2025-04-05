@@ -12,8 +12,8 @@
 ../Drivers/TCS3472/Src/TCS3472.c:378:9:TCS3472_Read8	1
 ../Drivers/TCS3472/Src/TCS3472.c:390:10:TCS3472_Read16	1
 ../Drivers/TCS3472/Src/TCS3472.c:405:7:TCS3472_DetectObjectColor	18
-../Drivers/TCS3472/Src/TCS3472.c:467:6:TCS3472_CalibrateObjectColors	5
-../Drivers/TCS3472/Src/TCS3472.c:555:9:TCS3472_InitAll	3
-../Drivers/TCS3472/Src/TCS3472.c:585:6:init_color_sensors	2
-../Drivers/TCS3472/Src/TCS3472.c:592:6:caliberate_color_sensors	1
-../Drivers/TCS3472/Src/TCS3472.c:606:6:TCS3472_DualSensorExample	12
+../Drivers/TCS3472/Src/TCS3472.c:467:6:TCS3472_CalibrateObjectColors	19
+../Drivers/TCS3472/Src/TCS3472.c:705:9:TCS3472_InitAll	3
+../Drivers/TCS3472/Src/TCS3472.c:735:6:init_color_sensors	2
+../Drivers/TCS3472/Src/TCS3472.c:742:6:caliberate_color_sensors	1
+../Drivers/TCS3472/Src/TCS3472.c:756:6:TCS3472_DualSensorExample	12

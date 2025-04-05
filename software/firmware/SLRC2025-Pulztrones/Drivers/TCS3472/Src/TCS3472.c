@@ -463,9 +463,13 @@ Color TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c) 
 }
 
 
-/* Calibration function for object colors - simplified version */
+/* Calibration function for object colors - with multiple readings */
 void TCS3472_CalibrateObjectColors(void) {
     uint16_t r, g, b, c;
+    uint16_t white_readings[5] = {0};
+    uint16_t yellow_readings_r[5] = {0};
+    uint16_t yellow_readings_g[5] = {0};
+    uint16_t yellow_readings_b[5] = {0};
 
     /* White calibration */
     display_clear();
@@ -486,9 +490,19 @@ void TCS3472_CalibrateObjectColors(void) {
     TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
     HAL_Delay(1000);
 
-    /* Take reading of white object */
-    TCS3472_GetRGBC(&r, &g, &b, &c);
-    object_color_config.white_min_c = c * 0.8; // 20% margin
+    /* Take 5 readings of white object */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        white_readings[i] = c;
+        HAL_Delay(50);
+    }
+
+    /* Calculate average */
+    uint32_t white_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        white_sum += white_readings[i];
+    }
+    object_color_config.white_min_c = (white_sum / 5) * 0.8; // 20% margin
 
     display_clear();
     display_headding("Calibration");
@@ -516,22 +530,40 @@ void TCS3472_CalibrateObjectColors(void) {
     TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
     HAL_Delay(1000);
 
-    /* Take reading of yellow-orange object */
-    TCS3472_GetRGBC(&r, &g, &b, &c);
+    /* Take 5 readings of yellow-orange object */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        yellow_readings_r[i] = r;
+        yellow_readings_g[i] = g;
+        yellow_readings_b[i] = b;
+        HAL_Delay(50);
+    }
+
+    /* Calculate averages */
+    uint32_t yellow_r_sum = 0, yellow_g_sum = 0, yellow_b_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        yellow_r_sum += yellow_readings_r[i];
+        yellow_g_sum += yellow_readings_g[i];
+        yellow_b_sum += yellow_readings_b[i];
+    }
+
+    uint16_t avg_r = yellow_r_sum / 5;
+    uint16_t avg_g = yellow_g_sum / 5;
+    uint16_t avg_b = yellow_b_sum / 5;
 
     /* Avoid division by zero */
-    if (b < 10) b = 10;
+    if (avg_b < 10) avg_b = 10;
 
     /* Calculate and store the calibration values */
-    object_color_config.yellow_min_ratio_r_to_b = ((r * 90) / b) * 0.9; // 10% margin
-    object_color_config.yellow_min_ratio_g_to_b = ((g * 90) / b) * 0.9; // 10% margin
+    object_color_config.yellow_min_ratio_r_to_b = ((avg_r * 100) / avg_b) * 0.9; // 10% margin
+    object_color_config.yellow_min_ratio_g_to_b = ((avg_g * 100) / avg_b) * 0.9; // 10% margin
 
     /* Calculate r-g similarity */
     uint16_t r_g_similarity;
-    if (r > g) {
-        r_g_similarity = (g * 100) / r;
+    if (avg_r > avg_g) {
+        r_g_similarity = (avg_g * 100) / avg_r;
     } else {
-        r_g_similarity = (r * 100) / g;
+        r_g_similarity = (avg_r * 100) / avg_g;
     }
     object_color_config.yellow_r_g_diff_percent = r_g_similarity * 0.9; // 10% margin
 
@@ -539,6 +571,124 @@ void TCS3472_CalibrateObjectColors(void) {
     display_headding("Calibration");
     display_message("Arm Color sensor", 2, 25);
     display_message("Yellow-Orange", 2, 40);
+    display_message("Calibrated.", 2, 52);
+    HAL_Delay(2000);
+
+    /* Add Red calibration */
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Red", 2, 40);
+    display_message("Press OK to Start", 2, 52);
+    while(okbtncount == prevokbtncount);
+    Reset_buttons();
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Red", 2, 40);
+    display_message("Calibrating...", 2, 52);
+
+    HAL_Delay(1000);
+    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+    HAL_Delay(1000);
+
+    uint16_t red_readings_r[5] = {0};
+    uint16_t red_readings_g[5] = {0};
+    uint16_t red_readings_b[5] = {0};
+
+    /* Take 5 readings of red object */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        red_readings_r[i] = r;
+        red_readings_g[i] = g;
+        red_readings_b[i] = b;
+        HAL_Delay(50);
+    }
+
+    /* Calculate averages */
+    uint32_t red_r_sum = 0, red_g_sum = 0, red_b_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        red_r_sum += red_readings_r[i];
+        red_g_sum += red_readings_g[i];
+        red_b_sum += red_readings_b[i];
+    }
+
+    avg_r = red_r_sum / 5;
+    avg_g = red_g_sum / 5;
+    avg_b = red_b_sum / 5;
+
+    /* Avoid division by zero */
+    if (avg_g < 10) avg_g = 10;
+    if (avg_b < 10) avg_b = 10;
+
+    /* Calculate and store red calibration values */
+    object_color_config.red_min_ratio_r_to_g = ((avg_r * 100) / avg_g) * 0.9; // 10% margin
+    object_color_config.red_min_ratio_r_to_b = ((avg_r * 100) / avg_b) * 0.9; // 10% margin
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Red", 2, 40);
+    display_message("Calibrated.", 2, 52);
+    HAL_Delay(2000);
+
+    /* Add Blue calibration */
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Blue", 2, 40);
+    display_message("Press OK to Start", 2, 52);
+    while(okbtncount == prevokbtncount);
+    Reset_buttons();
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Blue", 2, 40);
+    display_message("Calibrating...", 2, 52);
+
+    HAL_Delay(1000);
+    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+    HAL_Delay(1000);
+
+    uint16_t blue_readings_r[5] = {0};
+    uint16_t blue_readings_g[5] = {0};
+    uint16_t blue_readings_b[5] = {0};
+
+    /* Take 5 readings of blue object */
+    for (int i = 0; i < 5; i++) {
+        TCS3472_GetRGBC(&r, &g, &b, &c);
+        blue_readings_r[i] = r;
+        blue_readings_g[i] = g;
+        blue_readings_b[i] = b;
+        HAL_Delay(50);
+    }
+
+    /* Calculate averages */
+    uint32_t blue_r_sum = 0, blue_g_sum = 0, blue_b_sum = 0;
+    for (int i = 0; i < 5; i++) {
+        blue_r_sum += blue_readings_r[i];
+        blue_g_sum += blue_readings_g[i];
+        blue_b_sum += blue_readings_b[i];
+    }
+
+    avg_r = blue_r_sum / 5;
+    avg_g = blue_g_sum / 5;
+    avg_b = blue_b_sum / 5;
+
+    /* Avoid division by zero */
+    if (avg_r < 10) avg_r = 10;
+    if (avg_g < 10) avg_g = 10;
+
+    /* Calculate and store blue calibration values */
+    object_color_config.blue_min_ratio_b_to_r = ((avg_b * 100) / avg_r) * 0.9; // 10% margin
+    object_color_config.blue_min_ratio_b_to_g = ((avg_b * 100) / avg_g) * 0.9; // 10% margin
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Blue", 2, 40);
     display_message("Calibrated.", 2, 52);
     HAL_Delay(2000);
 
