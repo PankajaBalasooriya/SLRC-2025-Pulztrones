@@ -2,6 +2,7 @@
 #include "buzzer.h"
 #include "stm32f4xx.h"
 #include "main.h"
+#include <stdio.h>
 
 //*** Robot state **********************************************//
 
@@ -160,4 +161,17 @@ void Reset_buttons(){
 }
 
 
+
+int binaryToDecimal4Bit(int binaryArray[]) {
+    // For 4-bit number where index 0 is the least significant bit
+    return binaryArray[0] * 1 +    // 2^0 = 1
+           binaryArray[1] * 2 +    // 2^1 = 2
+           binaryArray[2] * 4 +    // 2^2 = 4
+           binaryArray[3] * 8;     // 2^3 = 8
+}
+
+// Returns 0 if number is odd, 1 if even
+int isEven(int number) {
+    return !(number % 2);
+}
 

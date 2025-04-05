@@ -9,6 +9,7 @@
 
 
 
+
 extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
 // Initialize task status globally
@@ -107,7 +108,10 @@ void moveTocolumn0Fromcolumn4(){
 	moveToCenterofNextCellandNotStop();
 
 	//Robot_LineFollowUntillJunction();
-	moveToCenterofNextCell();
+	//moveToCenterofNextCell();
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL - 35);
+
 
 	Robot_TurnLeft90Inplace();
 	//Robot_LineFollowUntillJunction();
@@ -161,15 +165,17 @@ Color picktheBall(uint8_t column, uint8_t row){
 
 
 
-	//ToDo: Get ball color
-	ballcolor = GetBallColor(column, row);
+//	//ToDo: Get ball color
+//	ballcolor = GetBallColor(column, row);
+
+	pickup_and_Store();
 
 	//ToDo: Pick The ball
 
 	//retrive_and_drop();
 
 
-	Buzzer_Toggle(1000);
+	Buzzer_Toggle(100);
 
 	Robot_TurnLeft90Inplace();
 
@@ -214,11 +220,11 @@ void executeMuddyRoadTask(void){
 
 	Robot_MoveForwardGivenDistance(remaining_distance);
 
-	Robot_TurnRightInplace(55);
+	Robot_TurnRightInplace(45);//55
 
-	Robot_MoveForwardGivenDistance(130);
+	Robot_MoveForwardGivenDistance(145);//130
 
-	Robot_TurnRightInplace(122);
+	Robot_TurnRightInplace(132);//122
 
 
 
@@ -228,48 +234,6 @@ void executeMuddyRoadTask(void){
 
 //================================================================================================
 
-//---------Start 0f colorBox Task (Drop the potatoes to the identified boxed)--------------------
-
-void executePotatoSeperationTask(void){
-	Robot_LineFollowUntillJunction();
-	HAL_Delay(MOTION_DELAY);
-
-
-	// If line following initially
-
-	Robot_TurnRight90Inplace();
-
-	Robot_FollowLineGivenDistance(DISTACE_TO_CENTER_OF_CELL);
-
-	Robot_TurnLeft90Inplace();
-
-	Robot_MoveForwardUntillLine();
-
-	//Drop the baalls
-
-	//retrieve_ball(WHITE_BALL);
-	Buzzer_Toggle(300);
-
-	HAL_Delay(2000);
-
-	Robot_MoveReverseGivenDistance(120);
-
-	Robot_TurnRight90Inplace();
-
-	Robot_MoveForwardGivenDistance(2 * DISTACE_TO_CENTER_OF_CELL);
-
-	Robot_TurnLeft90Inplace();
-
-	Robot_MoveForwardUntillLine();
-
-	//retrieve_ball(YELLOW_BALL);
-	Buzzer_Toggle(300);
-
-
-}
-
-
-//---------end 0f colorBox Task (Collect and identify potatoes)---------------------
 
 
 
@@ -302,20 +266,58 @@ void navigateToQR(){
 
 		Robot_adjust_using_front_wall();
 
-		Robot_MoveReverseGivenDistance(120);
+		Robot_MoveReverseGivenDistance(100);
 
 		Robot_TurnRight90Inplace();
 
 //		Buzzer_Toggle(100);
 //
-//		Robot_MoveForwardGivenDistance(600);
+		Robot_MoveForwardGivenDistance(350);
+
+		Robot_TurnRightInplace(45);
+
+		Robot_MoveForwardGivenDistance(60);
+
+		Robot_TurnLeftInplace(45);
 
 		Robot_moveForwardUntillFrontWall();
-		Buzzer_Toggle(500);
+
+		Robot_adjust_using_front_wall();
+
+		////
+		Robot_MoveReverseGivenDistance(50);
+
+		Robot_TurnRight90Inplace();
+
+
 }
 
 
+//Robot_read_Barcode();
 
+void executeQR(){
+	Robot_MoveForwardUntillLine();
+
+	Robot_MoveForwardGivenDistance(450);
+
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveReverseGivenDistance(100);
+
+	//read
+	uint8_t num = Robot_read_Barcode();
+
+	display_big_number(num);
+
+	if(num == 0){
+		Buzzer_Toggle(1000);
+	}
+	else if(num == 1){
+		Buzzer_Toggle(300);
+		HAL_Delay(400);
+		Buzzer_Toggle(300);
+	}
+}
 
 
 // -----------------------------Task manager function---------------------------------
@@ -328,20 +330,30 @@ void selectTask(){
 			display_big_number(nextbtncount);
 			switch(nextbtncount){
 			case 1:
+				display_message("                 ", 12, 45);
 				display_message("Plantation Task", 12, 45);
 				currentTask = TASK_PLANTATION;
 				break;
 			case 2:
+				display_message("                 ", 12, 45);
 				display_message("Muddy Road", 12, 45);
 				currentTask = TASK_MUDDY_ROAD;
 				break;
 			case 3:
+				display_message("                 ", 12, 45);
 				display_message("Ramp", 12, 45);
 				currentTask = TASK_RAMP;
 				break;
 			case 4:
+				display_message("                 ", 12, 45);
 				display_message("NAV QR", 12, 45);
 				currentTask = NAVIGATE_T0_QR;
+				break;
+			case 5:
+				display_message("                 ", 12, 45);
+				display_message("Read QR", 12, 45);
+				currentTask = TASK_QR;
+				break;
 			default:
 				break;
 			}
@@ -362,7 +374,6 @@ void selectTask(){
 
 void runCurrentTask() {
 	EnableSysTickFunction();
-	Buzzer_Toggle(500);
 
     switch (currentTask) {
         case TASK_PLANTATION:
@@ -380,6 +391,10 @@ void runCurrentTask() {
         case NAVIGATE_T0_QR:
         	navigateToQR();
         	currentTask = TASK_QR;
+        	break;
+        case TASK_QR:
+        	executeQR();
+        	currentTask = TASK_NONE;
         	break;
         default:
             break;

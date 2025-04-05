@@ -465,65 +465,91 @@ Color TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c) 
 
 /* Calibration function for object colors - simplified version */
 void TCS3472_CalibrateObjectColors(void) {
-    //char buffer[100];
     uint16_t r, g, b, c;
 
-    /* Send calibration instructions */
-//    sprintf(buffer, "Starting object color calibration sequence...\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    /* White calibration */
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("White", 2, 40);
+    display_message("Press OK to Start", 2, 52);
+    while(okbtncount == prevokbtncount);
+    Reset_buttons();
 
     display_clear();
-	display_headding("Calibration");
-	display_message("Arm Color sensor", 2, 25);
-	display_message("White", 2, 40);
-	display_message("Press OK to Start", 2, 52);
-	while(okbtncount == prevokbtncount);
-	Reset_buttons();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("White", 2, 40);
+    display_message("Calibrating...", 2, 52);
 
-	display_clear();
-	display_headding("Calibration");
-	display_message("Arm Color sensor", 2, 25);
-	display_message("White", 2, 40);
-	display_message("Calibrating...", 2, 52);
-
-	HAL_Delay(1000);
-	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-	HAL_Delay(1000);
-
-    /* 1. Calibrate WHITE object */
-//    sprintf(buffer, "Place sensor over WHITE object and wait 5 seconds...\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-//    HAL_Delay(5000);
+    HAL_Delay(1000);
+    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+    HAL_Delay(1000);
 
     /* Take reading of white object */
     TCS3472_GetRGBC(&r, &g, &b, &c);
     object_color_config.white_min_c = c * 0.8; // 20% margin
 
-//    sprintf(buffer, "WHITE calibrated: min_c = %d | R:%d G:%d B:%d C:%d\r\n",
-//            object_color_config.white_min_c, r, g, b, c);
-//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-//    HAL_Delay(1000);
     display_clear();
-	display_headding("Calibration");
-	display_message("Arm Color sensor", 2, 25);
-	display_message("White", 2, 40);
-	display_message("Calibrated.", 2, 52);
-	HAL_Delay(2000);
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("White", 2, 40);
+    display_message("Calibrated.", 2, 52);
+    HAL_Delay(2000);
 
-//    sprintf(buffer, "Object color calibration complete!\r\n");
-//    HAL_UART_Transmit(&huart3, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-//    HAL_Delay(1000);
+    /* Yellow-Orange calibration */
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Yellow-Orange", 2, 40);
+    display_message("Press OK to Start", 2, 52);
+    while(okbtncount == prevokbtncount);
+    Reset_buttons();
 
-	display_clear();
-	display_headding("Calibration");
-	display_message("Arm Color sensor", 2, 25);
-	display_message("Calibration", 2, 40);
-	display_message("Completed.", 2, 52);
-	HAL_Delay(2000);
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Yellow-Orange", 2, 40);
+    display_message("Calibrating...", 2, 52);
 
-    /* Note: Red and Blue calibration requires more complex processing
-       and is purposely left out. We'll use predefined values instead. */
+    HAL_Delay(1000);
+    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+    HAL_Delay(1000);
+
+    /* Take reading of yellow-orange object */
+    TCS3472_GetRGBC(&r, &g, &b, &c);
+
+    /* Avoid division by zero */
+    if (b < 10) b = 10;
+
+    /* Calculate and store the calibration values */
+    object_color_config.yellow_min_ratio_r_to_b = ((r * 90) / b) * 0.9; // 10% margin
+    object_color_config.yellow_min_ratio_g_to_b = ((g * 90) / b) * 0.9; // 10% margin
+
+    /* Calculate r-g similarity */
+    uint16_t r_g_similarity;
+    if (r > g) {
+        r_g_similarity = (g * 100) / r;
+    } else {
+        r_g_similarity = (r * 100) / g;
+    }
+    object_color_config.yellow_r_g_diff_percent = r_g_similarity * 0.9; // 10% margin
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Yellow-Orange", 2, 40);
+    display_message("Calibrated.", 2, 52);
+    HAL_Delay(2000);
+
+    display_clear();
+    display_headding("Calibration");
+    display_message("Arm Color sensor", 2, 25);
+    display_message("Calibration", 2, 40);
+    display_message("Completed.", 2, 52);
+    HAL_Delay(2000);
 }
+
 
 /* Initialize both TCS3472 color sensors */
 uint8_t TCS3472_InitAll(void) {
@@ -569,10 +595,10 @@ void caliberate_color_sensors(){
 	TCS3472_CalibrateColors();
 
 	/* Run simplified calibration for object sensor (just for white) */
-//	Arm_color_calibration_position();
-//	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-//	TCS3472_CalibrateObjectColors();
-//	return_home();
+	Arm_color_calibration_position();
+	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+	TCS3472_CalibrateObjectColors();
+	return_home();
 }
 
 

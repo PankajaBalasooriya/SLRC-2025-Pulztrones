@@ -1,0 +1,69 @@
+#ifndef SENSORS_H
+#define SENSORS_H
+
+#include "stm32f4xx_hal.h"
+#include <math.h>
+//#include "vl53l0x.h"
+//#include "tofs.h"
+#include "math.h"
+//#include "irs.h"
+#include "config.h"
+#include "uartcom.h"
+#include <stdio.h>
+#include <string.h>
+
+
+extern UART_HandleTypeDef huart3;
+
+/* Enum for steering modes */
+enum {
+    STEER_NORMAL,
+    STEER_LEFT_WALL,
+    STEER_RIGHT_WALL,
+    STEERING_OFF,
+	STEERING_OFF_READLINE,
+	STEERING_OFF_READIR,
+	STEERING_FRONT_WALL,
+	STEERING_CENTER_LINE_FOLLOW,
+	STEERING_CENTER_GRID_FOLLOW,
+};
+
+
+/* Sensor Channel Struct */
+typedef struct {
+	uint16_t raw;   // Raw ADC value
+	int value; // Normalized/calibrated value
+} SensorChannel;
+
+/* Public Functions */
+
+JunctionType DetectJunction();
+
+void ReadAllSensors(void);
+void ReadSelectedSensors(const uint8_t* channelList, uint8_t numChannels, uint16_t* results);
+
+float get_steering_feedback();
+float get_cross_track_error();
+void init_sensor_value();
+uint8_t is_wall_left();
+uint8_t is_wall_right();
+uint8_t is_wall_front();
+
+
+//void Sensors_Enable();
+//void Sensors_Disable();
+//float Sensors_GetDistance(float sensor_value, float k);
+
+float CalculateSteeringAdjustment();
+void set_steering_mode(uint8_t mode);
+void Sensors_Update();
+
+void RangeAllIRSensors(void);
+
+
+/* Extern Variables */
+extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
+extern volatile uint8_t see_front_wall, see_left_wall, see_right_wall;
+extern uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+
+#endif /* SENSORS_H */

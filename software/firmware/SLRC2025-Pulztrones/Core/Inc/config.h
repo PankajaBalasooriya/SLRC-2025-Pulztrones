@@ -194,4 +194,8 @@ extern const int FRONT_NOMINAL;
 extern const int WALL_ANGLE_WEIGHT;
 
 
+int binaryToDecimal4Bit(int binaryArray[]);
+
+// Returns 0 if number is odd, 1 if even
+int isEven(int number);
 #endif

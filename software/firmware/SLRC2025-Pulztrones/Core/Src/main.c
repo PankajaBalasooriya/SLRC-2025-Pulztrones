@@ -238,10 +238,10 @@ int main(void)
 	Buzzer_Toggle(200);
 	HAL_Delay(2000);
 	/*--------------- Raykha calibration ----------------------------------*/
-	//RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 	/*-------------------------------------------------------------------*/
 	HAL_Delay(2000);
-	Buzzer_Toggle(200);
+	//Buzzer_Toggle(200);
 
 
 	/*----------------- Begin color sensor init--------------------------------*/
@@ -326,6 +326,22 @@ int main(void)
 //	drop_bad_potatos();
 //	drop_good_potatos();
 	//---------------------------------------------------------------------------------
+//	pickup_and_Store();
+//
+//	HAL_Delay(5000);
+//
+//	pickup_and_Store();
+//
+//	HAL_Delay(5000);
+//
+//	pickup_and_Store();
+//
+//	HAL_Delay(5000);
+//
+//	pickup_and_Store();
+//
+//	HAL_Delay(5000);
+
 
 
 

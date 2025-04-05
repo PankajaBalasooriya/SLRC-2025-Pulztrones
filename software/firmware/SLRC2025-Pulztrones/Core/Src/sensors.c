@@ -30,12 +30,13 @@ volatile int m_front_diff = 0;
 volatile uint8_t left_wall_avg = 0;
 volatile uint8_t right_wall_avg = 0;
 
+
 volatile uint8_t g_steering_mode = STEERING_OFF;
 
 
 // Buffer to store values from all IR channels
 uint16_t sensorValues[16] = {0};
-uint16_t sensor_values[RAYKHA_NUM_SENSORS];
+uint16_t sensor_values[RAYKHA_NUM_SENSORS] = {0};
 int32_t line_position;
 
 extern RAYKHA_Calibration raykha_calibration;

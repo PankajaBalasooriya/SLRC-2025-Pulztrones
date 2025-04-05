@@ -50,6 +50,7 @@ void executePotatoSeperationTask(void);
 void executeMuddyRoadTask(void);
 void executeRampTask(void);
 void navigateToQR();
+void execteQR();
 void executeCollectionPointTask(void);
 void executeOldWarehouseTask(void);
 void executeNewWarehouseTask(void);

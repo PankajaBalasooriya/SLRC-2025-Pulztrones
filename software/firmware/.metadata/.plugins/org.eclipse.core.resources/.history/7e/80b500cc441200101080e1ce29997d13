@@ -1,0 +1,374 @@
+/**
+  ******************************************************************************
+  * @file           : robot_control.c
+  * @brief          : Robot control implementation
+  *                   This file provides code for robot control operations
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/
+#include "robot.h"
+#include "sensors.h"
+#include "motion.h"
+#include "buzzer.h"
+#include "TCS3472.h"
+#include "encoders.h"
+#include "tasks.h"
+
+extern Motion motion;
+
+volatile Color linecolorRPI = WHITE;
+
+volatile Color ballcolorRPI = WHITE;
+
+extern uint16_t r_line, g_line, b_line, c_line;
+extern uint16_t r_obj, g_obj, b_obj, c_obj;
+extern Color line_color, object_color;
+
+extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
+
+extern volatile uint8_t see_front_wall;
+
+
+extern JunctionType junction;
+
+
+
+
+void HandleLineColorDetection(uint8_t *data){
+	uint8_t colorId = data[0];
+
+	uint8_t ballId = data[1];
+
+	//handlecount++;
+
+	switch (colorId) {
+	case 0: /* Red */
+		linecolorRPI = WHITE;
+	  break;
+	case 1: /* Green */
+		linecolorRPI = GREEN;
+	  break;
+	default:
+	  /* Unknown color */
+		linecolorRPI = WHITE;
+	  break;
+	}
+
+	switch(ballId){
+	case 0:
+		ballcolorRPI = WHITE;
+		break;
+	case 1:
+		ballcolorRPI = YELLOW;
+		break;
+	default:
+		ballcolorRPI = WHITE;
+		break;
+	}
+}
+
+//-----------------------------------------------------------------------------------
+//Color GetLineColor(){
+//	return linecolorRPI;
+//}
+
+//Color GetLineColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 1 && row == 1){
+//		return GREEN;
+//	}
+//	if(column == 2 && row == 2){
+//		return GREEN;
+//	}
+//	if(column == 3 && row == 0){
+//		return GREEN;
+//	}
+//	if(column == 4 && row == 1){
+//		return GREEN;
+//	}
+//	return WHITE;
+//}
+
+
+Color GetLineColor(uint8_t column, uint8_t row){
+	TCS3472_SelectSensor(MUX_CHANNEL_LINE_SENSOR);
+	TCS3472_GetRGBC(&r_line, &g_line, &b_line, &c_line);
+	line_color = TCS3472_DetectLineColor(r_line, g_line, b_line, c_line);
+	return line_color;
+}
+
+
+//Color GetBallColor(uint8_t column, uint8_t row){
+//	// Need seperate code to handle color detection
+//	// use this to acces a global vairable
+//
+//	if(column == 0 && row == 0){
+//		return WHITE;
+//	}
+//	if(column == 1 && row == 1){
+//		return YELLOW;
+//	}
+//	if(column == 2 && row == 2){
+//		return YELLOW;
+//	}
+//	if(column == 3 && row == 0){
+//		return WHITE;
+//	}
+//	if(column == 4 && row == 1){
+//		return WHITE;
+//	}
+//	return WHITE;
+//}
+
+
+Color GetBallColor(){
+	/* Get RGB and Clear values from object sensor */
+	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
+	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
+
+	if(object_color == WHITE){
+		return WHITE;
+	}
+	else if(object_color == YELLOW){
+		return YELLOW;
+	}
+	return WHITE;
+}
+
+
+
+
+//------------------------------------------------------------------------------//
+JunctionType Robot_LineFollowUntillJunction(){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_StartMove(&motion, 1500, LINE_FOLLOW_SPEED, LINE_FOLLOW_SPEED, LINE_FOLLOW_ACCELERATION);
+	junction = STRAIGHT_LINE;
+	while(1){
+		if(junction != STRAIGHT_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	Motion_StopAfter(&motion, 55);
+	Motion_ResetDriveSystem(&motion);
+	return junction;
+
+}
+JunctionType Robot_LineFollowUntillJunctionAndNotStop(){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_StartMove(&motion, 1500, LINE_FOLLOW_SPEED, LINE_FOLLOW_SPEED, LINE_FOLLOW_ACCELERATION);
+	junction = STRAIGHT_LINE;
+	while(1){
+		if(junction != STRAIGHT_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	//Motion_StopAfter(&motion, 45);
+	Motion_SwitchToNextMotionAfter(&motion, 45);
+
+	//Motion_ResetDriveSystem(&motion);
+	return junction;
+
+}
+
+
+void Robot_FollowLineGivenDistance(int distnace){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
+	set_steering_mode(STEERING_OFF);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_FollowLineGivenDistanceandNotStop(int distnace){
+	set_steering_mode(STEERING_CENTER_LINE_FOLLOW);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, FORWARD_SPEED_1    , FORWARD_ACCELERATION_1);
+	//Motion_ResetDriveSystem(&motion);
+	//set_steering_mode(STEERING_OFF);
+	//Motion_ResetDriveSystem(&motion);
+}
+
+JunctionType Robot_MoveForwardUntillLine(){
+	set_steering_mode(STEERING_OFF_READLINE);
+	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	junction = NO_LINE;
+	while(1){
+		if(junction != NO_LINE){
+			break;
+		}
+	}
+	set_steering_mode(STEERING_OFF);
+	Motion_StopAfter(&motion, 60);
+	Motion_ResetDriveSystem(&motion);
+	return junction;
+}
+
+void Robot_MoveForwardGivenDistance(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveReverseGivenDistanceSLOW(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_2, 0, FORWARD_ACCELERATION_2);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveForwardGivenDistanceSLOW(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, 1 * distnace, FORWARD_SPEED_2, 0, FORWARD_ACCELERATION_2);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveReverseGivenDistance(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnRight90Inplace(){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -88.5, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+}
+
+void robot_TurnRight180Inplace(){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -180, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnRightInplace(float angle){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -1 * angle, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnLeft90Inplace(){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, 86, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(MOTION_DELAY);
+}
+
+void Robot_TurnLeftInplace(float angle){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, angle, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(MOTION_DELAY);
+}
+
+
+float Robot_moveForwardUntillFrontWall(){
+		see_front_wall = 0;
+	 	set_steering_mode(STEERING_OFF_READIR);
+	    Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+	    while(1){
+	    	if(see_front_wall){
+	    		break;
+	    	}
+		}
+		set_steering_mode(STEERING_OFF);
+	    Motion_StopAfter(&motion, 30);
+
+		float distance = robot_distance();
+		Motion_ResetDriveSystem(&motion);
+
+		return distance;
+}
+
+
+void Robot_adjust_using_front_wall(){
+	set_steering_mode(STEERING_FRONT_WALL);
+	NonBlockingDelay(2500);
+	while(!IsDelayComplete()){
+
+	}
+
+	set_steering_mode(STEERING_OFF);
+	Motion_ResetDriveSystem(&motion);
+}
+
+
+int barcode[5];
+int barcode_index = 0;
+int stripCounter = 0;
+int consecutiveEdges = 0;
+
+uint8_t Robot_read_Barcode(){
+	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(1000);
+	set_steering_mode(STEERING_OFF_READLINE);
+
+	int currentColor = 1;
+	int previousColor = 1;
+	int lastStripStart = 0;
+
+	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+
+	while(1){
+		float distance = robot_distance();
+
+		if(junction == NO_LINE){
+			currentColor = 0;
+		}
+		else{
+			currentColor = 1;
+		}
+
+		if(currentColor == 1 && previousColor == 0){
+			lastStripStart = distance;
+			previousColor = 1;
+		}
+		if(currentColor == 0 && previousColor == 1){
+			if(stripCounter == 0){
+				stripCounter++;
+				previousColor = 0;
+				continue;
+			}
+			float strip_length = distance - lastStripStart;
+
+			if(strip_length < 40 && strip_length > 20){
+				consecutiveEdges++;
+				barcode[barcode_index] = 0;
+				barcode_index++;
+			}
+			else if(strip_length > 40){
+				barcode[barcode_index] = 1;
+				barcode_index++;
+				consecutiveEdges = 0;
+			}
+
+			//barcode[barcode_index] = distance - di;
+			//Serial2.println(barcode[barcode_index - 1]);
+			//barcode_index++;
+			previousColor = 0;
+
+		}
+
+		if(consecutiveEdges == 3){
+			break;
+		}
+	}
+}
+
+

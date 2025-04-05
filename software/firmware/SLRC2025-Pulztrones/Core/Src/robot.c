@@ -14,6 +14,7 @@
 #include "TCS3472.h"
 #include "encoders.h"
 #include "tasks.h"
+#include "config.h"
 
 extern Motion motion;
 
@@ -132,7 +133,14 @@ Color GetBallColor(){
 	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
 	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
 	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
-	return object_color;
+
+	if(object_color == WHITE){
+		return WHITE;
+	}
+	else if(object_color == YELLOW){
+		return YELLOW;
+	}
+	return WHITE;
 }
 
 
@@ -299,6 +307,77 @@ void Robot_adjust_using_front_wall(){
 
 	set_steering_mode(STEERING_OFF);
 	Motion_ResetDriveSystem(&motion);
+}
+
+
+int barcode[4];
+int barcode_index = 0;
+int stripCounter = 0;
+int consecutiveEdges = 0;
+
+uint8_t Robot_read_Barcode(){
+	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(1000);
+	set_steering_mode(STEERING_OFF_READLINE);
+
+	int currentColor = 1;
+	int previousColor = 1;
+	int lastStripStart = 0;
+
+	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+
+	while(1){
+		float distance = robot_distance();
+
+		if(junction == NO_LINE){
+			currentColor = 0;
+		}
+		else{
+			currentColor = 1;
+		}
+
+		if(currentColor == 1 && previousColor == 0){
+			lastStripStart = distance;
+			previousColor = 1;
+		}
+		if(currentColor == 0 && previousColor == 1){
+			if(stripCounter == 0){
+				stripCounter++;
+				previousColor = 0;
+				continue;
+			}
+			float strip_length = distance - lastStripStart;
+
+			if(strip_length < 40 && strip_length > 20){
+				consecutiveEdges++;
+				barcode[barcode_index] = 0;
+				barcode_index++;
+			}
+			else if(strip_length > 40){
+				barcode[barcode_index] = 1;
+				barcode_index++;
+				consecutiveEdges = 0;
+			}
+
+			//barcode[barcode_index] = distance - di;
+			//Serial2.println(barcode[barcode_index - 1]);
+			//barcode_index++;
+			previousColor = 0;
+
+		}
+
+		if(barcode_index == 4){
+			break;
+		}
+	}
+
+	set_steering_mode(STEERING_OFF);
+	Motion_StopAfter(&motion, 55);
+	Motion_ResetDriveSystem(&motion);
+
+//	return isEven(binaryToDecimal4Bit(barcode));
+	return binaryToDecimal4Bit(barcode);
+
 }
 
 

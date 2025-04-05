@@ -59,6 +59,8 @@ void Robot_adjust_using_front_wall();
 void Robot_TurnLeftInplace(float angle);
 void Robot_TurnRightInplace(float angle);
 
+uint8_t Robot_read_Barcode();
+
 
 #ifdef __cplusplus
 }

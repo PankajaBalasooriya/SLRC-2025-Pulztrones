@@ -1,6 +1,8 @@
-../Core/Src/config.c:112:6:turn_on_water_pump	1
-../Core/Src/config.c:116:6:turn_off_water_pump	1
-../Core/Src/config.c:120:6:turn_on_air_pump	1
-../Core/Src/config.c:124:6:turn_off_air_pump	1
-../Core/Src/config.c:140:6:HAL_GPIO_EXTI_Callback	5
-../Core/Src/config.c:154:6:Reset_buttons	1
+../Core/Src/config.c:113:6:turn_on_water_pump	1
+../Core/Src/config.c:117:6:turn_off_water_pump	1
+../Core/Src/config.c:121:6:turn_on_air_pump	1
+../Core/Src/config.c:125:6:turn_off_air_pump	1
+../Core/Src/config.c:141:6:HAL_GPIO_EXTI_Callback	5
+../Core/Src/config.c:155:6:Reset_buttons	1
+../Core/Src/config.c:165:5:binaryToDecimal4Bit	1
+../Core/Src/config.c:174:5:isEven	1

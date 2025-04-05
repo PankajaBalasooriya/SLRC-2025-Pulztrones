@@ -227,33 +227,66 @@ int Arm_Home(void)
 }
 
 void pickup_and_Store(void){
-//	Arm_MoveServo(ARM_LINK2_SERVO,100);
-//	Arm_MoveServo(ARM_BASE_SERVO,6);
-//	Arm_MoveServo(ARM_LINK3_SERVO,35);
-//	Arm_MoveServo(ARM_LINK1_SERVO,55);
-////	HAL_Delay(1000);
-//	Arm_MoveServo(ARM_LINK1_SERVO,70);
-//	Arm_MoveServo(ARM_LINK2_SERVO,94);
-//	turn_on_air_pump();
-//	HAL_Delay(3000);
-//	Arm_MoveServo(ARM_LINK1_SERVO,0);
-//	Arm_MoveServo(ARM_LINK3_SERVO,85);
-//	Arm_MoveServo(ARM_LINK2_SERVO,30);
-////	turn_off_air_pump();
-//	Arm_MoveServo(ARM_BASE_SERVO,148);
-//	Arm_MoveServo(ARM_LINK3_SERVO,121);
-//	Arm_MoveServo(ARM_LINK2_SERVO,55);//45
-//	turn_off_air_pump();
-//	HAL_Delay(10000);
+	Arm_MoveServo(ARM_LINK2_SERVO,75);
+	Arm_MoveServo(ARM_BASE_SERVO,20);
+	Arm_MoveServo(ARM_LINK2_SERVO,90);
+	Arm_MoveServo(ARM_LINK3_SERVO,16);
+	Arm_MoveServo(ARM_LINK1_SERVO,70);
 
-// after pickup
+// read color
+	Color Ball_color = GetBallColor();
+	HAL_Delay(2000);
+	Arm_MoveServo(ARM_LINK1_SERVO,50);
+	Arm_MoveServo(ARM_BASE_SERVO,13);
+	Arm_MoveServo(ARM_LINK3_SERVO,16);
+	Arm_MoveServo(ARM_LINK1_SERVO,72);
 
 
+// vaccum pump on
+	turn_on_air_pump();
 
-//	Arm_MoveServo(ARM_BASE_SERVO,10);
-//	Arm_MoveServo(ARM_LINK1_SERVO,10);
-//	Arm_MoveServo(ARM_LINK2_SERVO,10);
-//	Arm_MoveServo(ARM_LINK3_SERVO,10);
+//time to suck the ball
+	HAL_Delay(1000);
+
+// vaccum pump off
+	turn_off_air_pump();
+
+
+	Arm_MoveServo(ARM_LINK1_SERVO,10);
+	Arm_MoveServo(ARM_LINK2_SERVO,75);
+	Arm_MoveServo(ARM_LINK3_SERVO,100);
+	Arm_MoveServo(ARM_LINK2_SERVO,25);
+
+	if(Ball_color == WHITE){
+		// bad potatoes - white
+		Arm_MoveServo(ARM_BASE_SERVO,180);
+		Arm_MoveServo(ARM_LINK3_SERVO,128);
+		//HAL_Delay(8000);
+	}
+	else{
+		//good potatoes -yellow
+		Arm_MoveServo(ARM_BASE_SERVO,160);
+		Arm_MoveServo(ARM_LINK3_SERVO,115);
+		//HAL_Delay(8000);
+	}
+
+
+
+
+	HAL_Delay(8000);
+	// time to drop the ball
+
+
+
+	Arm_MoveServo(ARM_LINK3_SERVO,100);
+	Arm_MoveServo(ARM_BASE_SERVO,105);
+	Arm_MoveServo(ARM_LINK3_SERVO,80);
+	Arm_MoveServo(ARM_LINK2_SERVO,75);
+
+	Arm_MoveServo(ARM_LINK3_SERVO,80);
+	Arm_MoveServo(ARM_LINK2_SERVO,75);
+	Arm_MoveServo(ARM_BASE_SERVO,105);
+	Arm_MoveServo(ARM_LINK2_SERVO,95);
 }
 
 void retrive_and_drop(void){
