@@ -188,6 +188,7 @@ void Reset_buttons();
 extern const int LEFT_THRESHOLD;
 extern const int RIGHT_THRESHOLD;
 extern const int FRONT_THRESHOLD;
+extern const int BOX_THRESHOLD;
 
 extern const int SIDE_NOMINAL;//-
 extern const int FRONT_NOMINAL;

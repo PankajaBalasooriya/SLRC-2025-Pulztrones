@@ -58,6 +58,7 @@ float Robot_moveForwardUntillFrontWall();
 void Robot_adjust_using_front_wall();
 void Robot_TurnLeftInplace(float angle);
 void Robot_TurnRightInplace(float angle);
+int Robot_moveForwardUntillBox(uint16_t input_distance);
 
 
 #ifdef __cplusplus

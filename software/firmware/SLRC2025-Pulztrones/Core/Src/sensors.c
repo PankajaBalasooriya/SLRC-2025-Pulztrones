@@ -258,5 +258,6 @@ void RangeAllIRSensors(void){
 //	see_left_wall = (left_wall_avg < LEFT_THRESHOLD);
 //	see_right_wall = (right_wall_avg < RIGHT_THRESHOLD);
 	see_front_wall = (fs.value < FRONT_THRESHOLD);
+	see_box = (fs.value < BOX_THRESHOLD);
 }
 
