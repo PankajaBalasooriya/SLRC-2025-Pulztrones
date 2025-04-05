@@ -27,7 +27,7 @@ extern Color line_color, object_color;
 
 extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
-
+extern volatile uint8_t see_front_wall, see_left_wall, see_right_wall,see_box;
 
 
 extern JunctionType junction;

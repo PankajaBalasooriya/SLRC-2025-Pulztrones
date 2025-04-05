@@ -28,8 +28,6 @@ extern Color line_color, object_color;
 extern volatile SensorChannel lfs, lrs, fs, rfs, rrs;
 
 
-
-
 extern JunctionType junction;
 
 

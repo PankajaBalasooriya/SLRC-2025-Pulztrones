@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include "robot.h"
 #include "config.h"
-#include "sensors.h"
-#include "motion.h"
 
 
 void box_manupilation();
