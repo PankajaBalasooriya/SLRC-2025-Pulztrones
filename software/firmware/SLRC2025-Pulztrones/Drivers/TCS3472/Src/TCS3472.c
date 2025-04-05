@@ -466,10 +466,15 @@ Color TCS3472_DetectObjectColor(uint16_t r, uint16_t g, uint16_t b, uint16_t c) 
 /* Calibration function for object colors - with multiple readings */
 void TCS3472_CalibrateObjectColors(void) {
     uint16_t r, g, b, c;
-    uint16_t white_readings[5] = {0};
-    uint16_t yellow_readings_r[5] = {0};
-    uint16_t yellow_readings_g[5] = {0};
-    uint16_t yellow_readings_b[5] = {0};
+    uint16_t white_readings_r[10] = {0};
+    uint16_t white_readings_g[10] = {0};
+    uint16_t white_readings_b[10] = {0};
+    uint16_t white_readings_c[10] = {0};
+
+    uint16_t yellow_readings_r[10] = {0};
+    uint16_t yellow_readings_g[10] = {0};
+    uint16_t yellow_readings_b[10] = {0};
+    uint16_t yellow_readings_c[10] = {0};
 
     /* White calibration */
     display_clear();
@@ -490,19 +495,47 @@ void TCS3472_CalibrateObjectColors(void) {
     TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
     HAL_Delay(1000);
 
-    /* Take 5 readings of white object */
-    for (int i = 0; i < 5; i++) {
+    /* Take 10 readings of white object for more accuracy */
+    for (int i = 0; i < 10; i++) {
         TCS3472_GetRGBC(&r, &g, &b, &c);
-        white_readings[i] = c;
-        HAL_Delay(50);
+        white_readings_r[i] = r;
+        white_readings_g[i] = g;
+        white_readings_b[i] = b;
+        white_readings_c[i] = c;
+        HAL_Delay(100); // Longer delay between readings for more stable values
     }
 
-    /* Calculate average */
-    uint32_t white_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        white_sum += white_readings[i];
+    /* Calculate average - discard the highest and lowest values */
+    uint32_t white_r_sum = 0, white_g_sum = 0, white_b_sum = 0, white_c_sum = 0;
+    uint16_t max_c = 0, min_c = 65535;
+    int max_idx = 0, min_idx = 0;
+
+    /* Find highest and lowest C values to exclude */
+    for (int i = 0; i < 10; i++) {
+        if (white_readings_c[i] > max_c) {
+            max_c = white_readings_c[i];
+            max_idx = i;
+        }
+        if (white_readings_c[i] < min_c) {
+            min_c = white_readings_c[i];
+            min_idx = i;
+        }
     }
-    object_color_config.white_min_c = (white_sum / 5) * 0.8; // 20% margin
+
+    /* Sum values excluding outliers */
+    for (int i = 0; i < 10; i++) {
+        if (i != max_idx && i != min_idx) {
+            white_r_sum += white_readings_r[i];
+            white_g_sum += white_readings_g[i];
+            white_b_sum += white_readings_b[i];
+            white_c_sum += white_readings_c[i];
+        }
+    }
+
+    uint16_t avg_white_c = white_c_sum / 8; // 10 - 2 outliers = 8 readings
+
+    /* Set white threshold with 15% margin for better accuracy */
+    object_color_config.white_min_c = avg_white_c * 0.85;
 
     display_clear();
     display_headding("Calibration");
@@ -530,42 +563,65 @@ void TCS3472_CalibrateObjectColors(void) {
     TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
     HAL_Delay(1000);
 
-    /* Take 5 readings of yellow-orange object */
-    for (int i = 0; i < 5; i++) {
+    /* Take 10 readings of yellow-orange object */
+    for (int i = 0; i < 10; i++) {
         TCS3472_GetRGBC(&r, &g, &b, &c);
         yellow_readings_r[i] = r;
         yellow_readings_g[i] = g;
         yellow_readings_b[i] = b;
-        HAL_Delay(50);
+        yellow_readings_c[i] = c;
+        HAL_Delay(100); // Longer delay for stability
     }
 
-    /* Calculate averages */
+    /* Sort readings to remove outliers */
+    max_c = 0; min_c = 65535;
+    max_idx = 0; min_idx = 0;
+
+    /* Find highest and lowest readings based on R value for yellow */
+    for (int i = 0; i < 10; i++) {
+        if (yellow_readings_r[i] > max_c) {
+            max_c = yellow_readings_r[i];
+            max_idx = i;
+        }
+        if (yellow_readings_r[i] < min_c) {
+            min_c = yellow_readings_r[i];
+            min_idx = i;
+        }
+    }
+
+    /* Calculate median-like average by removing extremes */
     uint32_t yellow_r_sum = 0, yellow_g_sum = 0, yellow_b_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        yellow_r_sum += yellow_readings_r[i];
-        yellow_g_sum += yellow_readings_g[i];
-        yellow_b_sum += yellow_readings_b[i];
+    for (int i = 0; i < 10; i++) {
+        if (i != max_idx && i != min_idx) {
+            yellow_r_sum += yellow_readings_r[i];
+            yellow_g_sum += yellow_readings_g[i];
+            yellow_b_sum += yellow_readings_b[i];
+        }
     }
 
-    uint16_t avg_r = yellow_r_sum / 5;
-    uint16_t avg_g = yellow_g_sum / 5;
-    uint16_t avg_b = yellow_b_sum / 5;
+    uint16_t avg_r = yellow_r_sum / 8;
+    uint16_t avg_g = yellow_g_sum / 8;
+    uint16_t avg_b = yellow_b_sum / 8;
 
-    /* Avoid division by zero */
-    if (avg_b < 10) avg_b = 10;
+    /* Avoid division by zero with more safety margin */
+    if (avg_b < 20) avg_b = 20;
 
-    /* Calculate and store the calibration values */
-    object_color_config.yellow_min_ratio_r_to_b = ((avg_r * 100) / avg_b) * 0.9; // 10% margin
-    object_color_config.yellow_min_ratio_g_to_b = ((avg_g * 100) / avg_b) * 0.9; // 10% margin
+    /* Calculate ratios with more precision */
+    uint16_t r_to_b_ratio = (avg_r * 100) / avg_b;
+    uint16_t g_to_b_ratio = (avg_g * 100) / avg_b;
 
-    /* Calculate r-g similarity */
+    /* Add some safety margin but not too much to keep sensitivity */
+    object_color_config.yellow_min_ratio_r_to_b = r_to_b_ratio * 0.95; // 5% margin
+    object_color_config.yellow_min_ratio_g_to_b = g_to_b_ratio * 0.95; // 5% margin
+
+    /* Calculate r-g similarity with better precision */
     uint16_t r_g_similarity;
     if (avg_r > avg_g) {
         r_g_similarity = (avg_g * 100) / avg_r;
     } else {
         r_g_similarity = (avg_r * 100) / avg_g;
     }
-    object_color_config.yellow_r_g_diff_percent = r_g_similarity * 0.9; // 10% margin
+    object_color_config.yellow_r_g_diff_percent = r_g_similarity * 0.95; // 5% margin
 
     display_clear();
     display_headding("Calibration");
@@ -574,123 +630,12 @@ void TCS3472_CalibrateObjectColors(void) {
     display_message("Calibrated.", 2, 52);
     HAL_Delay(2000);
 
-    /* Add Red calibration */
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Red", 2, 40);
-    display_message("Press OK to Start", 2, 52);
-    while(okbtncount == prevokbtncount);
-    Reset_buttons();
-
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Red", 2, 40);
-    display_message("Calibrating...", 2, 52);
-
-    HAL_Delay(1000);
-    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-    HAL_Delay(1000);
-
-    uint16_t red_readings_r[5] = {0};
-    uint16_t red_readings_g[5] = {0};
-    uint16_t red_readings_b[5] = {0};
-
-    /* Take 5 readings of red object */
-    for (int i = 0; i < 5; i++) {
-        TCS3472_GetRGBC(&r, &g, &b, &c);
-        red_readings_r[i] = r;
-        red_readings_g[i] = g;
-        red_readings_b[i] = b;
-        HAL_Delay(50);
-    }
-
-    /* Calculate averages */
-    uint32_t red_r_sum = 0, red_g_sum = 0, red_b_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        red_r_sum += red_readings_r[i];
-        red_g_sum += red_readings_g[i];
-        red_b_sum += red_readings_b[i];
-    }
-
-    avg_r = red_r_sum / 5;
-    avg_g = red_g_sum / 5;
-    avg_b = red_b_sum / 5;
-
-    /* Avoid division by zero */
-    if (avg_g < 10) avg_g = 10;
-    if (avg_b < 10) avg_b = 10;
-
-    /* Calculate and store red calibration values */
-    object_color_config.red_min_ratio_r_to_g = ((avg_r * 100) / avg_g) * 0.9; // 10% margin
-    object_color_config.red_min_ratio_r_to_b = ((avg_r * 100) / avg_b) * 0.9; // 10% margin
-
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Red", 2, 40);
-    display_message("Calibrated.", 2, 52);
-    HAL_Delay(2000);
-
-    /* Add Blue calibration */
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Blue", 2, 40);
-    display_message("Press OK to Start", 2, 52);
-    while(okbtncount == prevokbtncount);
-    Reset_buttons();
-
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Blue", 2, 40);
-    display_message("Calibrating...", 2, 52);
-
-    HAL_Delay(1000);
-    TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
-    HAL_Delay(1000);
-
-    uint16_t blue_readings_r[5] = {0};
-    uint16_t blue_readings_g[5] = {0};
-    uint16_t blue_readings_b[5] = {0};
-
-    /* Take 5 readings of blue object */
-    for (int i = 0; i < 5; i++) {
-        TCS3472_GetRGBC(&r, &g, &b, &c);
-        blue_readings_r[i] = r;
-        blue_readings_g[i] = g;
-        blue_readings_b[i] = b;
-        HAL_Delay(50);
-    }
-
-    /* Calculate averages */
-    uint32_t blue_r_sum = 0, blue_g_sum = 0, blue_b_sum = 0;
-    for (int i = 0; i < 5; i++) {
-        blue_r_sum += blue_readings_r[i];
-        blue_g_sum += blue_readings_g[i];
-        blue_b_sum += blue_readings_b[i];
-    }
-
-    avg_r = blue_r_sum / 5;
-    avg_g = blue_g_sum / 5;
-    avg_b = blue_b_sum / 5;
-
-    /* Avoid division by zero */
-    if (avg_r < 10) avg_r = 10;
-    if (avg_g < 10) avg_g = 10;
-
-    /* Calculate and store blue calibration values */
-    object_color_config.blue_min_ratio_b_to_r = ((avg_b * 100) / avg_r) * 0.9; // 10% margin
-    object_color_config.blue_min_ratio_b_to_g = ((avg_b * 100) / avg_g) * 0.9; // 10% margin
-
-    display_clear();
-    display_headding("Calibration");
-    display_message("Arm Color sensor", 2, 25);
-    display_message("Blue", 2, 40);
-    display_message("Calibrated.", 2, 52);
-    HAL_Delay(2000);
+    /* Update the thresholds for red/blue using relative values */
+    /* These are estimates based on typical color sensor values */
+    object_color_config.red_min_ratio_r_to_g = 150;   // Keep default
+    object_color_config.red_min_ratio_r_to_b = 150;   // Keep default
+    object_color_config.blue_min_ratio_b_to_r = 150;  // Keep default
+    object_color_config.blue_min_ratio_b_to_g = 120;  // Keep default
 
     display_clear();
     display_headding("Calibration");
@@ -699,6 +644,117 @@ void TCS3472_CalibrateObjectColors(void) {
     display_message("Completed.", 2, 52);
     HAL_Delay(2000);
 }
+
+
+
+// new color
+Color TCS3472_DetectWhiteVsYellow(uint16_t r, uint16_t g, uint16_t b, uint16_t c) {
+    /* Set minimum values to prevent division issues */
+    const uint16_t min_value = 20;
+    if (r < min_value) r = min_value;
+    if (g < min_value) g = min_value;
+    if (b < min_value) b = min_value;
+
+    /* Calculate important metrics for white vs yellow differentiation */
+    uint16_t r_dominance = ((r * 100) / (r + g + b));
+    uint16_t g_dominance = ((g * 100) / (r + g + b));
+    uint16_t b_dominance = ((b * 100) / (r + g + b));
+
+    /* R-G similarity - key for yellow detection */
+    uint16_t r_g_similarity;
+    if (r > g) {
+        r_g_similarity = (g * 100) / r;
+    } else {
+        r_g_similarity = (r * 100) / g;
+    }
+
+    /* Calculate blue ratio to average of red and green */
+    uint16_t b_to_rg_ratio = (b * 200) / (r + g);
+
+    /* Blue-to-overall ratio is the key differentiator between white and yellow */
+    uint16_t relative_blueness = (b * 100) / ((r + g) / 2);
+
+    /* WHITE: High brightness, balanced RGB, significant blue component */
+    if (c > object_color_config.white_min_c &&
+        r > 1000 && g > 1000 && b > 1000 &&
+        r_g_similarity > 80 && /* R and G within 20% of each other */
+        relative_blueness > 75 && /* Blue component is at least 75% of R+G average */
+        b_dominance > 25) { /* Blue makes up at least 25% of total color */
+        return WHITE;
+    }
+
+    /* YELLOW-ORANGE: High R and G, low B, R and G balanced */
+    if (c > 2000 && /* Decent brightness */
+        r > 800 && g > 800 && /* Strong red and green */
+        r_g_similarity > object_color_config.yellow_r_g_diff_percent && /* R and G similar */
+        b_dominance < 25 && /* Blue is a small component */
+        relative_blueness < 60) { /* Blue is much less than R+G */
+        return YELLOW;
+    }
+
+    /* Make best guess based on blueness and brightness */
+    if (relative_blueness > 65 || b_dominance > 30) {
+        return WHITE;
+    } else {
+        return YELLOW;
+    }
+}
+
+/* Function to specifically differentiate between RED and BLUE colors */
+Color TCS3472_DetectRedVsBlue(uint16_t r, uint16_t g, uint16_t b, uint16_t c) {
+    /* Set minimum values to prevent division issues */
+    const uint16_t min_value = 20;
+    if (r < min_value) r = min_value;
+    if (g < min_value) g = min_value;
+    if (b < min_value) b = min_value;
+
+    /* Calculate color dominance - critical for red vs blue */
+    uint16_t r_dominance = ((r * 100) / (r + g + b));
+    uint16_t g_dominance = ((g * 100) / (r + g + b));
+    uint16_t b_dominance = ((b * 100) / (r + g + b));
+
+    /* Calculate critical ratios for red vs blue */
+    uint16_t r_to_b_ratio = (r * 100) / b;
+    uint16_t b_to_r_ratio = (b * 100) / r;
+
+    /* Calculate red-to-green and blue-to-green ratios */
+    uint16_t r_to_g_ratio = (r * 100) / g;
+    uint16_t b_to_g_ratio = (b * 100) / g;
+
+    /* For debugging */
+    /*
+    char debug[150];
+    sprintf(debug, "Red vs Blue: R=%d,G=%d,B=%d,C=%d | Rdom=%d,Gdom=%d,Bdom=%d | R/B=%d,B/R=%d,R/G=%d,B/G=%d\r\n",
+            r, g, b, c, r_dominance, g_dominance, b_dominance, r_to_b_ratio, b_to_r_ratio, r_to_g_ratio, b_to_g_ratio);
+    HAL_UART_Transmit(&huart3, (uint8_t*)debug, strlen(debug), HAL_MAX_DELAY);
+    */
+
+    /* RED: High red dominance, high red/blue ratio */
+    if (r_dominance > 45 && /* Red is at least 45% of total RGB */
+        b_dominance < 30 && /* Blue is less than 30% */
+        r_to_b_ratio > object_color_config.red_min_ratio_r_to_b && /* Red much higher than blue */
+        r_to_g_ratio > 120) { /* Red higher than green */
+        return RED;
+    }
+
+    /* BLUE: High blue dominance, high blue/red ratio */
+    if (b_dominance > 40 && /* Blue is at least 40% of total RGB */
+        r_dominance < 35 && /* Red is less than 35% */
+        b_to_r_ratio > object_color_config.blue_min_ratio_b_to_r && /* Blue much higher than red */
+        b_to_g_ratio > 110) { /* Blue higher than green */
+        return BLUE;
+    }
+
+    /* If we can't decide between red and blue */
+    return UNKNOWN;
+}
+
+
+
+
+
+
+
 
 
 /* Initialize both TCS3472 color sensors */

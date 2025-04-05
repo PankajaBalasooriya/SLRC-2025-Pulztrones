@@ -102,7 +102,7 @@ const int WALL_ANGLE_WEIGHT = 0.1;
 //***** Robot constants ******************************************************//
 
 const int MOTION_DELAY = 800;
-const int DISTACE_TO_CENTER_OF_CELL = 150;
+const int DISTACE_TO_CENTER_OF_CELL = 165; //150
 
 //***** Box manupilation constants ******************************************************//
 const int BOX_THRESHOLD = 100; // minimum value to register a box

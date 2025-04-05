@@ -134,7 +134,7 @@ Color GetBallColor(){
 	/* Get RGB and Clear values from object sensor */
 	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
 	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
-	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
+	object_color = TCS3472_DetectWhiteVsYellow(r_obj, g_obj, b_obj, c_obj);
 
 	if(object_color == WHITE){
 		return WHITE;
@@ -337,8 +337,8 @@ uint8_t Robot_read_Barcode(){
 	HAL_Delay(1000);
 	set_steering_mode(STEERING_OFF_READLINE);
 
-	int currentColor = 1;
-	int previousColor = 1;
+	int currentColor = 0;
+	int previousColor = 0;
 	int lastStripStart = 0;
 
 	Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
@@ -346,11 +346,11 @@ uint8_t Robot_read_Barcode(){
 	while(1){
 		float distance = robot_distance();
 
-		if(junction == NO_LINE){
-			currentColor = 0;
+		if(on_line == 1){
+			currentColor = 1;
 		}
 		else{
-			currentColor = 1;
+			currentColor = 0;
 		}
 
 		if(currentColor == 1 && previousColor == 0){
@@ -383,7 +383,7 @@ uint8_t Robot_read_Barcode(){
 
 		}
 
-		if(barcode_index == 4){
+		if(barcode_index == 3){
 			break;
 		}
 	}

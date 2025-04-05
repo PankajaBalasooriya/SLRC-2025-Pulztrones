@@ -237,9 +237,9 @@ void pickup_and_Store(void){
 	Color Ball_color = GetBallColor();
 	HAL_Delay(2000);
 	Arm_MoveServo(ARM_LINK1_SERVO,50);
-	Arm_MoveServo(ARM_BASE_SERVO,8);
+	Arm_MoveServo(ARM_BASE_SERVO,5);
 	Arm_MoveServo(ARM_LINK3_SERVO,15);
-	Arm_MoveServo(ARM_LINK1_SERVO,77);
+	Arm_MoveServo(ARM_LINK1_SERVO,75);//70
 
 
 // vaccum pump on

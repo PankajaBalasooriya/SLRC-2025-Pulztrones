@@ -104,6 +104,9 @@ void TCS3472_SelectSensor(uint8_t channel);
 void init_color_sensors();
 void caliberate_color_sensors();
 
+Color TCS3472_DetectRedVsBlue(uint16_t r, uint16_t g, uint16_t b, uint16_t c);
+Color TCS3472_DetectWhiteVsYellow(uint16_t r, uint16_t g, uint16_t b, uint16_t c);
+
 
 
 

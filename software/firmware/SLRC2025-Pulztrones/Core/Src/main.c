@@ -248,8 +248,8 @@ int main(void)
 
 	/*----------------- Begin color sensor init--------------------------------*/
 	Buzzer_Toggle(100);
-	init_color_sensors();
-	caliberate_color_sensors();
+	//init_color_sensors();
+	//caliberate_color_sensors();
 
 	/*--------------- End color sensor init-----------------------------------*/
 

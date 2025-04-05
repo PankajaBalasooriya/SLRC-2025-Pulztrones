@@ -6593,3 +6593,30 @@ Caused by: java.nio.channels.UnresolvedAddressException
 
 !ENTRY org.eclipse.cdt.dsf.ui 2 0 2025-04-06 02:39:18.149
 !MESSAGE Unable to locate file: D:/Oshadha/Professional Projects/SLRC 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Debug/../Core/Startup/startup_stm32f446retx.s
+!SESSION 2025-04-06 03:13:03.150 -----------------------------------------------
+eclipse.buildId=Version 1.18.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-04-06 03:13:46.919
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-04-06 03:13:46.919
+!MESSAGE Log4j2 initialized with config file C:\Users\PANKAJA\OneDrive\Projects\SLRC\SLRC-2025-Pulztrones\software\firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-04-06 03:13:53.667
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2025-04-06 03:23:35.349
+!MESSAGE Unable to locate file: D:/Oshadha/Professional Projects/SLRC 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Debug/../Core/Startup/startup_stm32f446retx.s
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2025-04-06 03:35:27.227
+!MESSAGE Unable to locate file: D:/Oshadha/Professional Projects/SLRC 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Debug/../Core/Startup/startup_stm32f446retx.s
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2025-04-06 03:39:52.536
+!MESSAGE Unable to locate file: D:/Oshadha/Professional Projects/SLRC 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Debug/../Core/Startup/startup_stm32f446retx.s
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2025-04-06 03:51:24.706
+!MESSAGE Unable to locate file: D:/Oshadha/Professional Projects/SLRC 2025/Codebase/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Debug/../Core/Startup/startup_stm32f446retx.s

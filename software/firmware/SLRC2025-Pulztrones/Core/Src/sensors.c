@@ -30,6 +30,8 @@ volatile int m_front_diff = 0;
 volatile uint8_t left_wall_avg = 0;
 volatile uint8_t right_wall_avg = 0;
 
+volatile uint8_t on_line = 0;
+
 
 volatile uint8_t g_steering_mode = STEERING_OFF;
 
@@ -188,6 +190,15 @@ void Sensors_Update() {
 		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
 		line_position = RAYKHA_GetPositionForPID(sensor_values, &raykha_calibration);
 		junction = DetectJunction();
+
+		if(sensor_values[4] > LINE_THRESHOLD || sensor_values[5] > LINE_THRESHOLD){
+			on_line = 1;
+		}
+		else{
+			on_line = 0;
+		}
+
+
 	}
 	else if(g_steering_mode == STEER_LEFT_WALL){
 		RangeAllIRSensors();
