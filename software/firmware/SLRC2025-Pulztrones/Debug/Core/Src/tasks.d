@@ -42,7 +42,7 @@ Core/Src/tasks.o: ../Core/Src/tasks.c ../Core/Inc/tasks.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/ssd1306.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h \
- ../Core/Inc/systick.h
+ ../Core/Inc/systick.h ../Core/Inc/arm_controller.h
 ../Core/Inc/tasks.h:
 ../Core/Inc/config.h:
 ../Core/Inc/sensors.h:
@@ -92,3 +92,4 @@ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/S
 C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/fonts.h:
 C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/SSD1306/Inc/bitmap.h:
 ../Core/Inc/systick.h:
+../Core/Inc/arm_controller.h:

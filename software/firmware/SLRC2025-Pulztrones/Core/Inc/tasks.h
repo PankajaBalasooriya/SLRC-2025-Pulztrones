@@ -10,6 +10,7 @@ typedef enum {
     TASK_PLANTATION,
     TASK_MUDDY_ROAD,
 	TASK_RAMP,
+	TASK_QR,
     TASK_COLLECTION_POINT,
 	TASK_SORTING_POTATOS,
     TASK_OLD_WAREHOUSE,
@@ -17,6 +18,12 @@ typedef enum {
     TASK_OUTDOOR,
     TASK_NONE // No active task
 } TaskType;
+
+
+// Start a non-blocking delay (delay in milliseconds)
+void NonBlockingDelay(uint32_t delay_ms);
+// Check if the delay is complete
+uint8_t IsDelayComplete(void);
 
 
 // Function prototypes
@@ -40,6 +47,7 @@ void executePotatoSeperationTask(void);
 
 
 void executeMuddyRoadTask(void);
+void executeRampTask(void);
 void executeCollectionPointTask(void);
 void executeOldWarehouseTask(void);
 void executeNewWarehouseTask(void);

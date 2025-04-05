@@ -58,19 +58,24 @@ const float ROT_KD = LOOP_FREQUENCY * (8 * ROT_TM - ROT_TD) / (ROT_KM * ROT_TD);
 
 // controller constants for the steering controller
 const float STEERING_KP = 0.001;//0.003
-const float STEERING_KD = 0.00001 ///0.00001
-		;
+const float STEERING_KD = 0.00001; ///0.00001
+const float STEERING_FRONT_KP = 0.02;
+const float STEERING_FRONT_KD = 0.0001;
 const float STEERING_ADJUST_LIMIT = 0.6;  // deg/s
 
 //***************************************************************************//
 
 
 //***** PERFORMANCE CONSTANTS************************************************//
-const int LINE_FOLLOW_SPEED = 100;
+const int LINE_FOLLOW_SPEED = 85;
 const int LINE_FOLLOW_ACCELERATION = 120;
 
 const int FORWARD_SPEED_1 = 100;
 const int FORWARD_ACCELERATION_1 = 120;
+
+const int FORWARD_SPEED_2 = 30;
+const int FORWARD_ACCELERATION_2 = 10;
+
 
 const int SPIN_TURN_OMEGA = 150;
 const int SPIN_TURN_ALPHA = 50;
@@ -80,14 +85,17 @@ const int SPIN_TURN_ALPHA = 50;
 
 //***** SENSOR SCALING ******************************************************//
 // This is the normalised value seen by the front sensor when the Robot is
-// in its calibration position
-const int SIDE_NOMINAL = 40;
+// in its calibration positio8
+const int SIDE_NOMINAL = 90;//-
 const int FRONT_NOMINAL = 80;
 
 // the values above which, a wall is seen
 const int LEFT_THRESHOLD = 80;   // minimum value to register a wall
 const int RIGHT_THRESHOLD = 80;  // minimum value to register a wall
-const int FRONT_THRESHOLD = 180;  // minimum value to register a wall
+const int FRONT_THRESHOLD = 100;  // minimum value to register a wall-
+
+
+const int WALL_ANGLE_WEIGHT = 0.1;
 
 
 //***** Robot constants ******************************************************//

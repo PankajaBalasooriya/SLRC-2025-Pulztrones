@@ -19,7 +19,8 @@ static float m_cross_track_error = 0;
 static float m_steering_adjustment = 0;
 
 /* Sensor variables */
-volatile SensorChannel lfs, lrs, fs, rfs, rrs;  // Front/side/wall sensors
+volatile SensorChannel lfs, lrs, fs, rfs, rrs;
+// Front/side/wall sensors
 volatile uint8_t see_front_wall = 0;
 volatile uint8_t see_left_wall = 0;
 volatile uint8_t see_right_wall = 0;
@@ -40,6 +41,10 @@ int32_t line_position;
 extern RAYKHA_Calibration raykha_calibration;
 
 JunctionType junction = NO_LINE;
+
+volatile int error;
+int wall_angle;
+int distance_error;
 
 
 /**
@@ -128,13 +133,22 @@ uint8_t is_wall_front(){
 	return see_front_wall;
 }
 
-
+float pTerm;
+float dTerm;
 
 
 /* Calculate steering adjustment */
 float CalculateSteeringAdjustment() {
-    float pTerm = STEERING_KP * m_cross_track_error;
-    float dTerm = STEERING_KD * (m_cross_track_error - m_last_steering_error);
+	if (g_steering_mode == STEERING_FRONT_WALL) {
+		pTerm = STEERING_FRONT_KP * m_cross_track_error;
+		dTerm = STEERING_FRONT_KD * (m_cross_track_error - m_last_steering_error);
+	} else {
+		pTerm = STEERING_KP * m_cross_track_error;
+		dTerm = STEERING_KD * (m_cross_track_error - m_last_steering_error);
+	}
+
+//    float pTerm = STEERING_KP * m_cross_track_error;
+//    float dTerm = STEERING_KD * (m_cross_track_error - m_last_steering_error);
     float adjustment = pTerm + dTerm * LOOP_FREQUENCY;
     adjustment = fminf(fmaxf(adjustment, -STEERING_ADJUST_LIMIT), STEERING_ADJUST_LIMIT);
     m_last_steering_error = m_cross_track_error;
@@ -154,7 +168,7 @@ void set_steering_mode(uint8_t mode){
 /* Update sensor readings and calculate cross-track error */
 void Sensors_Update() {
     // Read ADC values for all sensor channels
-	int error = 0;
+	error = 0;
 
 	if(g_steering_mode == STEERING_CENTER_LINE_FOLLOW){
 		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
@@ -165,6 +179,7 @@ void Sensors_Update() {
 		error = line_position;
 
 		junction = DetectJunction();
+
 	}
 	else if(g_steering_mode == STEERING_OFF_READLINE){
 		RAYKHA_ReadCalibrated(sensor_values, &raykha_calibration);
@@ -174,20 +189,25 @@ void Sensors_Update() {
 	else if(g_steering_mode == STEER_LEFT_WALL){
 		RangeAllIRSensors();
 
-		//int left_error = SIDE_NOMINAL - lws.value;
-		//int right_error = SIDE_NOMINAL - rws.value;
+		// Calculate the wall angle using the difference between front and rear sensors
+		//wall_angle = lfs.value - lrs.value;
 
+		// Calculate distance error - how far we are from the desired distance to wall
+		//distance_error = SIDE_NOMINAL - left_wall_avg;
+		distance_error = SIDE_NOMINAL - lrs.value;
 
-		//UART_Transmit_Int(&huart6, ">L", lws.value);
-		//UART_Transmit_Int(&huart6, ">F", cfs.value);
-		//UART_Transmit_Int(&huart6, ">R", rws.value);
+		// Combine both angle and distance for proportional control
+		// Adjust weights as needed based on testing
+		//error = 25 * (distance_error + (wall_angle * WALL_ANGLE_WEIGHT));
+		error = 3.5 * distance_error;
 
 
 
     }
     else if(g_steering_mode == STEERING_FRONT_WALL){
+    	RangeAllIRSensors();
 
-		error = 0;
+		error = lfs.value - rfs.value;
     }
     else if(g_steering_mode == STEERING_OFF_READIR){
     	RangeAllIRSensors();
@@ -206,8 +226,8 @@ void Sensors_Update() {
 void RangeAllIRSensors(void){
 	analogReadIRs();
 
-	lfs.raw = readRawIR(IR_LEFT_FORWARD);
-	lrs.raw = readRawIR(IR_LEFT_BACK);
+	lfs.raw = readRawIR(IR_LEFT_BACK);
+	lrs.raw = readRawIR(IR_LEFT_FORWARD);
 
 	fs.raw = readRawIR(IR_FRONT);
 

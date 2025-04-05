@@ -238,7 +238,7 @@ int main(void)
 	Buzzer_Toggle(200);
 	HAL_Delay(2000);
 	/*--------------- Raykha calibration ----------------------------------*/
-	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+	//RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 	/*-------------------------------------------------------------------*/
 	HAL_Delay(2000);
 	Buzzer_Toggle(200);
@@ -249,7 +249,7 @@ int main(void)
 	//init_color_sensors();
 	//caliberate_color_sensors();
 
-	/*----------------- End color sensor init-----------------------------------*/
+	/*--------------- End color sensor init-----------------------------------*/
 
 	//display_big_number(2);
 
@@ -332,17 +332,17 @@ int main(void)
   //---------------- Begining of Motion controller tests---------------------------------------------
     //EnableSysTickFunction();
     //Robot_moveForwardUntillFrontWall();
-//    set_steering_mode(STEERING_OFF_READIR);
-//    Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
+    //set_steering_mode(STEERING_FRONT_WALL);
+    //Motion_StartMove(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 //    while(!see_front_wall){
 //	}
 //    Motion_StopAfter(&motion, 30);
-//	set_steering_mode(STEERING_OFF);
+	//set_steering_mode(STEERING_FRONT_WALL);
 //	Motion_ResetDriveSystem(&motion);
 
 
 
-  	//set_steering_mode(STEERING_OFF_READLINE);
+  	//set_steering_mode(STEER_LEFT_WALL);
 
 	//Robot_TurnRight90Inplace();
 	//Robot_TurnLeft90Inplace();
@@ -385,6 +385,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 	  runCurrentTask();
+	  //RangeAllIRSensors();
 
 
 

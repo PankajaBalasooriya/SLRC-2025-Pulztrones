@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="front"/>
+		<item value="STEERING"/>
 		<item value="error"/>
 		<item value="Robot_LineFollowUntillJunctionAndNotStop"/>
 		<item value="TaskType"/>
@@ -16,8 +18,6 @@
 		<item value="lws"/>
 		<item value="STEER"/>
 		<item value="sensorValues"/>
-		<item value="TCS3472_SetGain"/>
-		<item value="ray"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="selection" value="lws"/>
@@ -43,5 +43,9 @@
 		<item key="DIALOG_WIDTH" value="414"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="646"/>
+		<item key="DIALOG_Y_ORIGIN" value="409"/>
 	</section>
 </section>

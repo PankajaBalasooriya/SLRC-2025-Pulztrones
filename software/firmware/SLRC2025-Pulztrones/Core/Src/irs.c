@@ -8,13 +8,22 @@
 
 uint16_t IRsensorValues[16] = {0};
 
+//IR_Calibration_t IR_calibration[5] = {
+//    {203411.57, 14.72, -154.45},  // Front IR
+//	{63185.09, -1.57, 83.91},  //LEFT Front
+//	{70795.03, 5.63, 1.60},  //Left Back
+//	{93912.65, 13.94, -209.14},  //Right Back
+//	{78382.44, 9.55, -27.92},  //Right Front
+//};
+
 IR_Calibration_t IR_calibration[5] = {
     {203411.57, 14.72, -154.45},  // Front IR
-	{63185.09, -1.57, 83.91},  //LEFT Front
+	{82827.0, 16.87, -1.44},  //LEFT Front
 	{70795.03, 5.63, 1.60},  //Left Back
 	{93912.65, 13.94, -209.14},  //Right Back
 	{78382.44, 9.55, -27.92},  //Right Front
 };
+
 
 void analogReadIRs(void){
 	for (uint8_t i = 10; i < 15; i++)

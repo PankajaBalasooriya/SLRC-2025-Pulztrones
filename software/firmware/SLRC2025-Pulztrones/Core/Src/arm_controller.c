@@ -8,6 +8,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "arm_controller.h"
 #include <math.h>
+#include "robot.h"
 
 /* Private defines -----------------------------------------------------------*/
 #define ARM_HOME_BASE_ANGLE   105.0f //105
@@ -256,48 +257,49 @@ void pickup_and_Store(void){
 }
 
 void retrive_and_drop(void){
-	Arm_MoveServo(ARM_LINK2_SERVO,30);
-//	HAL_Delay(2000);
-	Arm_MoveServo(ARM_BASE_SERVO,148);
-//	HAL_Delay(2000);
-	Arm_MoveServo(ARM_LINK3_SERVO,100);
-//	Arm_MoveServo(ARM_LINK2_SERVO,40);
-//	HAL_Delay(2000);
-	Arm_MoveServo(ARM_LINK2_SERVO,85);
-	Arm_MoveServo(ARM_LINK1_SERVO,7);
-	Arm_MoveServo(ARM_LINK2_SERVO,130);
-	Arm_MoveServo(ARM_LINK3_SERVO,105);
-//	HAL_Delay(2000);
-//	Arm_MoveServo(ARM_LINK1_SERVO,20);
-	turn_on_air_pump();
-	HAL_Delay(4000);
-//	Arm_MoveServo(ARM_LINK1_SERVO,0);
-	Arm_MoveServo(ARM_LINK2_SERVO,80);
-	Arm_MoveServo(ARM_LINK3_SERVO,105);
-	Arm_MoveServo(ARM_LINK2_SERVO,75);
-	Arm_MoveServo(ARM_LINK3_SERVO,110);
-	Arm_MoveServo(ARM_LINK2_SERVO,50);
-
-	Arm_MoveServo(ARM_BASE_SERVO,6);
-	Arm_MoveServo(ARM_LINK3_SERVO,35);
-	Arm_MoveServo(ARM_LINK2_SERVO,100);
-	Arm_MoveServo(ARM_LINK1_SERVO,55);
-//	HAL_Delay(1000);
+//	Arm_MoveServo(ARM_LINK2_SERVO,75);
+//Arm_MoveServo(ARM_BASE_SERVO,16);
+//	Arm_MoveServo(ARM_LINK2_SERVO,90);
+//	Arm_MoveServo(ARM_LINK3_SERVO,16);
 //	Arm_MoveServo(ARM_LINK1_SERVO,70);
-//	Arm_MoveServo(ARM_LINK2_SERVO,94);
-	turn_off_air_pump();
-	HAL_Delay(10000);
-
+//
+//// read color
+//	//Color Ball_color = GetBallColor();
+//	HAL_Delay(2000);
+//	Arm_MoveServo(ARM_LINK1_SERVO,50);
+//	Arm_MoveServo(ARM_BASE_SERVO,7);
+//	Arm_MoveServo(ARM_LINK3_SERVO,15);
+//	Arm_MoveServo(ARM_LINK1_SERVO,74);
+//
+//
+//// vaccum pump on
+//	turn_on_air_pump();
 //	HAL_Delay(3000);
-	Arm_MoveServo(ARM_LINK1_SERVO,0);
-	Arm_MoveServo(ARM_LINK3_SERVO,85);
-	Arm_MoveServo(ARM_LINK2_SERVO,30);
+//	turn_off_air_pump();
+//
+//
+//	Arm_MoveServo(ARM_LINK1_SERVO,10);
+//	Arm_MoveServo(ARM_LINK2_SERVO,75);
+//	Arm_MoveServo(ARM_LINK3_SERVO,100);
+//	Arm_MoveServo(ARM_LINK2_SERVO,25);
+//	Arm_MoveServo(ARM_BASE_SERVO,180);
+//	Arm_MoveServo(ARM_LINK3_SERVO,130);
+//
+//// vaccum pump off
+//	turn_off_air_pump();
+//	HAL_Delay(10000);
+//
+//
+//	Arm_MoveServo(ARM_LINK3_SERVO,100);
+//	Arm_MoveServo(ARM_BASE_SERVO,105);
+//	Arm_MoveServo(ARM_LINK3_SERVO,80);
+//	Arm_MoveServo(ARM_LINK2_SERVO,75);
+//
+//	Arm_MoveServo(ARM_LINK3_SERVO,80);
+//	Arm_MoveServo(ARM_LINK2_SERVO,75);
+//	Arm_MoveServo(ARM_BASE_SERVO,105);
+//	Arm_MoveServo(ARM_LINK2_SERVO,95);
 
-
-//	Arm_MoveServo(ARM_LINK3_SERVO,50);
-	//Arm_MoveServo(ARM_LINK1_SERVO,5);
-//	Arm_MoveServo(ARM_LINK2_SERVO,60);
-//	Arm_MoveServo(ARM_LINK2_SERVO,80);
 }
 
 

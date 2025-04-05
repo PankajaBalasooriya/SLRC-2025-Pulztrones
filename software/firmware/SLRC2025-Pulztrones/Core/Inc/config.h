@@ -86,6 +86,8 @@ extern const float BIAS_FF;
 // controller constants for the steering controller
 extern const float STEERING_KP;
 extern const float STEERING_KD;
+extern const float STEERING_FRONT_KP;
+extern const float STEERING_FRONT_KD;
 extern const float STEERING_ADJUST_LIMIT;  // deg/s
 
 // forward motion controller constants
@@ -110,6 +112,9 @@ extern const int LINE_FOLLOW_SPEED;
 extern const int LINE_FOLLOW_ACCELERATION;
 extern const int SPIN_TURN_OMEGA;
 extern const int SPIN_TURN_ALPHA;
+extern const int FORWARD_SPEED_2;
+extern const int FORWARD_ACCELERATION_2;
+
 extern const int FORWARD_SPEED_1;
 extern const int FORWARD_ACCELERATION_1;
 
@@ -183,6 +188,10 @@ void Reset_buttons();
 extern const int LEFT_THRESHOLD;
 extern const int RIGHT_THRESHOLD;
 extern const int FRONT_THRESHOLD;
+
+extern const int SIDE_NOMINAL;//-
+extern const int FRONT_NOMINAL;
+extern const int WALL_ANGLE_WEIGHT;
 
 
 #endif

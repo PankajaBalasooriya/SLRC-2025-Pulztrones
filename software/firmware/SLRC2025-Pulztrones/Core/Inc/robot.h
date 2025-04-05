@@ -37,14 +37,16 @@ void HandleLineColorDetection(uint8_t *data);
 //Dummy functions
 Color GetLineColor(uint8_t column, uint8_t row);
 //Color GetLineColor();
-Color GetBallColor(uint8_t column, uint8_t row);
-//Color GetBallColor();
+//Color GetBallColor(uint8_t column, uint8_t row);
+Color GetBallColor();
 
 
 
 JunctionType Robot_LineFollowUntillJunction();
 JunctionType Robot_LineFollowUntillJunctionAndNotStop();
 void Robot_FollowLineGivenDistance(int distnace);
+void Robot_MoveReverseGivenDistanceSLOW(int distnace);
+void Robot_MoveForwardGivenDistanceSLOW(int distnace);
 void Robot_FollowLineGivenDistanceandNotStop(int distnace);
 JunctionType Robot_MoveForwardUntillLine();
 void Robot_MoveForwardGivenDistance(int distnace);
@@ -53,6 +55,9 @@ void Robot_TurnRight90Inplace();
 void Robot_TurnLeft90Inplace();
 void robot_TurnRight180Inplace();
 float Robot_moveForwardUntillFrontWall();
+void Robot_adjust_using_front_wall();
+void Robot_TurnLeftInplace(float angle);
+void Robot_TurnRightInplace(float angle);
 
 
 #ifdef __cplusplus

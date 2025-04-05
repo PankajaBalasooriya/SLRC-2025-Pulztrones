@@ -5,6 +5,7 @@
 #include "ballstorage.h"
 #include "display.h"
 #include "systick.h"
+#include "arm_controller.h"
 
 
 
@@ -91,6 +92,10 @@ void executePlantationTask(void) {
 			}
 		}
 	}
+
+	Robot_LineFollowUntillJunctionAndNotStop();
+	Robot_MoveForwardGivenDistance(145);
+	Robot_TurnRight90Inplace();
 }
 
 
@@ -160,6 +165,10 @@ Color picktheBall(uint8_t column, uint8_t row){
 	ballcolor = GetBallColor(column, row);
 
 	//ToDo: Pick The ball
+
+	//retrive_and_drop();
+
+
 	Buzzer_Toggle(1000);
 
 	Robot_TurnLeft90Inplace();
@@ -179,14 +188,37 @@ Color picktheBall(uint8_t column, uint8_t row){
 
 //---------Start 0f Muddy Road Task (Navigate through random walls)--------------------
 void executeMuddyRoadTask(void){
-	Robot_LineFollowUntillJunctionAndNotStop();
-	Robot_MoveForwardGivenDistance(145);
 
-	Robot_TurnRight90Inplace();
+//	Robot_LineFollowUntillJunctionAndNotStop();
+//	Robot_MoveForwardGivenDistance(145);
+//	Robot_TurnRight90Inplace();
 
-	Robot_moveForwardUntillFrontWall();
+
+	float distance_traveled = Robot_moveForwardUntillFrontWall();
+
+	float remaining_distance = 550 - distance_traveled;
+
+	Robot_adjust_using_front_wall();
+
+	Robot_MoveReverseGivenDistance(50);
 
 	Robot_TurnLeft90Inplace();
+
+	Robot_MoveForwardGivenDistance(190);
+
+	Robot_TurnRightInplace(45);
+
+	Robot_MoveForwardGivenDistance(190);
+
+	Robot_TurnRightInplace(45);
+
+	Robot_MoveForwardGivenDistance(remaining_distance);
+
+	Robot_TurnRightInplace(55);
+
+	Robot_MoveForwardGivenDistance(130);
+
+	Robot_TurnRightInplace(122);
 
 
 
@@ -242,7 +274,26 @@ void executePotatoSeperationTask(void){
 
 
 
+void executeRampTask(void){
+	Robot_MoveReverseGivenDistanceSLOW(680);
+	Robot_TurnRightInplace(183);
 
+	Robot_MoveForwardGivenDistanceSLOW(490);
+
+	Robot_moveForwardUntillFrontWall();
+
+	Robot_adjust_using_front_wall();
+
+	Robot_MoveReverseGivenDistance(50);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_moveForwardUntillFrontWall();
+	//Robot_MoveForwardGivenDistanceFAST(100);
+	//Robot_MoveForwardGivenDistanceFAST(325);
+
+
+}
 
 
 
@@ -265,6 +316,9 @@ void selectTask(){
 				display_message("Muddy Road", 12, 45);
 				currentTask = TASK_MUDDY_ROAD;
 				break;
+			case 3:
+				display_message("Ramp", 12, 45);
+				currentTask = TASK_RAMP;
 			default:
 				break;
 			}
@@ -277,7 +331,7 @@ void selectTask(){
 	}
 	display_headding("Start Task");
 	while(okbtncount == prevokbtncount);
-	Reset_buttons();
+	//Reset_buttons();
 	runCurrentTask();
 }
 
@@ -296,6 +350,10 @@ void runCurrentTask() {
         	executeMuddyRoadTask();
 		    currentTask = TASK_RAMP;
 		    break;
+        case TASK_RAMP:
+        	executeRampTask();
+        	currentTask = TASK_QR;
+        	break;
         default:
             break;
     }

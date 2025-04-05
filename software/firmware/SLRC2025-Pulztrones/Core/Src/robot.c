@@ -13,6 +13,7 @@
 #include "buzzer.h"
 #include "TCS3472.h"
 #include "encoders.h"
+#include "tasks.h"
 
 extern Motion motion;
 
@@ -101,45 +102,36 @@ Color GetLineColor(uint8_t column, uint8_t row){
 }
 
 
-Color GetBallColor(uint8_t column, uint8_t row){
-	// Need seperate code to handle color detection
-	// use this to acces a global vairable
-
-	if(column == 0 && row == 0){
-		return WHITE;
-	}
-	if(column == 1 && row == 1){
-		return YELLOW;
-	}
-	if(column == 2 && row == 2){
-		return YELLOW;
-	}
-	if(column == 3 && row == 0){
-		return WHITE;
-	}
-	if(column == 4 && row == 1){
-		return WHITE;
-	}
-	return WHITE;
-}
-
-
-//Color GetBallColor(){
+//Color GetBallColor(uint8_t column, uint8_t row){
 //	// Need seperate code to handle color detection
 //	// use this to acces a global vairable
-//	if(ballcolorRPI == WHITE){
-//		Buzzer_Toggle(100);
-//		HAL_Delay(100);
-//	}
-//	else if(ballcolorRPI == YELLOW){
-//		Buzzer_Toggle(100);
-//		HAL_Delay(100);
-//		Buzzer_Toggle(100);
-//		HAL_Delay(100);
-//	}
 //
-//	return ballcolorRPI;
+//	if(column == 0 && row == 0){
+//		return WHITE;
+//	}
+//	if(column == 1 && row == 1){
+//		return YELLOW;
+//	}
+//	if(column == 2 && row == 2){
+//		return YELLOW;
+//	}
+//	if(column == 3 && row == 0){
+//		return WHITE;
+//	}
+//	if(column == 4 && row == 1){
+//		return WHITE;
+//	}
+//	return WHITE;
 //}
+
+
+Color GetBallColor(){
+	/* Get RGB and Clear values from object sensor */
+	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
+	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
+	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
+	return object_color;
+}
 
 
 
@@ -216,6 +208,18 @@ void Robot_MoveForwardGivenDistance(int distnace){
 	Motion_ResetDriveSystem(&motion);
 }
 
+void Robot_MoveReverseGivenDistanceSLOW(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_2, 0, FORWARD_ACCELERATION_2);
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_MoveForwardGivenDistanceSLOW(int distnace){
+	set_steering_mode(STEERING_OFF);
+	Motion_Move(&motion, 1 * distnace, FORWARD_SPEED_2, 0, FORWARD_ACCELERATION_2);
+	Motion_ResetDriveSystem(&motion);
+}
+
 void Robot_MoveReverseGivenDistance(int distnace){
 	set_steering_mode(STEERING_OFF);
 	Motion_Move(&motion, -1 * distnace, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
@@ -224,7 +228,7 @@ void Robot_MoveReverseGivenDistance(int distnace){
 
 void Robot_TurnRight90Inplace(){
 	HAL_Delay(MOTION_DELAY);
-	Motion_SpinTurn(&motion, -87, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+	Motion_SpinTurn(&motion, -88.5, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
 
 
 	Motion_ResetDriveSystem(&motion);
@@ -233,6 +237,14 @@ void Robot_TurnRight90Inplace(){
 void robot_TurnRight180Inplace(){
 	HAL_Delay(MOTION_DELAY);
 	Motion_SpinTurn(&motion, -180, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+}
+
+void Robot_TurnRightInplace(float angle){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, -1 * angle, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
 
 
 	Motion_ResetDriveSystem(&motion);
@@ -247,18 +259,39 @@ void Robot_TurnLeft90Inplace(){
 	HAL_Delay(MOTION_DELAY);
 }
 
+void Robot_TurnLeftInplace(float angle){
+	HAL_Delay(MOTION_DELAY);
+	Motion_SpinTurn(&motion, angle, SPIN_TURN_OMEGA, SPIN_TURN_ALPHA);
+
+
+	Motion_ResetDriveSystem(&motion);
+	HAL_Delay(MOTION_DELAY);
+}
+
 
 float Robot_moveForwardUntillFrontWall(){
 	 set_steering_mode(STEERING_OFF_READIR);
 	    Motion_StartMove(&motion, 1500, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
 	    while(!see_front_wall){
 		}
-	    Motion_StopAfter(&motion, 100);
+	    Motion_StopAfter(&motion, 50);
 		set_steering_mode(STEERING_OFF);
+		float distance = robot_distance();
 		Motion_ResetDriveSystem(&motion);
 
-		return 1.00;
+		return distance;
 }
 
+
+void Robot_adjust_using_front_wall(){
+	set_steering_mode(STEERING_FRONT_WALL);
+	NonBlockingDelay(2000);
+	while(!IsDelayComplete()){
+
+	}
+
+	set_steering_mode(STEERING_OFF);
+	Motion_ResetDriveSystem(&motion);
+}
 
 
