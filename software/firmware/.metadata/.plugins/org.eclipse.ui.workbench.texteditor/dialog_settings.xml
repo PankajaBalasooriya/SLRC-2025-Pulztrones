@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="cali"/>
+		<item value="detecto"/>
 		<item value="front"/>
 		<item value="STEERING"/>
 		<item value="error"/>
@@ -16,8 +18,6 @@
 		<item value="line_color"/>
 		<item value="color_config"/>
 		<item value="lws"/>
-		<item value="STEER"/>
-		<item value="sensorValues"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="selection" value="lws"/>

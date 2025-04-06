@@ -3,6 +3,6 @@
 ../Core/Src/box_manupilation.c:26:6:exit_the_area	1
 ../Core/Src/box_manupilation.c:31:6:box_manupilation	1
 ../Core/Src/box_manupilation.c:40:6:box_manupilation_876	11
-../Core/Src/box_manupilation.c:97:6:box_manupilation_630	11
-../Core/Src/box_manupilation.c:147:6:box_manupilation_258	11
-../Core/Src/box_manupilation.c:188:6:box_manupilation_741	9
+../Core/Src/box_manupilation.c:118:6:box_manupilation_630	8
+../Core/Src/box_manupilation.c:181:6:box_manupilation_258	8
+../Core/Src/box_manupilation.c:236:6:box_manupilation_741	10

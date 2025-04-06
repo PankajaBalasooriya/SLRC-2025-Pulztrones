@@ -137,7 +137,7 @@ Color GetBallColor(){
 	/* Get RGB and Clear values from object sensor */
 	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
 	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
-	object_color = TCS3472_DetectWhiteVsYellow(r_obj, g_obj, b_obj, c_obj);
+	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
 
 	if(object_color == WHITE){
 		return WHITE;

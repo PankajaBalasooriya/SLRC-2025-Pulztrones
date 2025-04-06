@@ -346,7 +346,7 @@ int main(void)
 
 
 
-
+	//Arm_color_calibration_position();
   //---------------- Begining of Motion controller tests---------------------------------------------
     //EnableSysTickFunction();
 
@@ -408,6 +408,8 @@ int main(void)
 	  runCurrentTask();
 	  //RangeAllIRSensors();
 
+//	  Color Ball_color = GetBallColor();
+//	  HAL_Delay(600);
 
 
 //	  if (task_ready){
