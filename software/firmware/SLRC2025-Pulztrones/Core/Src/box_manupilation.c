@@ -38,7 +38,7 @@ void box_manupilation(){
 }
 
 void box_manupilation_876(){
-    remaining_distance = 720;
+    //remaining_distance = 720;
     
     //Robot_MoveForwardGivenDistance(60);                //entering to the area between 5,8 and going between te 2nd and 3rd rows.
     // if(is_box_detected()==1){       //Box detected at 8?
@@ -48,38 +48,59 @@ void box_manupilation_876(){
     //         remaining_distance = remaining_distance - get_current_distance();
     //     }
     // }
-    current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
-    remaining_distance = remaining_distance - current_dist;
+    // current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
+    // remaining_distance = remaining_distance - current_dist;
 
-    if(remaining_distance >= 550  && correct_box_detected == 0){       //Box detected at 8?
-        if(meassure_box_colour()==1){   
+    // if(remaining_distance >= 550  && correct_box_detected == 0){       //Box detected at 8?
+    //     if(meassure_box_colour()==1){   
+    //         correct_box_detected = 1;
+    //         pickup();
+    //     }
+    //     //Robot_MoveForwardGivenDistance(65);
+    //     current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //     remaining_distance = remaining_distance - current_dist;
+
+    //     if(remaining_distance >= 200  && correct_box_detected == 0){   //Box detected at 7?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+	// 		//Robot_MoveForwardGivenDistance(50);
+    //         //current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //         //remaining_distance = remaining_distance - current_dist;
+    //         Robot_MoveForwardGivenDistance(300);
+    
+    //         if(see_box && correct_box_detected == 0){       //Box detected at 6?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         }
+    //     }
+
+    // }
+
+    Robot_MoveForwardGivenDistance(100);
+    if(see_box && correct_box_detected == 0){       //Box detected at 8?
+        if(meassure_box_colour()==1){
             correct_box_detected = 1;
             pickup();
         }
-        //Robot_MoveForwardGivenDistance(65);
-        current_dist = Robot_moveForwardUntillBox(remaining_distance);
-        remaining_distance = remaining_distance - current_dist;
-
-        if(remaining_distance >= 200  && correct_box_detected == 0){   //Box detected at 7?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-			//Robot_MoveForwardGivenDistance(50);
-            //current_dist = Robot_moveForwardUntillBox(remaining_distance);
-            //remaining_distance = remaining_distance - current_dist;
-            Robot_MoveForwardGivenDistance(300);
-    
-            if(see_box && correct_box_detected == 0){       //Box detected at 6?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            }
-        }
-
     }
-
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 7?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 6?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
     //Now robot is at near the 6 location. In between 3,4,6,7.
     Robot_MoveReverseGivenDistance(140); //go_back(10);
     if(correct_box_detected == 1){
@@ -96,36 +117,49 @@ void box_manupilation_876(){
 
 void box_manupilation_630(){
 
-    current_dist = Robot_moveForwardUntillBox(remaining_distance);    //go_straight(remaining_distance);
-    remaining_distance = remaining_distance - current_dist;
+    // current_dist = Robot_moveForwardUntillBox(remaining_distance);    //go_straight(remaining_distance);
+    // remaining_distance = remaining_distance - current_dist;
 
-    if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 6?
-        if(meassure_box_colour()==1){   
+    // if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 6?
+    //     if(meassure_box_colour()==1){   
+    //         correct_box_detected = 1;
+    //         pickup();
+    //     }
+
+    //     current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //     remaining_distance = remaining_distance - current_dist;
+
+    //     if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 3?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //         remaining_distance = remaining_distance - current_dist;
+    
+    //         if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 0?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         }
+    //     }
+
+    // }
+    Robot_MoveForwardGivenDistance(200);
+    if(see_box && correct_box_detected == 0){       //Box detected at 3?
+        if(meassure_box_colour()==1){
             correct_box_detected = 1;
             pickup();
         }
-
-        current_dist = Robot_moveForwardUntillBox(remaining_distance);
-        remaining_distance = remaining_distance - current_dist;
-
-        if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 3?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            current_dist = Robot_moveForwardUntillBox(remaining_distance);
-            remaining_distance = remaining_distance - current_dist;
-    
-            if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 0?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            }
-        }
-
     }
-
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 0?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
 
     Robot_MoveForwardUntillLine();      //detect_junction();
     Robot_LineFollowUntillJunction();   //line_follow_until_junction();
@@ -145,35 +179,49 @@ void box_manupilation_630(){
 }
 
 void box_manupilation_258(){
-    current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
-    remaining_distance = remaining_distance - current_dist;
+    // current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
+    // remaining_distance = remaining_distance - current_dist;
 
-    if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 2?
-        if(meassure_box_colour()==1){   
+    // if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 2?
+    //     if(meassure_box_colour()==1){   
+    //         correct_box_detected = 1;
+    //         pickup();
+    //     }
+
+    //     Robot_moveForwardUntillBox(remaining_distance);
+    //     current_dist = remaining_distance = remaining_distance - current_dist;
+
+    //     if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 5?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //         remaining_distance = remaining_distance - current_dist;
+    
+    //         if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 8?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         }
+    //     }
+    Robot_MoveForwardGivenDistance(100);
+    if(see_box && correct_box_detected == 0){       //Box detected at 2?
+        if(meassure_box_colour()==1){
             correct_box_detected = 1;
             pickup();
         }
-
-        Robot_moveForwardUntillBox(remaining_distance);
-        current_dist = remaining_distance = remaining_distance - current_dist;
-
-        if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 5?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            current_dist = Robot_moveForwardUntillBox(remaining_distance);
-            remaining_distance = remaining_distance - current_dist;
-    
-            if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 8?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            }
-        }
-
     }
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 5?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
+    //Ignpre box 8
+
     Robot_MoveForwardUntillLine();    //go_straight_unitl_line();
     if(correct_box_detected == 1){
         exit_the_area();
@@ -195,31 +243,52 @@ void box_manupilation_741(){
     Robot_TurnRight90Inplace();         // turn_right();
 
     
-    current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
-    remaining_distance = remaining_distance - current_dist;
+    // current_dist = Robot_moveForwardUntillBox(remaining_distance); //go_straight(remaining_distance);
+    // remaining_distance = remaining_distance - current_dist;
 
-    if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 7?
-        //Pass if there is a box at 7.
+    // if(remaining_distance >= 50  && correct_box_detected == 0){       //Box detected at 7?
+    //     //Pass if there is a box at 7.
 
-        current_dist = Robot_moveForwardUntillBox(remaining_distance);
-        remaining_distance = remaining_distance - current_dist;
+    //     current_dist = Robot_moveForwardUntillBox(remaining_distance);
+    //     remaining_distance = remaining_distance - current_dist;
 
-        if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 4?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            current_dist =Robot_moveForwardUntillBox(remaining_distance);
-            remaining_distance = remaining_distance - current_dist;
+    //     if(remaining_distance >= 30  && correct_box_detected == 0){   //Box detected at 4?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         current_dist =Robot_moveForwardUntillBox(remaining_distance);
+    //         remaining_distance = remaining_distance - current_dist;
     
-            if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 1?
-                if(meassure_box_colour()==1){
-                    correct_box_detected = 1;
-                    pickup();
-                }
-            }
-        }
+    //         if(remaining_distance >= 10 && correct_box_detected == 0){  //Box detected at 1?
+    //             if(meassure_box_colour()==1){
+    //                 correct_box_detected = 1;
+    //                 pickup();
+    //             }
+    //         }
+    //     }
 
+    // }
+    Robot_MoveForwardGivenDistance(100);
+    if(see_box && correct_box_detected == 0){       //Box detected at 7?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 4?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
+    }
+    Robot_MoveForwardGivenDistance(300);
+    if(see_box && correct_box_detected == 0){       //Box detected at 1?
+        if(meassure_box_colour()==1){
+            correct_box_detected = 1;
+            pickup();
+        }
     }
 
     Robot_MoveForwardUntillLine();      // detect_line();
