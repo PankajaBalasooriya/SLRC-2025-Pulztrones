@@ -26,6 +26,9 @@ uint8_t ball_pos = 0;
 
 extern volatile TaskType currentTask;
 
+Color goodpotato = RED;
+
+
 // Start a non-blocking delay (delay in milliseconds)
 void NonBlockingDelay(uint32_t delay_ms)
 {
@@ -80,7 +83,7 @@ void executePlantationTask(void) {
 				moveToCenterofNextCell();
 			}
 			else{
-				Robot_MoveReverseGivenDistance(50);
+				Robot_MoveReverseGivenDistance(65);
 				robot_TurnRight180Inplace();
 
 				if(row == 2){
@@ -95,7 +98,7 @@ void executePlantationTask(void) {
 	}
 
 	Robot_LineFollowUntillJunctionAndNotStop();
-	Robot_MoveForwardGivenDistance(145);
+	Robot_MoveForwardGivenDistance(155);
 	Robot_TurnRight90Inplace();
 }
 
@@ -214,7 +217,7 @@ void executeMuddyRoadTask(void){
 
 	Robot_TurnRightInplace(45);
 
-	Robot_MoveForwardGivenDistance(190);
+	Robot_MoveForwardGivenDistance(205);
 
 	Robot_TurnRightInplace(45);
 
@@ -222,7 +225,7 @@ void executeMuddyRoadTask(void){
 
 	Robot_TurnRightInplace(45);//55
 
-	Robot_MoveForwardGivenDistance(145);//130
+	Robot_MoveForwardGivenDistance(152);//130
 
 	Robot_TurnRightInplace(132);//122
 
@@ -289,6 +292,8 @@ void navigateToQR(){
 
 		Robot_TurnRight90Inplace();
 
+		Robot_MoveReverseGivenDistance(70);
+
 
 }
 
@@ -296,13 +301,14 @@ void navigateToQR(){
 //Robot_read_Barcode();
 
 void executeQR(){
+
 	Robot_MoveForwardUntillLine();
 
 	Robot_MoveForwardGivenDistance(450);
 
 	Robot_TurnLeft90Inplace();
 
-	Robot_MoveReverseGivenDistance(100);
+	Robot_MoveReverseGivenDistance(50);
 
 	//read
 	uint8_t num = Robot_read_Barcode();
@@ -310,13 +316,53 @@ void executeQR(){
 	display_big_number(num);
 
 	if(num == 0){
-		Buzzer_Toggle(1000);
+		goodpotato = BLUE;
 	}
 	else if(num == 1){
-		Buzzer_Toggle(300);
-		HAL_Delay(400);
-		Buzzer_Toggle(300);
+		goodpotato = RED;
 	}
+}
+
+
+
+void executeCollectionPointTask(void){
+	Robot_MoveForwardUntillLine();
+	Robot_TurnLeft90Inplace();
+	Robot_LineFollowUntillJunction();
+	Robot_MoveReverseGivenDistance(50);
+	robot_TurnRight180Inplace();
+	Robot_FollowLineGivenDistance(243);
+	Robot_TurnLeft90Inplace();
+	Robot_MoveReverseGivenDistance(150);
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveReverseGivenDistance(185);
+
+	if(goodpotato == BLUE){
+		drop_good_potatos();
+	}
+	else{
+		drop_bad_potatos();
+	}
+
+	Robot_MoveForwardGivenDistance(40);
+
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveForwardGivenDistance(600);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_MoveReverseGivenDistance(60);
+
+	if(goodpotato == RED){
+		drop_good_potatos();
+	}
+	else{
+		drop_bad_potatos();
+	}
+
+
 }
 
 
@@ -353,6 +399,11 @@ void selectTask(){
 				display_message("                 ", 12, 45);
 				display_message("Read QR", 12, 45);
 				currentTask = TASK_QR;
+				break;
+			case 6:
+				display_message("                 ", 12, 45);
+				display_message("Collection Point", 12, 45);
+				currentTask = TASK_COLLECTION_POINT;
 				break;
 			default:
 				break;
@@ -394,8 +445,11 @@ void runCurrentTask() {
         	break;
         case TASK_QR:
         	executeQR();
-        	currentTask = TASK_NONE;
+        	currentTask = TASK_COLLECTION_POINT;
         	break;
+        case TASK_COLLECTION_POINT:
+        	executeCollectionPointTask();
+        	currentTask = TASK_NONE;
         default:
             break;
     }

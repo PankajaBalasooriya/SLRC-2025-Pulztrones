@@ -348,7 +348,7 @@ int main(void)
 
 
   //---------------- Begining of Motion controller tests---------------------------------------------
-    EnableSysTickFunction();
+    //EnableSysTickFunction();
 
     //Robot_moveForwardUntillBox(600);
     //Robot_moveForwardUntillFrontWall();
@@ -390,8 +390,8 @@ int main(void)
 	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
   //---------------- End of Motion controller tests---------------------------------------------
-	box_manupilation();
-	//selectTask();
+	//box_manupilation();
+	selectTask();
 
   /* USER CODE END 2 */
 
@@ -405,7 +405,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  //runCurrentTask();
+	  runCurrentTask();
 	  //RangeAllIRSensors();
 
 

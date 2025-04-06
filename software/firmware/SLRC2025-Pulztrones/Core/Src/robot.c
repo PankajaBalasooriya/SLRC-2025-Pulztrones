@@ -371,12 +371,12 @@ uint8_t Robot_read_Barcode(){
 
 			UART_Transmit_Float(&huart3, "l", strip_length, 2);
 
-			if(strip_length < 40 && strip_length > 20){
+			if(strip_length < 50 && strip_length > 30){
 				consecutiveEdges++;
 				barcode[barcode_index] = 0;
 				barcode_index++;
 			}
-			else if(strip_length > 40){
+			else if(strip_length > 55){
 				barcode[barcode_index] = 1;
 				barcode_index++;
 				consecutiveEdges = 0;
@@ -389,7 +389,7 @@ uint8_t Robot_read_Barcode(){
 
 		}
 
-		if(barcode_index == 3){
+		if(barcode_index == 4){
 			break;
 		}
 	}
@@ -398,8 +398,8 @@ uint8_t Robot_read_Barcode(){
 	Motion_StopAfter(&motion, 55);
 	Motion_ResetDriveSystem(&motion);
 
-//	return isEven(binaryToDecimal4Bit(barcode));
-	return binaryToDecimal4Bit(barcode);
+	return isEven(binaryToDecimal4Bit(barcode));
+	//return binaryToDecimal4Bit(barcode);
 
 }
 

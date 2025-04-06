@@ -649,6 +649,8 @@ void TCS3472_CalibrateObjectColors(void) {
 
 // new color
 Color TCS3472_DetectWhiteVsYellow(uint16_t r, uint16_t g, uint16_t b, uint16_t c) {
+	char msg[100];
+
     /* Set minimum values to prevent division issues */
     const uint16_t min_value = 20;
     if (r < min_value) r = min_value;
@@ -694,8 +696,12 @@ Color TCS3472_DetectWhiteVsYellow(uint16_t r, uint16_t g, uint16_t b, uint16_t c
 
     /* Make best guess based on blueness and brightness */
     if (relative_blueness > 65 || b_dominance > 30) {
+    	sprintf(msg, "WHITE\r\n");
+		HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
         return WHITE;
     } else {
+    	sprintf(msg, "YELLOW\r\n");
+		HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
         return YELLOW;
     }
 }
@@ -734,6 +740,7 @@ Color TCS3472_DetectRedVsBlue(uint16_t r, uint16_t g, uint16_t b, uint16_t c) {
         b_dominance < 30 && /* Blue is less than 30% */
         r_to_b_ratio > object_color_config.red_min_ratio_r_to_b && /* Red much higher than blue */
         r_to_g_ratio > 120) { /* Red higher than green */
+
         return RED;
     }
 
