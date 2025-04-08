@@ -17,6 +17,7 @@ typedef enum {
     TASK_OLD_WAREHOUSE,
     TASK_NEW_WAREHOUSE,
     TASK_OUTDOOR,
+	TASK_HIDDEN_TASK,
     TASK_NONE // No active task
 } TaskType;
 

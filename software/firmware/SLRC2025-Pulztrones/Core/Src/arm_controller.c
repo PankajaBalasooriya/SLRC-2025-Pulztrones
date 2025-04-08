@@ -9,6 +9,7 @@
 #include "arm_controller.h"
 #include <math.h>
 #include "robot.h"
+#include "config.h"
 
 /* Private defines -----------------------------------------------------------*/
 #define ARM_HOME_BASE_ANGLE   105.0f //105
@@ -225,6 +226,7 @@ int Arm_Home(void)
     return Arm_MoveTo(ARM_HOME_BASE_ANGLE, ARM_HOME_LINK1_ANGLE,
                       ARM_HOME_LINK2_ANGLE, ARM_HOME_LINK3_ANGLE);
 }
+
 
 void pickup_and_Store(void){
 	Arm_MoveServo(ARM_LINK2_SERVO,75);

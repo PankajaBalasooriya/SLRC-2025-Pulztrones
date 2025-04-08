@@ -12,13 +12,13 @@ void init_ball_storage(){
 }
 
 void drop_good_potatos(){
-	Servo_SetAngle(good_potato_storage, 37);
+	Servo_SetAngle(good_potato_storage, 0);
 	HAL_Delay(4000);
 	Servo_SetAngle(good_potato_storage, 90);
 }
 
 void drop_bad_potatos(){
-	Servo_SetAngle(bad_potato_storage, 155);
+	Servo_SetAngle(bad_potato_storage, 180);
 	HAL_Delay(4000);
 	Servo_SetAngle(bad_potato_storage, 90);
 }

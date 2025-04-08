@@ -37,7 +37,8 @@ Core/Src/box_manupilation.o: ../Core/Src/box_manupilation.c \
  ../Core/Inc/motion.h ../Core/Inc/motors.h ../Core/Inc/main.h \
  ../Core/Inc/profile.h ../Core/Inc/encoders.h ../Core/Inc/controller.h \
  ../Core/Inc/robot.h ../Core/Inc/config.h ../Core/Inc/sensors.h \
- ../Core/Inc/motion.h
+ ../Core/Inc/motion.h \
+ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h
 ../Core/Inc/box_manupilation.h:
 ../Core/Inc/robot.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -86,3 +87,4 @@ Core/Src/box_manupilation.o: ../Core/Src/box_manupilation.c \
 ../Core/Inc/config.h:
 ../Core/Inc/sensors.h:
 ../Core/Inc/motion.h:
+C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/Buzzer/Inc/buzzer.h:

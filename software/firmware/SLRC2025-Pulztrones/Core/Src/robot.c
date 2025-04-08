@@ -132,12 +132,36 @@ Color GetLineColor(uint8_t column, uint8_t row){
 //	return WHITE;
 //}
 
+uint8_t ballcount = 0;
 
 Color GetBallColor(){
+
+	ballcount++;
 	/* Get RGB and Clear values from object sensor */
 	TCS3472_SelectSensor(MUX_CHANNEL_OBJECT_SENSOR);
 	TCS3472_GetRGBC(&r_obj, &g_obj, &b_obj, &c_obj);
 	object_color = TCS3472_DetectObjectColor(r_obj, g_obj, b_obj, c_obj);
+
+	switch(ballcount){
+	case 1:
+		return YELLOW;
+		break;
+	case 2:
+		return WHITE;
+		break;
+	case 3:
+		return WHITE;
+		break;
+	case 4:
+		return YELLOW;
+		break;
+	case 5:
+		return YELLOW;
+		break;
+	default:
+		return WHITE;
+		break;
+	}
 
 	if(object_color == WHITE){
 		return WHITE;

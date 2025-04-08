@@ -4,6 +4,7 @@
 #include "config.h"
 #include "sensors.h"
 #include "motion.h"
+#include "buzzer.h"
 //0 1 2
 //3 4 5
 //6 7 8
@@ -13,6 +14,7 @@ int current_dist = 0;
 int remaining_distance = 0;
 
 uint8_t meassure_box_colour(){
+	Buzzer_Toggle(100);
     //Dummy function. Change it later.
     //return 1; //white box
     //return 0; //yellow box
@@ -29,11 +31,11 @@ void exit_the_area(){
 }
 
 void box_manupilation(){
-//	Robot_LineFollowUntillJunction();
-//	Robot_MoveReverseGivenDistance(50);
-//	robot_TurnRight180Inplace();
-//	Robot_FollowLineGivenDistance(243);
-//	Robot_TurnLeft90Inplace();
+	Robot_LineFollowUntillJunction();
+	Robot_MoveReverseGivenDistance(50);
+	robot_TurnRight180Inplace();
+	Robot_FollowLineGivenDistance(248);
+	Robot_TurnLeft90Inplace();
     box_manupilation_876();
 }
 
@@ -102,7 +104,7 @@ void box_manupilation_876(){
         }
     }
     //Now robot is at near the 6 location. In between 3,4,6,7.
-    Robot_MoveReverseGivenDistance(140); //go_back(10);
+    Robot_MoveReverseGivenDistance(100); //go_back(10);
     if(correct_box_detected == 1){
         Robot_TurnLeft90Inplace(); //turn_left_carefully();
         exit_the_area();
@@ -146,7 +148,7 @@ void box_manupilation_630(){
     //     }
 
     // }
-    Robot_MoveForwardGivenDistance(200);
+    Robot_MoveForwardGivenDistance(150);
     if(see_box && correct_box_detected == 0){       //Box detected at 3?
         if(meassure_box_colour()==1){
             correct_box_detected = 1;
@@ -162,9 +164,13 @@ void box_manupilation_630(){
     }
 
     Robot_MoveForwardUntillLine();      //detect_junction();
+    Robot_MoveForwardGivenDistance(30);
     Robot_LineFollowUntillJunction();   //line_follow_until_junction();
     Robot_TurnRight90Inplace();         //turn_right();
     Robot_LineFollowUntillJunction();   //line_follow_until_junction();
+    Robot_TurnRight90Inplace();
+    Robot_LineFollowUntillJunction();   //line_follow_until_junction();
+    Robot_MoveForwardGivenDistance(30); //go_straight(30);
 
     //Now robot in between 1,2.
     if(correct_box_detected == 1){
@@ -236,10 +242,10 @@ void box_manupilation_258(){
 void box_manupilation_741(){
     Robot_TurnLeft90Inplace();          // turn_left_on_line();
     Robot_LineFollowUntillJunction();   // line_follow_until_junction();
-    Robot_MoveForwardGivenDistance(50); // go_straight(50);
+    Robot_MoveForwardGivenDistance(200); // go_straight(50);
     robot_TurnRight180Inplace();        // turn(180);
     Robot_LineFollowUntillJunction();   // line_follow_until_junction();
-    Robot_MoveForwardGivenDistance(15); // go_straight(15);
+    Robot_MoveForwardGivenDistance(300); // go_straight(15);
     Robot_TurnRight90Inplace();         // turn_right();
 
     
@@ -292,6 +298,7 @@ void box_manupilation_741(){
     }
 
     Robot_MoveForwardUntillLine();      // detect_line();
+    Robot_MoveForwardGivenDistance(30);
     Robot_LineFollowUntillJunction();   // line_follow_until_junction();
     Robot_TurnLeft90Inplace();          // turn_left();
     Robot_LineFollowUntillJunction();   // line_follow_until_junction();

@@ -6,6 +6,8 @@
 #include "display.h"
 #include "systick.h"
 #include "arm_controller.h"
+#include "box_manupilation.h"
+#include "config.h"
 
 
 
@@ -84,7 +86,13 @@ void executePlantationTask(void) {
 			}
 			else{
 				Robot_MoveReverseGivenDistance(65);
-				robot_TurnRight180Inplace();
+				if(row == 1){
+					Robot_TurnLeftInplace(180);
+				}
+				else{
+					robot_TurnRight180Inplace();
+				}
+
 
 				if(row == 2){
 					Robot_LineFollowUntillJunction();
@@ -98,7 +106,7 @@ void executePlantationTask(void) {
 	}
 
 	Robot_LineFollowUntillJunctionAndNotStop();
-	Robot_MoveForwardGivenDistance(155);
+	Robot_MoveForwardGivenDistance(165);
 	Robot_TurnRight90Inplace();
 }
 
@@ -227,7 +235,7 @@ void executeMuddyRoadTask(void){
 
 	Robot_MoveForwardGivenDistance(152);//130
 
-	Robot_TurnRightInplace(132);//122
+	Robot_TurnRightInplace(135);//122
 
 
 
@@ -275,11 +283,11 @@ void navigateToQR(){
 
 //		Buzzer_Toggle(100);
 //
-		Robot_MoveForwardGivenDistance(350);
+		Robot_MoveForwardGivenDistance(250);
 
 		Robot_TurnRightInplace(45);
 
-		Robot_MoveForwardGivenDistance(60);
+		Robot_MoveForwardGivenDistance(90); //60
 
 		Robot_TurnLeftInplace(45);
 
@@ -292,7 +300,7 @@ void navigateToQR(){
 
 		Robot_TurnRight90Inplace();
 
-		Robot_MoveReverseGivenDistance(70);
+		Robot_MoveReverseGivenDistance(30);
 
 
 }
@@ -362,11 +370,45 @@ void executeCollectionPointTask(void){
 		drop_bad_potatos();
 	}
 
+	Robot_MoveForwardGivenDistance(60);
+
+	Robot_TurnRight90Inplace();
+
+	Robot_MoveForwardGivenDistance(500);
+
+	Robot_MoveForwardUntillLine();
+
+	Robot_TurnLeft90Inplace();
+
 
 }
 
 
-// -----------------------------Task manager function---------------------------------
+void executeNewWarehouseTask(){
+	Robot_TurnLeft90Inplace();
+	Robot_LineFollowUntillJunction();
+
+	Robot_TurnLeftInplace(176);
+
+	//Robot_MoveReverseGivenDistance(300);
+	Robot_FollowLineGivenDistance(450);
+
+	Robot_TurnLeft90Inplace();
+
+	Robot_MoveForwardGivenDistance(20);
+
+	Robot_MoveForwardUntillLine();
+
+	//Robot_MoveForwardGivenDistance(250);
+
+	Robot_moveForwardUntillFrontWall();
+
+}
+
+
+
+
+// -----------------------------Task manager function--------------Robot-------------------
 void selectTask(){
 	display_clear();
 	display_headding("Tasks");
@@ -404,6 +446,16 @@ void selectTask(){
 				display_message("                 ", 12, 45);
 				display_message("Collection Point", 12, 45);
 				currentTask = TASK_COLLECTION_POINT;
+				break;
+			case 7:
+				display_message("                 ", 12, 45);
+				display_message("Old warehouse", 12, 45);
+				currentTask = TASK_OLD_WAREHOUSE;
+				break;
+			case 8:
+				display_message("                 ", 12, 45);
+				display_message("Hidden warehouse", 12, 45);
+				currentTask = TASK_HIDDEN_TASK;
 				break;
 			default:
 				break;
@@ -449,7 +501,16 @@ void runCurrentTask() {
         	break;
         case TASK_COLLECTION_POINT:
         	executeCollectionPointTask();
+        	currentTask = TASK_OLD_WAREHOUSE;
+        	break;
+        case TASK_OLD_WAREHOUSE:
+        	box_manupilation();
+        	currentTask = TASK_HIDDEN_TASK;
+        	break;
+        case TASK_HIDDEN_TASK:
+        	executeNewWarehouseTask();
         	currentTask = TASK_NONE;
+        	break;
         default:
             break;
     }

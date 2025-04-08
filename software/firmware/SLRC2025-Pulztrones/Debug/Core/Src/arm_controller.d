@@ -35,7 +35,8 @@ Core/Src/arm_controller.o: ../Core/Src/arm_controller.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/servo.h \
  C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/SLRC2025-Pulztrones/Drivers/PCA9685/Inc/pca9685.h \
- ../Core/Inc/main.h ../Core/Inc/config.h ../Core/Inc/robot.h
+ ../Core/Inc/main.h ../Core/Inc/config.h ../Core/Inc/robot.h \
+ ../Core/Inc/config.h
 ../Core/Inc/arm_controller.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -76,3 +77,4 @@ C:/Users/PANKAJA/OneDrive/Projects/SLRC/SLRC-2025-Pulztrones/software/firmware/S
 ../Core/Inc/main.h:
 ../Core/Inc/config.h:
 ../Core/Inc/robot.h:
+../Core/Inc/config.h:

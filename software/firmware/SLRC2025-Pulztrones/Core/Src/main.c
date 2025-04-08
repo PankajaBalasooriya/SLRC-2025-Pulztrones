@@ -205,8 +205,11 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
-	turn_off_air_pump();
+	turn_on_air_pump();
 	turn_on_water_pump();
+
+	HAL_Delay(5000);
+	turn_off_air_pump();
 
 
 	/*--------------------- OLED Display --------------------------------*/
@@ -257,137 +260,7 @@ int main(void)
 
 
 
-  ///////////////////////////////Chandupa & R_osh tests arm and ball store here/////////////////////////////////////////////
 
-	//store_ball(1, WHITE_BALL);
-	////
-	////
-	//store_ball(2, YELLOW_BALL);
-	////
-	//  store_ball(3, WHITE_BALL);
-	//
-	//  store_ball(4, YELLOW_BALL);
-	//
-	//  store_ball(5, WHITE_BALL);
-	//
-	//
-	//  retrieve_ball(YELLOW_BALL);
-
-	//////////////////////Lines for Oshadha's mechanism testing only
-	//  rotate_360_to_position(1);
-	//  HAL_Delay(1000);
-	//  rotate_360_to_position(3);
-	//  HAL_Delay(1000);
-	//  rotate_360_to_position(5);
-	//  HAL_Delay(1000);
-	//  rotate_360_to_position(2);
-	//  HAL_Delay(1000);
-	//  rotate_360_to_position(1);
-	//  HAL_Delay(1000);
-	//////////////////////Lines for Oshadha's mechanism testing only ends
-
-	//  pickup_and_Store();
-	////  retrive_and_drop();
-//	  return_home();
-
-	//  pickup_and_Store();
-	//retrive_and_drop();
-	//  HAL_Delay(3000);
-//	 return_home();
-
-
-	//Arm_MoveServo(ARM_BASE_SERVO, 10);//105
-
-//	Arm_MoveServo(ARM_LINK2_SERVO, 25);
-//	HAL_Delay(1000);
-//	Arm_MoveServo(ARM_LINK3_SERVO,100);
-//	HAL_Delay(1000);
-//	Arm_MoveServo(ARM_BASE_SERVO, 180);
-//
-//	HAL_Delay(5000);
-//	Arm_MoveServo(ARM_BASE_SERVO, 105);
-//	Arm_MoveServo(ARM_LINK3_SERVO,80);
-//	Arm_MoveServo(ARM_LINK2_SERVO, 95);
-
-
-//	Arm_MoveServo(ARM_LINK2_SERVO,135);
-
-
-	//Arm_MoveServo(ARM_BASE_SERVO, 105);
-	//return_home();
-//	Arm_MoveServo(ARM_LINK1_SERVO,10);
-//	Arm_MoveServo(ARM_LINK3_SERVO,135);
-
-
-
-
-  ///////////////////////////////Chandupa & R_osh tests arm and ball store here ends/////////////////////////////////////////////
-
-
-	//----------- Drop potatos test code ----------------------------------------------
-//	drop_bad_potatos();
-//	drop_good_potatos();
-	//---------------------------------------------------------------------------------
-//	pickup_and_Store();
-//
-//	HAL_Delay(5000);
-//
-//	pickup_and_Store();
-//
-//	HAL_Delay(5000);
-//
-//	pickup_and_Store();
-//
-//	HAL_Delay(5000);
-//
-//	pickup_and_Store();
-//
-//	HAL_Delay(5000);
-
-
-
-	//Arm_color_calibration_position();
-  //---------------- Begining of Motion controller tests---------------------------------------------
-    //EnableSysTickFunction();
-
-    //Robot_moveForwardUntillBox(600);
-    //Robot_moveForwardUntillFrontWall();
-    //set_steering_mode(STEERING_OFF_READIR);
-    //Motion_StartMove(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
-//    while(!see_front_wall){
-//	}
-//    Motion_StopAfter(&motion, 30);
-	//set_steering_mode(STEERING_FRONT_WALL);
-//	Motion_ResetDriveSystem(&motion);
-
-
-    //Robot_moveForwardUntillBox(600);
-  	//set_steering_mode(STEER_LEFT_WALL);
-
-	//Robot_TurnRight90Inplace();
-	//Robot_TurnLeft90Inplace();
-
-	//setMotorLPWM(1);
-	//setMotorRPWM(1);
-
-	//  Motion_StartMove(&motion, 1500, 200, 0, 120);
-	//  HAL_Delay(1000);
-	//  //Motion_StopAt(&motion, 600);
-	//  Motion_StopAfter(&motion, 100);
-	//Robot_LineFollowUntillJunction();
-	// set_steering_mode(STEERING_OFF_READLINE);
-
-	//Motion_Move(&motion, 1000, 100, 0, 120);
-
-	//set_steering_mode(STEER_LEFT_WALL);
-	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
-	//Motion_SpinTurn(&motion, -90, 200.0, 20.0);
-	//Motion_Move(&motion, 600, 200, 0, 200);
-
-
-	//Motion_Move(&motion, 600, FORWARD_SPEED_1, 0, FORWARD_ACCELERATION_1);
-	//set_steering_mode(STEERING_OFF);
-	//Motion_SpinTurn(&motion, 90, 200.0, 20.0);
 
   //---------------- End of Motion controller tests---------------------------------------------
 	//box_manupilation();

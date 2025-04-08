@@ -1,8 +1,8 @@
-../Core/Src/box_manupilation.c:15:9:meassure_box_colour	4	static
-../Core/Src/box_manupilation.c:22:6:pickup	4	static
-../Core/Src/box_manupilation.c:26:6:exit_the_area	4	static
-../Core/Src/box_manupilation.c:31:6:box_manupilation	8	static
-../Core/Src/box_manupilation.c:40:6:box_manupilation_876	8	static
-../Core/Src/box_manupilation.c:118:6:box_manupilation_630	8	static
-../Core/Src/box_manupilation.c:181:6:box_manupilation_258	8	static
-../Core/Src/box_manupilation.c:236:6:box_manupilation_741	8	static
+../Core/Src/box_manupilation.c:16:9:meassure_box_colour	8	static
+../Core/Src/box_manupilation.c:24:6:pickup	4	static
+../Core/Src/box_manupilation.c:28:6:exit_the_area	4	static
+../Core/Src/box_manupilation.c:33:6:box_manupilation	8	static
+../Core/Src/box_manupilation.c:42:6:box_manupilation_876	8	static
+../Core/Src/box_manupilation.c:120:6:box_manupilation_630	8	static
+../Core/Src/box_manupilation.c:187:6:box_manupilation_258	8	static
+../Core/Src/box_manupilation.c:242:6:box_manupilation_741	8	static
