@@ -5,7 +5,7 @@ All project-related documents, resources, and plans are organized in the **Googl
 [![Google Drive](https://img.shields.io/badge/Google%20Drive-Project%20Management-blue?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/1cOV7it_HSn0CdsOwUSD5XmdHk_gKeofi?usp=sharing)
 
 
-# 📌 Pin Mapping
+# 📌 Pin Mapping of Rasberry Pi
 
 This document keeps track of all the **STM32F446RE Nucleo** and **Raspberry Pi 4B** pin usage.
 
