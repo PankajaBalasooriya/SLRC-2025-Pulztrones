@@ -243,7 +243,7 @@ int main(void)
 	Buzzer_Toggle(200);
 	HAL_Delay(2000);
 	/*--------------- Raykha calibration ----------------------------------*/
-	RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
+	//RAYKHA_Calibrate(&raykha_calibration, RAYKHA_LINE_WHITE);
 	/*-------------------------------------------------------------------*/
 	HAL_Delay(2000);
 	//Buzzer_Toggle(200);
@@ -251,8 +251,8 @@ int main(void)
 
 	/*----------------- Begin color sensor init--------------------------------*/
 	Buzzer_Toggle(100);
-	init_color_sensors();
-	caliberate_color_sensors();
+	//init_color_sensors();
+	//caliberate_color_sensors();
 
 	/*--------------- End color sensor init-----------------------------------*/
 
@@ -264,7 +264,7 @@ int main(void)
 
   //---------------- End of Motion controller tests---------------------------------------------
 	//box_manupilation();
-	selectTask();
+	//selectTask();
 
   /* USER CODE END 2 */
 
@@ -278,7 +278,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  runCurrentTask();
+	  //runCurrentTask();
 	  //RangeAllIRSensors();
 
 //	  Color Ball_color = GetBallColor();
@@ -303,12 +303,12 @@ int main(void)
 //	  }
 
 
-	  //left_counts = getLeftEncoderCounts();
-	  //right_counts = getRightEncoderCounts();
+	  left_counts = getLeftEncoderCounts();
+	  right_counts = getRightEncoderCounts();
 	  //UART_Transmit_IR(&huart3, left_counts, right_counts);
 
-	  //setMotorLPWM(1);
-	  //setMotorRPWM(1);
+	  setMotorLPWM(0.5);
+	  setMotorRPWM(0.5);
   }
   /* USER CODE END 3 */
 }
