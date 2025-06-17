@@ -5,7 +5,7 @@ This repository contains the design and codebase of our autonomous robot, develo
 ---
 
 ## 📸 Preview
-
+<center>
 <table>
   <tr>
     <td><img src="assets/Images/FB_IMG_1744606982447.jpg" alt="Robot at SLRC 2025" width="300"/>
@@ -16,6 +16,7 @@ This repository contains the design and codebase of our autonomous robot, develo
   <em>Figure 2: Color Detection using Robot Arm</em></td>
   </tr>
 </table>
+</center>
 <p align="center">
   <img src="assets/Images/FB_IMG_1744607130501.jpg" alt="Vision Tracking Demo" width="500"/>
   <br>
