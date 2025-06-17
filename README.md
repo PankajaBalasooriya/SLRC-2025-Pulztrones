@@ -1,49 +1,67 @@
-# SLRC 2025 Pulztrones
+# 🤖 SLRC Vision-Based Autonomous Robot (1st Runner-up)
 
-All project-related documents, resources, and plans are organized in the **Google Drive folder**.
-
-[![Google Drive](https://img.shields.io/badge/Google%20Drive-Project%20Management-blue?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/1cOV7it_HSn0CdsOwUSD5XmdHk_gKeofi?usp=sharing)
-
-
-# 📌 Pin Mapping of Rasberry Pi
-
-This document keeps track of all the **STM32F446RE Nucleo** and **Raspberry Pi 4B** pin usage.
+This repository contains the design and codebase of our autonomous robot, developed for the **Sri Lankan Robotics Challenge (SLRC)**. Our robot was powered by a ** STM32 microcontroller and Raspberry Pi**, and it earned **1st Runner-up** in the national university category.
 
 ---
 
-## 🔌 STM32F446RE Nucleo Pin Assignments
+## 📸 Preview
 
-| **Peripheral**      | **Pin**  | **Pin Setting** | **User Label** |
-|--------------------|---------|---------------|--------------|
-| **Motors (PWM)**  |  PB6   | TIM4_CH1 | RightMotorch1 |
-|                  |  PB7  |   TIM4_CH2 | RightMotorCh2 |
-|                  |  PB8  |   TIM4_CH3 | LeftMotorCh1 |
-|                  |  PB9  |   TIM4_CH4 | LeftMotorCh2 |
-| **Encoders**      | PA8     | TIM1_CH1 | LeftEncoderCh1     | 
-|                  | PA9     | TIM1_CH2 | LeftEncoderCh2     | 
-|                  | PA0     | TIM2_CH1 | RightEncoderCh1     | 
-|                  | PA1     | TIM2_CH2 | RightEncoderCh2     |
-|**PCA9685**     | PB10     | I2C2_SCL |  I2C2_SCL    |
-|                          | PC12     | I2C2_SDA  |  I2C2_SDA     |
-|**Raspberry Pi UART**     |PC7       | USART6_RX |  USART6_RX    |
-|                          |PC6       | USART6_TX |  USART6_TX    |
+<table>
+  <tr>
+    <td><img src="assets/Images/FB_IMG_1744606982447.jpg" alt="Robot at SLRC 2025" width="300"/>
+  <br>
+  <em>Figure 1: Final robot design for SLRC 2024</em></td>
+    <td><img src="assets/Images/FB_IMG_1744606795969.jpg" alt="Robot at SLRC 2025" width="300"/>
+  <br>
+  <em>Figure 2: Color Detection using Robot Arm</em></td>
+  </tr>
+</table>
+<p align="center">
+  <img src="assets/Images/FB_IMG_1744607130501.jpg" alt="Vision Tracking Demo" width="500"/>
+  <br>
+  <em>Figure 3: Picking Balls using Robot Arm</em>
+</p>
+
+<p align="center">
+  <img src="assets/Images/FB_IMG_1744607114574.jpg" alt="Vision Tracking Demo" width="500"/>
+  <br>
+  <em>Figure 4: Progrmming the hidden task</em>
+</p>
+
+<p align="center">
+  <img src="assets/Images/FB_IMG_1744607192768.jpg" alt="Vision Tracking Demo" width="500"/>
+  <br>
+  <em>Figure 5: Awarding Ceramony</em>
+</p>
+
+---
+
+## 🚀 Key Features
+
+- 🔧 Real-time control with **STM32 microcontroller**
+- 🎯 Vision-based object tracking using **OpenCV** - For Elimination Round only
+- 🔁 PID-based motor control
+- 🧠 Modular software structure (Python + Embedded C)
+- 🖥️ UART-based communication between Pi and STM32
+
 
 ---
 
-## 🍓 Raspberry Pi 4B Pin Assignments
+## 🛠️ Hardware Components
 
-| **Peripheral**        | **GPIO Pin** | **Function** | **User Label** |
-|----------------------|------------|-------------|--------------|
-
-
----
-
-### ⚠️ Notes:
-- **User Labels** are for easy reference in firmware.
-
-- Keep track of any modifications and update this file accordingly.
+| Component         | Description                           |
+|------------------|---------------------------------------|
+| Raspberry Pi      | High-level processing (vision, logic) |
+| STM32 MCU         | Low-level motor control               |
+| Motor Drivers     | L298N Dual H-Bridge                   |
+| Camera Module     | Raspberry Pi Camera Module v2         |
+| Chassis & Motors  | Custom-built 2WD platform             |
+| Power Supply      | 11.1V LiPo Battery                    |
 
 ---
+
+
+
   
-📅 **Last Updated - Codes:** `[26-02-2025]`
-📅 **Last Updated - Designs:** `[15-03-2025]`
+📅 **Last Updated - Codes:** `[06-04-2025]`
+📅 **Last Updated - Designs:** `[06-04-2025]`
